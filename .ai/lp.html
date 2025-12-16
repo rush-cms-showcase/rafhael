@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rafhael Marsigli — Sites de Alta Performance</title>
+  <meta name="description" content="Sites que carregam em menos de 2 segundos, aparecem no Google e convertem visitantes em clientes. Especialista em construtoras e empresas de alto padrão.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --color-bg: #0a0a0a;
+      --color-bg-elevated: #141414;
+      --color-bg-card: #1a1a1a;
+      --color-text: #fafafa;
+      --color-text-muted: #a3a3a3;
+      --color-text-subtle: #737373;
+      --color-accent: #d4a853;
+      --color-accent-hover: #e8bc5e;
+      --color-border: #262626;
+      --color-border-subtle: #1f1f1f;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Utility */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 120px 0;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--color-text-muted);
+      max-width: 600px;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--color-accent);
+    }
+
+    .nav {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--color-text);
+    }
+
+    .nav-cta {
+      background: var(--color-accent);
+      color: var(--color-bg);
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--color-text);
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60%;
+      height: 100%;
+      background: radial-gradient(ellipse at 70% 30%, rgba(212, 168, 83, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease 0.1s forwards;
+      opacity: 0;
+    }
+
+    .hero-title-highlight {
+      color: var(--color-accent);
+    }
+
+    .hero-description {
+      font-size: 20px;
+      color: var(--color-text-muted);
+      margin-bottom: 40px;
+      max-width: 560px;
+      animation: fadeInUp 0.6s ease 0.2s forwards;
+      opacity: 0;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s ease 0.3s forwards;
+      opacity: 0;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(212, 168, 83, 0.3);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--color-text);
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+      border: 1px solid var(--color-border);
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-bg-elevated);
+      border-color: var(--color-text-subtle);
+    }
+
+    /* Stats */
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 80px;
+      padding-top: 40px;
+      border-top: 1px solid var(--color-border-subtle);
+      animation: fadeInUp 0.6s ease 0.4s forwards;
+      opacity: 0;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1;
+    }
+
+    .stat-value span {
+      color: var(--color-accent);
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-top: 8px;
+    }
+
+    /* Problem Section */
+    .problem {
+      background: var(--color-bg-elevated);
+      border-top: 1px solid var(--color-border-subtle);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .problem-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .problem-item {
+      display: flex;
+      gap: 16px;
+      padding: 24px;
+      background: var(--color-bg);
+      border-radius: 12px;
+      border: 1px solid var(--color-border-subtle);
+    }
+
+    .problem-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+      font-size: 20px;
+    }
+
+    .problem-content h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .problem-content p {
+      font-size: 14px;
+      color: var(--color-text-muted);
+    }
+
+    /* Services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+    }
+
+    .service-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 40px 32px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .service-card:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-4px);
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
+    }
+
+    .service-card.featured {
+      border-color: var(--color-accent);
+      background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(212, 168, 83, 0.05) 100%);
+    }
+
+    .service-card.featured::before {
+      opacity: 1;
+    }
+
+    .service-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--color-bg-elevated);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 24px;
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .service-description {
+      font-size: 15px;
+      color: var(--color-text-muted);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .service-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .service-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--color-text-muted);
+    }
+
+    .service-features li::before {
+      content: '✓';
+      color: var(--color-accent);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .service-price {
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .service-price-label {
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .service-price-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .service-price-value span {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-text-muted);
+    }
+
+    .service-price-monthly {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    /* Case Study */
+    .case-study {
+      background: var(--color-bg-elevated);
+      border-top: 1px solid var(--color-border-subtle);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .case-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 48px;
+    }
+
+    .case-image {
+      background: linear-gradient(135deg, #1a1a1a 0%, #262626 100%);
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+    }
+
+    .case-image-placeholder {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 16/10;
+      background: var(--color-bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-subtle);
+      font-size: 14px;
+    }
+
+    .case-content {
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .case-client {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .case-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    .case-description {
+      font-size: 16px;
+      color: var(--color-text-muted);
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .case-metric {
+      text-align: center;
+      padding: 20px;
+      background: var(--color-bg-elevated);
+      border-radius: 12px;
+    }
+
+    .case-metric-value {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--color-accent);
+      line-height: 1;
+    }
+
+    .case-metric-label {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-top: 8px;
+    }
+
+    /* Process */
+    .process-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+      position: relative;
+    }
+
+    .process-timeline::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 60px;
+      right: 60px;
+      height: 2px;
+      background: var(--color-border);
+    }
+
+    .process-step {
+      text-align: center;
+      position: relative;
+    }
+
+    .process-number {
+      width: 80px;
+      height: 80px;
+      background: var(--color-bg-card);
+      border: 2px solid var(--color-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--color-accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .process-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .process-description {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Testimonial */
+    .testimonial {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 60px;
+      margin-top: 60px;
+      text-align: center;
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '"';
+      font-family: var(--font-display);
+      font-size: 120px;
+      color: var(--color-accent);
+      opacity: 0.2;
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      line-height: 1;
+    }
+
+    .testimonial-text {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .testimonial-avatar {
+      width: 56px;
+      height: 56px;
+      background: var(--color-bg-elevated);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+
+    .testimonial-info {
+      text-align: left;
+    }
+
+    .testimonial-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .testimonial-role {
+      font-size: 14px;
+      color: var(--color-text-muted);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(212, 168, 83, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .cta-description {
+      font-size: 18px;
+      color: var(--color-text-muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-guarantee {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--color-text-muted);
+    }
+
+    .cta-guarantee svg {
+      color: #22c55e;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .footer-logo span {
+      color: var(--color-accent);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-link {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--color-text);
+    }
+
+    .footer-copy {
+      font-size: 14px;
+      color: var(--color-text-subtle);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .case-card {
+        grid-template-columns: 1fr;
+      }
+
+      .case-image {
+        min-height: 300px;
+      }
+
+      .process-timeline {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+      }
+
+      .process-timeline::before {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 80px 0;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .problem-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .case-content {
+        padding: 40px 24px;
+      }
+
+      .case-metrics {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .process-timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonial {
+        padding: 40px 24px;
+      }
+
+      .testimonial-text {
+        font-size: 20px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#" class="logo">Rafhael<span>.</span></a>
+        <nav class="nav">
+          <a href="#servicos" class="nav-link">Serviços</a>
+          <a href="#case" class="nav-link">Cases</a>
+          <a href="#processo" class="nav-link">Processo</a>
+          <a href="#contato" class="nav-cta">Falar no WhatsApp</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Disponível para novos projetos
+        </div>
+        <h1 class="hero-title">
+          Sites que <span class="hero-title-highlight">vendem</span><br>
+          enquanto você trabalha
+        </h1>
+        <p class="hero-description">
+          Sites de alta performance para construtoras e empresas de alto padrão. 
+          Carregamento em menos de 2 segundos, SEO otimizado, e gestão simples.
+        </p>
+        <div class="hero-cta-group">
+          <a href="#contato" class="btn-primary">
+            Solicitar Proposta
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#case" class="btn-secondary">
+            Ver Case de Sucesso
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-value">95<span>+</span></div>
+            <div class="stat-label">PageSpeed Score</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">&lt;2<span>s</span></div>
+            <div class="stat-label">Tempo de carregamento</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">100<span>%</span></div>
+            <div class="stat-label">Seu controle dos dados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem -->
+  <section class="section problem">
+    <div class="container">
+      <div class="problem-grid">
+        <div>
+          <span class="section-label">O Problema</span>
+          <h2 class="section-title">Seu site está te custando clientes</h2>
+          <p class="section-subtitle">
+            53% dos visitantes abandonam sites que demoram mais de 3 segundos para carregar. 
+            Se seu site é lento ou não aparece no Google, você está perdendo obras.
+          </p>
+        </div>
+        <ul class="problem-list">
+          <li class="problem-item">
+            <div class="problem-icon">⏱</div>
+            <div class="problem-content">
+              <h4>Site lento demais</h4>
+              <p>Cada segundo de atraso reduz conversões em até 7%. Seu concorrente carrega mais rápido.</p>
+            </div>
+          </li>
+          <li class="problem-item">
+            <div class="problem-icon">🔍</div>
+            <div class="problem-content">
+              <h4>Invisível no Google</h4>
+              <p>Quem busca "reforma alto padrão" na sua cidade encontra seu concorrente, não você.</p>
+            </div>
+          </li>
+          <li class="problem-item">
+            <div class="problem-icon">📱</div>
+            <div class="problem-content">
+              <h4>Difícil de atualizar</h4>
+              <p>Adicionar uma obra nova no portfólio não deveria exigir ligar para a agência.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="servicos">
+    <div class="container">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <span class="section-label">Serviços</span>
+        <h2 class="section-title">Escolha o pacote ideal</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">
+          Todos os pacotes incluem hospedagem de alta performance, SSL, backups e suporte técnico.
+        </p>
+      </div>
+      
+      <div class="services-grid">
+        <!-- Essencial -->
+        <div class="service-card">
+          <div class="service-icon">🏠</div>
+          <h3 class="service-title">Essencial</h3>
+          <p class="service-description">
+            Presença digital profissional para quem está começando a investir no online.
+          </p>
+          <ul class="service-features">
+            <li>Site institucional (5-7 páginas)</li>
+            <li>Portfólio com até 10 obras</li>
+            <li>Formulário + WhatsApp</li>
+            <li>SEO básico configurado</li>
+            <li>2h de suporte/mês</li>
+          </ul>
+          <div class="service-price">
+            <div class="service-price-label">A partir de</div>
+            <div class="service-price-value">R$ 6.000</div>
+            <div class="service-price-monthly">+ R$ 250/mês</div>
+          </div>
+        </div>
+
+        <!-- Profissional -->
+        <div class="service-card featured">
+          <span class="service-badge">Mais escolhido</span>
+          <div class="service-icon">🏗</div>
+          <h3 class="service-title">Profissional</h3>
+          <p class="service-description">
+            Para quem quer aparecer no Google e converter mais visitantes em orçamentos.
+          </p>
+          <ul class="service-features">
+            <li>Tudo do Essencial, mais:</li>
+            <li>Portfólio expandido (30 obras)</li>
+            <li>Blog para SEO de longo prazo</li>
+            <li>Analytics próprio + relatório mensal</li>
+            <li>Páginas de serviço para SEO local</li>
+            <li>4h de suporte/mês</li>
+          </ul>
+          <div class="service-price">
+            <div class="service-price-label">A partir de</div>
+            <div class="service-price-value">R$ 10.000</div>
+            <div class="service-price-monthly">+ R$ 400/mês</div>
+          </div>
+        </div>
+
+        <!-- Premium -->
+        <div class="service-card">
+          <div class="service-icon">🏛</div>
+          <h3 class="service-title">Premium</h3>
+          <p class="service-description">
+            Experiência completa para empresas que querem o melhor em presença digital.
+          </p>
+          <ul class="service-features">
+            <li>Tudo do Profissional, mais:</li>
+            <li>Design 100% personalizado</li>
+            <li>Portfólio ilimitado</li>
+            <li>Depoimentos em vídeo</li>
+            <li>Calculadora de orçamento</li>
+            <li>Reunião mensal de acompanhamento</li>
+            <li>8h de suporte prioritário/mês</li>
+          </ul>
+          <div class="service-price">
+            <div class="service-price-label">A partir de</div>
+            <div class="service-price-value">R$ 15.000</div>
+            <div class="service-price-monthly">+ R$ 600/mês</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Study -->
+  <section class="section case-study" id="case">
+    <div class="container">
+      <span class="section-label">Case de Sucesso</span>
+      <h2 class="section-title">Resultados reais, não promessas</h2>
+      
+      <div class="case-card">
+        <div class="case-image">
+          <div class="case-image-placeholder">
+            [Screenshot do site]
+          </div>
+        </div>
+        <div class="case-content">
+          <span class="case-client">Construtora Alto Padrão</span>
+          <h3 class="case-title">De invisível no Google para primeira página em 60 dias</h3>
+          <p class="case-description">
+            A construtora tinha um site antigo que demorava mais de 8 segundos para carregar 
+            e não aparecia nas buscas por "reforma alto padrão" na região. Após o novo site, 
+            os resultados foram imediatos.
+          </p>
+          <div class="case-metrics">
+            <div class="case-metric">
+              <div class="case-metric-value">97</div>
+              <div class="case-metric-label">PageSpeed Score</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">1.4s</div>
+              <div class="case-metric-label">Carregamento</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">+340%</div>
+              <div class="case-metric-label">Tráfego orgânico</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial -->
+      <div class="testimonial">
+        <p class="testimonial-text">
+          "Finalmente consigo atualizar o portfólio sozinho. Os clientes comentam que o site é rápido 
+          e profissional. Já recebi 3 indicações só por causa do site novo."
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JM</div>
+          <div class="testimonial-info">
+            <div class="testimonial-name">João Marcos</div>
+            <div class="testimonial-role">Sócio-diretor, Construtora Alto Padrão</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section" id="processo">
+    <div class="container">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <span class="section-label">Processo</span>
+        <h2 class="section-title">Do briefing ao ar em 4 semanas</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">
+          Processo direto, sem burocracia. Você foca no seu negócio enquanto eu cuido do site.
+        </p>
+      </div>
+      
+      <div class="process-timeline">
+        <div class="process-step">
+          <div class="process-number">1</div>
+          <h4 class="process-title">Conversa Inicial</h4>
+          <p class="process-description">Entendo seu negócio, objetivos e o que você precisa. Sem compromisso.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-number">2</div>
+          <h4 class="process-title">Proposta</h4>
+          <p class="process-description">Receba uma proposta clara com escopo, preço e prazo em até 48h.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-number">3</div>
+          <h4 class="process-title">Desenvolvimento</h4>
+          <p class="process-description">Site construído com acompanhamento. Você aprova cada etapa.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-number">4</div>
+          <h4 class="process-title">Lançamento</h4>
+          <p class="process-description">Site no ar, treinamento incluso. Suporte contínuo garantido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section" id="contato">
+    <div class="container">
+      <div class="cta-content">
+        <span class="section-label">Pronto para começar?</span>
+        <h2 class="cta-title">Vamos conversar sobre<br>seu próximo site</h2>
+        <p class="cta-description">
+          Sem compromisso. Me conta sobre seu negócio e eu te mostro como um site de alta performance pode trazer mais clientes.
+        </p>
+        <div class="cta-buttons">
+          <a href="https://wa.me/5511999999999?text=Olá! Vi seu site e gostaria de saber mais sobre os serviços." class="btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Chamar no WhatsApp
+          </a>
+          <a href="mailto:contato@rafhael.com.br" class="btn-secondary">
+            Enviar email
+          </a>
+        </div>
+        <p class="cta-guarantee">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Resposta em até 24 horas
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">Rafhael<span>.</span></div>
+        <div class="footer-links">
+          <a href="#servicos" class="footer-link">Serviços</a>
+          <a href="#case" class="footer-link">Cases</a>
+          <a href="https://rushcms.com" class="footer-link" target="_blank">Rush CMS</a>
+          <a href="#contato" class="footer-link">Contato</a>
+        </div>
+        <p class="footer-copy">© 2025 Rafhael Marsigli. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
