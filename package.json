@@ -9,11 +9,17 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@fontsource/libre-baskerville": "^5.0.13",
+    "@fontsource/outfit": "^5.0.13",
+    "@rushcms/client": "^0.1.4",
     "@tailwindcss/vite": "^4.1.18",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "astro": "^5.16.6",
     "astro-seo": "^0.8.4",
-    "@fontsource/outfit": "^5.0.13",
-    "@fontsource/libre-baskerville": "^5.0.13",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "tailwindcss": "^4.1.18"
   }
 }
