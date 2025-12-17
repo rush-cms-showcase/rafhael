@@ -1,0 +1,147 @@
+---
+import Layout from "../../layouts/layout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import Section from "../../components/ui/section.astro";
+import Container from "../../components/ui/container.astro";
+import Badge from "../../components/ui/badge.astro";
+import { rush, type BlogPost } from "../../lib/rush";
+
+// Generate Static Paths for all posts
+export async function getStaticPaths() {
+    try {
+        const response = await rush.getEntries("blog", {
+            per_page: 1000,
+        });
+        const posts = response.data as unknown as BlogPost[];
+
+        return posts.map((post) => ({
+            params: { slug: post.slug },
+            props: { post },
+        }));
+    } catch (error) {
+        console.error("Error fetching paths for blog:", error);
+        return [];
+    }
+}
+
+interface Props {
+    post: BlogPost;
+}
+
+const { post } = Astro.props;
+
+// Formatting
+const formattedDate = new Date(post.published_at).toLocaleDateString("pt-BR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+});
+
+const title = `${post.title} | Rafhael Marsigli`;
+const description = post.excerpt || `Leia sobre ${post.title} no blog.`;
+---
+
+<Layout title={title} description={description}>
+    <Header />
+
+    <main class="pt-32">
+        <article>
+            <!-- Header -->
+            <Section class="pb-10 pt-10 border-b-0">
+                <Container className="max-w-4xl text-center">
+                    <div class="mb-6 flex justify-center gap-2 animate-fade-in">
+                        {
+                            post.category && (
+                                <Badge variant="primary">
+                                    {post.category.name}
+                                </Badge>
+                            )
+                        }
+                        <time
+                            datetime={post.published_at}
+                            class="inline-flex items-center rounded px-3 py-1 text-xs font-medium bg-bg-elevated text-text-muted border border-border"
+                        >
+                            {formattedDate}
+                        </time>
+                    </div>
+
+                    <h1
+                        class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 animate-fade-in delay-100"
+                    >
+                        {post.title}
+                    </h1>
+
+                    <div
+                        class="flex items-center justify-center gap-3 animate-fade-in delay-200"
+                    >
+                        {
+                            post.author?.avatar ? (
+                                <img
+                                    src={post.author.avatar}
+                                    alt={post.author.name}
+                                    class="w-10 h-10 rounded-full border border-border"
+                                />
+                            ) : (
+                                <div class="w-10 h-10 rounded-full bg-bg-elevated border border-border flex items-center justify-center text-sm font-bold text-text-muted">
+                                    {(post.author?.name || "R").charAt(0)}
+                                </div>
+                            )
+                        }
+                        <div class="text-left">
+                            <div class="text-sm font-bold text-text-main">
+                                {post.author?.name || "Rafhael Marsigli"}
+                            </div>
+                            <div class="text-xs text-text-muted">Autor</div>
+                        </div>
+                    </div>
+                </Container>
+            </Section>
+
+            <!-- Cover & Content -->
+            <Container className="max-w-4xl mb-24">
+                {
+                    post.cover_image && (
+                        <div class="rounded-3xl overflow-hidden shadow-2xl mb-12 animate-fade-in-up">
+                            <img
+                                src={post.cover_image}
+                                alt={post.title}
+                                class="w-full h-auto"
+                                loading="eager"
+                            />
+                        </div>
+                    )
+                }
+
+                <!-- Content Body -->
+                <div
+                    class="prose prose-invert prose-lg max-w-none prose-headings:font-serif prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl"
+                    set:html={post.content}
+                />
+            </Container>
+        </article>
+
+        <!-- CTA Footer -->
+        <Section class="bg-bg-elevated border-y border-border">
+            <Container className="text-center">
+                <h2 class="font-serif text-3xl font-bold mb-6">
+                    Gostou deste artigo?
+                </h2>
+                <p class="text-text-muted mb-8 max-w-2xl mx-auto">
+                    Inscreva-se na nossa newsletter para receber conteúdos
+                    exclusivos sobre performance e growth.
+                </p>
+                <div class="flex justify-center">
+                    <a
+                        href="https://wa.me/5512983173077"
+                        class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-hover hover:-translate-y-1 transition-all shadow-lg shadow-primary/20"
+                    >
+                        Fale comigo no WhatsApp
+                    </a>
+                </div>
+            </Container>
+        </Section>
+    </main>
+
+    <Footer />
+</Layout>
