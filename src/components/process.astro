@@ -1,0 +1,65 @@
+---
+import Section from "./ui/section.astro";
+
+const steps = [
+    {
+        number: "1",
+        title: "Entendendo Você",
+        description:
+            "Reunião de briefing para mapear seus objetivos e público-alvo.",
+    },
+    {
+        number: "2",
+        title: "Proposta",
+        description:
+            "Apresentação do conceito visual e estrutura estratégica do site.",
+    },
+    {
+        number: "3",
+        title: "Desenvolvimento",
+        description:
+            "Codificação focada em performance e SEO, fiel ao design aprovado.",
+    },
+    {
+        number: "4",
+        title: "Homologação e Lançamento",
+        description:
+            "Testes finais, otimização de velocidade e publicação do seu site.",
+    },
+];
+---
+
+<Section class="relative">
+    <div class="text-center">
+        <span
+            class="text-xs font-bold text-primary uppercase tracking-widest mb-4 block animate-fade-in"
+            >Metodologia</span
+        >
+        <h2
+            class="font-serif text-3xl md:text-5xl font-bold mb-16 animate-fade-in"
+        >
+            Do briefing ao ar em 4 etapas
+        </h2>
+
+        <div class="relative grid md:grid-cols-4 gap-8">
+            <div
+                class="hidden md:block absolute top-14 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-border to-transparent -z-10"
+            >
+            </div>
+
+            {
+                steps.map((step) => (
+                    <div class="relative group bg-bg p-4 md:bg-transparent">
+                        <div class="w-20 h-20 mx-auto bg-bg-card border-2 border-border rounded-full flex items-center justify-center font-serif text-2xl font-bold text-primary group-hover:border-primary group-hover:scale-110 transition-all duration-300 shadow-xl shadow-black/20 z-10 relative mb-6">
+                            {step.number}
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">{step.title}</h3>
+                        <p class="text-text-muted text-sm leading-relaxed">
+                            {step.description}
+                        </p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</Section>

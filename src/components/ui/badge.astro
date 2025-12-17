@@ -1,0 +1,23 @@
+---
+interface Props {
+    variant?: "default" | "outline" | "primary";
+    className?: string;
+}
+
+const { variant = "default", className = "" } = Astro.props;
+
+const variants = {
+    default: "bg-bg-elevated border border-border text-text-subtle",
+    outline: "bg-transparent border border-border text-text-muted",
+    primary: "bg-primary text-white shadow-lg shadow-primary/30",
+};
+
+const baseStyles =
+    "inline-flex items-center rounded px-3 py-2 text-xs font-medium";
+
+const classes = [baseStyles, variants[variant], className].join(" ");
+---
+
+<span class={classes}>
+    <slot />
+</span>

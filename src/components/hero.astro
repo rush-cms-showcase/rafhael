@@ -1,0 +1,104 @@
+---
+import PageSpeedWidget from "./page-speed-widget.astro";
+import Particles from "./particles.astro";
+import Container from "./ui/container.astro";
+import Button from "./ui/button.astro";
+import Badge from "./ui/badge.astro";
+---
+
+<section
+    class="relative min-h-[90vh] flex items-center pt-32 pb-20 overflow-hidden"
+>
+    <Particles />
+
+    <div class="absolute inset-0 pointer-events-none">
+        <div
+            class="absolute top-0 right-0 w-[60%] h-full bg-[radial-gradient(ellipse_at_70%_30%,var(--color-primary)_0%,transparent_60%)] opacity-10"
+        >
+        </div>
+    </div>
+
+    <Container>
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="relative z-10">
+                <h1
+                    class="font-serif text-5xl md:text-7xl font-bold leading-tight mb-6 animate-fade-in delay-100"
+                >
+                    Sites que
+                    <span class="text-primary italic">vendem</span> enquanto você
+                    trabalha
+                </h1>
+
+                <p
+                    class="text-text-muted text-lg md:text-xl mb-10 max-w-lg leading-relaxed animate-fade-in delay-200"
+                >
+                    <b>Sites</b> e <b>Landing Pages</b> de alta performance para empresas
+                    de alto padrão. Carregamento em menos de 2 segundos, SEO otimizado,
+                    e gestão simples.
+                </p>
+
+                <div class="flex flex-wrap gap-4 animate-fade-in-up delay-300">
+                    <Button
+                        href="https://wa.me/5512983173077"
+                        variant="primary"
+                        size="lg"
+                        className="shadow-[0_10px_40px_rgba(63,145,240,0.3)]"
+                    >
+                        Criar meu Site
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            ><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"
+                            ></path></svg
+                        >
+                    </Button>
+                    <Button href="#features" variant="outline" size="lg">
+                        Ver Demo
+                    </Button>
+                </div>
+            </div>
+
+            <div
+                class="relative z-10 animate-fade-in delay-500 hidden lg:block"
+            >
+                <PageSpeedWidget />
+            </div>
+        </div>
+    </Container>
+</section>
+
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fade-in-up {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards;
+    }
+    .delay-100 {
+        animation-delay: 0.1s;
+    }
+    .delay-200 {
+        animation-delay: 0.2s;
+    }
+    .delay-300 {
+        animation-delay: 0.3s;
+    }
+    .delay-400 {
+        animation-delay: 0.4s;
+    }
+</style>

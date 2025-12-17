@@ -1,16 +1,45 @@
 ---
+import Layout from "../layouts/layout.astro";
+import Header from "../components/header.astro";
+import Hero from "../components/hero.astro";
+import Problem from "../components/problem.astro";
+import Pricing from "../components/pricing.astro";
+import Process from "../components/process.astro";
+import Testimonial from "../components/testimonial.astro";
+import Footer from "../components/footer.astro";
+import Section from "../components/ui/section.astro";
+import Button from "../components/ui/button.astro";
 
+// Page-specific metadata
+const title = "Rafhael Marsigli - Sites de Alta Performance";
+const description =
+    "Especialista em sites ultrarrápidos, SEO e alta conversão para empresas que querem crescer.";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title={title} description={description}>
+    <Header />
+
+    <main>
+        <Hero />
+        <Problem />
+        <Pricing />
+        <Process />
+        <Testimonial />
+
+        <Section class="text-center">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8">
+                Vamos conversar sobre seu próximo site?
+            </h2>
+            <Button
+                href="https://wa.me/5512983173077"
+                variant="primary"
+                size="lg"
+                className="shadow-lg shadow-primary/25"
+            >
+                Começar Agora
+            </Button>
+        </Section>
+    </main>
+
+    <Footer />
+</Layout>

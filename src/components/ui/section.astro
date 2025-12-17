@@ -1,0 +1,32 @@
+---
+import Container from "./container.astro";
+
+interface Props {
+    id?: string;
+    class?: string; // Outer section class
+    containerClass?: string; // Inner container class
+    noContainer?: boolean;
+}
+
+const {
+    id,
+    class: className = "",
+    containerClass = "",
+    noContainer = false,
+} = Astro.props;
+---
+
+<section
+    id={id}
+    class:list={["py-20 md:py-32 relative overflow-hidden", className]}
+>
+    {
+        noContainer ? (
+            <slot />
+        ) : (
+            <Container className={containerClass}>
+                <slot />
+            </Container>
+        )
+    }
+</section>
