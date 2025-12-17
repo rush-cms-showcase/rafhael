@@ -1,0 +1,78 @@
+---
+import Container from "./ui/container.astro";
+import Badge from "./ui/badge.astro";
+import { Image } from "astro:assets";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="flex items-center flex-col border-t border-border-subtle bg-bg">
+    <div class="w-full py-12">
+        <Container
+            className="relative flex flex-col md:flex-row justify-between items-center gap-6"
+        >
+            <div class="flex items-center gap-2">
+                <span class="font-serif text-xl font-bold text-text-main">
+                    Rafhael <span class="text-primary">Marsigli</span>
+                </span>
+            </div>
+
+            <div class="absolute top-1/2 left-1/2 -ml-[32px] -mt-[32px]">
+                <Image
+                    src="/favicon.svg"
+                    width={64}
+                    height={64}
+                    alt="Rafhael Marsigli"
+                />
+            </div>
+
+            <div class="flex gap-6">
+                <a
+                    href="#"
+                    class="text-sm text-text-muted hover:text-primary transition-colors"
+                    >Termos</a
+                >
+                <a
+                    href="#"
+                    class="text-sm text-text-muted hover:text-primary transition-colors"
+                    >Privacidade</a
+                >
+            </div>
+        </Container>
+    </div>
+    <small
+        class="w-full text-sm text-text-muted p-4 lg:p-8 border-t border-border-subtle/40"
+    >
+        <Container
+            className="flex flex-col lg:flex-row justify-between items-center gap-2"
+        >
+            <span>
+                &copy; {currentYear} Rafhael Marsigli. Todos os direitos reservados.
+            </span>
+            <div class="flex flex-row items-center justify-center gap-2">
+                Criado por
+                <a
+                    href="https://rafhael.com.br?utm_source=rafhael&utm_medium=footer&utm_campaign=footer"
+                >
+                    <Image
+                        src="/favicon.svg"
+                        width={32}
+                        height={32}
+                        alt="Rafhael Marsigli"
+                    />
+                </a>
+                Powered by
+                <a
+                    href="https://rushcms.com?utm_source=rafhael&utm_medium=footer&utm_campaign=footer"
+                >
+                    <Image
+                        src="/rush-cms.svg"
+                        width={32}
+                        height={32}
+                        alt="Rush CMS"
+                    />
+                </a>
+            </div>
+        </Container>
+    </small>
+</footer>

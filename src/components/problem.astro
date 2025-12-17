@@ -1,0 +1,95 @@
+---
+import Section from "./ui/section.astro";
+
+const problems = [
+    {
+        title: "Lentidão e Perda de Vendas",
+        description:
+            "Cada segundo de carregamento custa 7% em conversões. Sites lentos são abandonados antes mesmo de abrir.",
+        icon: "timer",
+    },
+    {
+        title: "Invisível no Google",
+        description:
+            "Sem a estrutura técnica correta (SEO), seu site nunca aparecerá na primeira página, perdendo tráfego gratuito e deixando anúncios mais caros.",
+        icon: "invisible",
+    },
+    {
+        title: "Design Amador",
+        description:
+            "A primeira impressão é a que fica. Um site com visual ultrapassado gera desconfiança imediata. Não dá para oferecer preço premium dom design amador.",
+        icon: "design",
+    },
+];
+---
+
+<Section id="problems" class="bg-bg-elevated border-y border-border">
+    <div class="text-center max-w-3xl mx-auto mb-20 animate-fade-in">
+        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6">
+            Seu site atual está <span class="text-primary">te sabotando?</span>
+        </h2>
+        <p class="text-text-muted text-lg">
+            A maioria dos sites são lentos, genéricos e difíceis de usar.
+            <br /> Isso custa clientes todos os dias.
+        </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+        {
+            problems.map((item, index) => (
+                <div class="bg-bg-card p-10 rounded-2xl border border-border group hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-bg-elevated rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
+                        {item.icon === "timer" && (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="w-8 h-8 text-primary"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                        )}
+                        {item.icon === "invisible" && (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="w-8 h-8 text-primary"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                <line x1="1" y1="1" x2="23" y2="23" />
+                            </svg>
+                        )}
+                        {item.icon === "design" && (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="w-8 h-8 text-primary"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        )}
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">{item.title}</h3>
+                    <p class="text-text-muted leading-relaxed">
+                        {item.description}
+                    </p>
+                </div>
+            ))
+        }
+    </div>
+</Section>

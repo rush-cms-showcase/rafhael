@@ -1,0 +1,92 @@
+<canvas
+    id="hero-particles"
+    class="absolute inset-0 w-full h-full pointer-events-none opacity-40"
+></canvas>
+
+<script>
+    class ParticleSystem {
+        constructor() {
+            this.canvas = document.getElementById("hero-particles");
+            if (!this.canvas) return;
+
+            this.ctx = this.canvas.getContext("2d");
+            this.particles = [];
+            this.resize();
+            this.init();
+            this.animate();
+
+            window.addEventListener("resize", () => this.resize());
+        }
+
+        resize() {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        }
+
+        init() {
+            this.particles = [];
+            const particleCount = Math.min(window.innerWidth / 10, 100); // Limit particles for performance
+
+            for (let i = 0; i < particleCount; i++) {
+                this.particles.push({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    size: Math.random() * 2 + 1,
+                    alpha: Math.random() * 0.5 + 0.1,
+                });
+            }
+        }
+
+        draw() {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            // Draw connections
+            this.ctx.strokeStyle = "rgba(63, 145, 240, 0.1)"; // Primary color low opacity
+            this.ctx.lineWidth = 1;
+
+            for (let i = 0; i < this.particles.length; i++) {
+                const p = this.particles[i];
+
+                // Move
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Bounce
+                if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+
+                // Draw particle
+                this.ctx.beginPath();
+                this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                this.ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+                this.ctx.fill();
+
+                // Connections (simple distance check)
+                for (let j = i + 1; j < this.particles.length; j++) {
+                    const p2 = this.particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(p.x, p.y);
+                        this.ctx.lineTo(p2.x, p2.y);
+                        this.ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        animate() {
+            this.draw();
+            requestAnimationFrame(() => this.animate());
+        }
+    }
+
+    // Init when DOM ready or page loaded
+    document.addEventListener("astro:page-load", () => new ParticleSystem());
+    document.addEventListener("DOMContentLoaded", () => new ParticleSystem());
+</script>
