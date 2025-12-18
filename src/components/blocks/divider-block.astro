@@ -1,0 +1,35 @@
+---
+import type { DividerBlock } from '../../lib/blocks/types'
+
+interface Props {
+	block: DividerBlock
+}
+
+const { block } = Astro.props
+
+const { label, style, spacing } = block.data
+
+const spacingClass = {
+	'small': 'my-6',
+	'medium': 'my-12',
+	'large': 'my-16'
+}[spacing || 'medium'] || 'my-12'
+
+const styleClass = {
+	'solid': 'border-t border-border',
+	'dashed': 'border-t border-dashed border-border',
+	'dotted': 'border-t border-dotted border-border'
+}[style || 'solid'] || 'border-t border-border'
+---
+
+<div class={`divider-block ${spacingClass}`}>
+	{label ? (
+		<div class="flex items-center gap-4">
+			<div class={`flex-1 ${styleClass}`}></div>
+			<span class="text-sm text-text-muted font-medium">{label}</span>
+			<div class={`flex-1 ${styleClass}`}></div>
+		</div>
+	) : (
+		<div class={styleClass}></div>
+	)}
+</div>

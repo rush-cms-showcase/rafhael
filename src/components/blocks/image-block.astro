@@ -10,6 +10,7 @@ const { block } = Astro.props
 const { image, caption, alt, alignment } = block.data
 
 if (!image || !image.url) {
+	console.warn('ImageBlock: missing image data', { caption, alt, hasImage: !!image })
 	return null
 }
 
