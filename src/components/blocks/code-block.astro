@@ -165,7 +165,6 @@ const blockId = `code-${Math.random().toString(36).slice(2, 9)}`;
                 await navigator.clipboard.writeText(rawCode);
 
                 const textEl = btn.querySelector(".copy-text");
-                const iconEl = btn.querySelector(".copy-icon");
 
                 if (textEl) textEl.textContent = "Copiado!";
                 btn.classList.add("copied");

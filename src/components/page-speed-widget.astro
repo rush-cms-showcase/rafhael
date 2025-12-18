@@ -185,81 +185,81 @@
     </div>
 </div>
 
-<script>
+<script is:inline>
     function animateWidget() {
-        const duration = 2000;
+        const duration = 2000
 
         const randomScore = () =>
-            Math.floor(Math.random() * (100 - 97 + 1)) + 97;
+            Math.floor(Math.random() * (100 - 97 + 1)) + 97
 
-        const perfScore = randomScore();
-        const accessScore = 100;
-        const practiceScore = 100;
-        const seoScore = 100;
+        const perfScore = randomScore()
+        const accessScore = 100
+        const practiceScore = 100
+        const seoScore = 100
 
         const animations = [
-            { id: "perf", score: perfScore },
-            { id: "access", score: accessScore },
-            { id: "practices", score: practiceScore },
-            { id: "seo", score: seoScore },
+            { id: 'perf', score: perfScore },
+            { id: 'access', score: accessScore },
+            { id: 'practices', score: practiceScore },
+            { id: 'seo', score: seoScore },
             {
                 id: null,
                 score: perfScore,
-                counterId: "score-counter-main",
-                circleId: "progress-circle-main",
-            },
-        ];
+                counterId: 'score-counter-main',
+                circleId: 'progress-circle-main'
+            }
+        ]
 
         animations.forEach((item) => {
             const circle = document.getElementById(
-                item.circleId || `circle-${item.id}`,
-            );
+                item.circleId || `circle-${item.id}`
+            )
             const counter = document.getElementById(
-                item.counterId || `score-${item.id}`,
-            );
-            if (circle) circle.style.strokeDashoffset = "100";
-            if (counter) counter.innerText = "0";
-        });
+                item.counterId || `score-${item.id}`
+            )
+            if (circle) circle.style.strokeDashoffset = '100'
+            if (counter) counter.innerText = '0'
+        })
 
         setTimeout(() => {
-            const startTime = performance.now();
+            const startTime = performance.now()
 
             animations.forEach((item) => {
                 const circle = document.getElementById(
-                    item.circleId || `circle-${item.id}`,
-                );
+                    item.circleId || `circle-${item.id}`
+                )
                 if (circle) {
                     circle.style.strokeDashoffset = (
                         100 - item.score
-                    ).toString();
+                    ).toString()
                 }
-            });
+            })
 
             function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+                const elapsed = currentTime - startTime
+                const progress = Math.min(elapsed / duration, 1)
 
-                const ease = progress * (2 - progress);
+                const ease = progress * (2 - progress)
 
                 animations.forEach((item) => {
                     const counter = document.getElementById(
-                        item.counterId || `score-${item.id}`,
-                    );
+                        item.counterId || `score-${item.id}`
+                    )
                     if (counter) {
-                        const currentVal = Math.round(item.score * ease);
-                        counter.innerText = currentVal.toString();
+                        const currentVal = Math.round(item.score * ease)
+                        counter.innerText = currentVal.toString()
                     }
-                });
+                })
 
                 if (progress < 1) {
-                    requestAnimationFrame(update);
+                    requestAnimationFrame(update)
                 }
             }
 
-            requestAnimationFrame(update);
-        }, 300);
+            requestAnimationFrame(update)
+        }, 300)
     }
 
-    document.addEventListener("DOMContentLoaded", animateWidget);
-    document.addEventListener("astro:page-load", animateWidget);
+    document.addEventListener('DOMContentLoaded', animateWidget)
+    document.addEventListener('astro:page-load', animateWidget)
 </script>

@@ -1,5 +1,5 @@
 ---
-import type { Block } from '../../lib/blocks/types'
+import type { Block, RichTextBlock as RichTextBlockType, CodeBlock as CodeBlockType, ImageBlock as ImageBlockType } from '../../lib/blocks/types'
 import RichTextBlock from './richtext-block.astro'
 import CodeBlock from './code-block.astro'
 import ImageBlock from './image-block.astro'
@@ -19,13 +19,13 @@ if (!blocks || !Array.isArray(blocks)) {
 	{blocks && blocks.map((block) => {
 		switch (block.type) {
 			case 'richtext':
-				return <RichTextBlock block={block} />
+				return <RichTextBlock block={block as RichTextBlockType} />
 
 			case 'code':
-				return <CodeBlock block={block} />
+				return <CodeBlock block={block as CodeBlockType} />
 
 			case 'image':
-				return <ImageBlock block={block} />
+				return <ImageBlock block={block as ImageBlockType} />
 
 			default:
 				console.warn(`Unknown block type: ${block.type}`)
