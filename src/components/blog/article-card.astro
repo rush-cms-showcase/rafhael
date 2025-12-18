@@ -27,8 +27,11 @@ const formattedDate = new Date(post.published_at).toLocaleDateString("pt-BR", {
                 <img
                     src={post.featured_image.preview || post.featured_image.url}
                     alt={post.title}
+                    width="640"
+                    height="360"
                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
+                    decoding="async"
                 />
             ) : (
                 <div class="w-full h-full bg-bg-elevated flex items-center justify-center text-text-muted">
@@ -97,7 +100,11 @@ const formattedDate = new Date(post.published_at).toLocaleDateString("pt-BR", {
                         <img
                             src={post.author.avatar}
                             alt={post.author.name}
+                            width="32"
+                            height="32"
                             class="w-8 h-8 rounded-full border border-border"
+                            loading="lazy"
+                            decoding="async"
                         />
                     ) : (
                         <div class="w-8 h-8 rounded-full bg-bg-elevated border border-border flex items-center justify-center text-xs font-bold text-text-muted">
