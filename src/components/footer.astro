@@ -1,7 +1,7 @@
 ---
-import Container from './ui/container.astro'
+import Container from "./ui/container.astro";
 
-const currentYear = new Date().getFullYear()
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="flex items-center flex-col border-t border-border-subtle bg-bg">
@@ -15,7 +15,9 @@ const currentYear = new Date().getFullYear()
                 </span>
             </div>
 
-            <div class="absolute top-1/2 left-1/2 -ml-[32px] -mt-[32px]">
+            <div
+                class="lg:absolute lg:top-1/2 lg:left-1/2 lg:-ml-[32px] lg:-mt-[32px]"
+            >
                 <img
                     src="/favicon.svg"
                     width="64"
@@ -42,9 +44,9 @@ const currentYear = new Date().getFullYear()
         class="w-full text-sm text-text-muted p-4 lg:p-8 border-t border-border-subtle/40"
     >
         <Container
-            className="flex flex-col lg:flex-row justify-between items-center gap-2"
+            className="flex flex-col lg:flex-row lg:justify-between items-center gap-2"
         >
-            <span>
+            <span class="text-center lg:text-left">
                 &copy; {currentYear} Rafhael Marsigli. Todos os direitos reservados.
             </span>
             <div class="flex flex-row items-center justify-center gap-2">

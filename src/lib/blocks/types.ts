@@ -24,11 +24,27 @@ export interface CodeBlock extends Block {
 export interface ImageBlock extends Block {
 	type: 'image'
 	data: {
-		image: MediaData
+		image?: MediaData
 		caption?: string
 		alt?: string
 		width?: string
 		alignment?: string
+		size?: string
+		shadow?: boolean
+		lightbox?: boolean
+		aspect_ratio?: string
+		lazy_loading?: boolean
+		border_radius?: string
+		link?: string | null
+	}
+}
+
+export interface DividerBlock extends Block {
+	type: 'divider'
+	data: {
+		label?: string | null
+		style?: 'solid' | 'dashed' | 'dotted'
+		spacing?: 'small' | 'medium' | 'large'
 	}
 }
 

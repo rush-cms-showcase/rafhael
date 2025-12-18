@@ -1,8 +1,9 @@
 ---
-import type { Block, RichTextBlock as RichTextBlockType, CodeBlock as CodeBlockType, ImageBlock as ImageBlockType } from '../../lib/blocks/types'
+import type { Block, RichTextBlock as RichTextBlockType, CodeBlock as CodeBlockType, ImageBlock as ImageBlockType, DividerBlock as DividerBlockType } from '../../lib/blocks/types'
 import RichTextBlock from './richtext-block.astro'
 import CodeBlock from './code-block.astro'
 import ImageBlock from './image-block.astro'
+import DividerBlock from './divider-block.astro'
 
 interface Props {
 	blocks: Block[]
@@ -26,6 +27,9 @@ if (!blocks || !Array.isArray(blocks)) {
 
 			case 'image':
 				return <ImageBlock block={block as ImageBlockType} />
+
+			case 'divider':
+				return <DividerBlock block={block as DividerBlockType} />
 
 			default:
 				console.warn(`Unknown block type: ${block.type}`)
