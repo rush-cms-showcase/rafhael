@@ -33,7 +33,7 @@ const { post } = Astro.props;
 const title = `${post.title} | Rafhael Marsigli`;
 const description = post.excerpt || `Leia sobre ${post.title} no blog.`;
 const url = `${import.meta.env.PUBLIC_SITE_URL}/blog/${post.slug}`;
-const image = post.featured_image?.url || '/banner.png';
+const image = post.featured_image?.url || "/banner.png";
 ---
 
 <Layout title={title} description={description} image={image}>
@@ -144,7 +144,10 @@ const image = post.featured_image?.url || '/banner.png';
                     post.featured_image && (
                         <div class="rounded-3xl overflow-hidden shadow-2xl mb-12 animate-fade-in-up">
                             <img
-                                src={post.featured_image.preview || post.featured_image.url}
+                                src={
+                                    post.featured_image.preview ||
+                                    post.featured_image.url
+                                }
                                 alt={post.title}
                                 width="896"
                                 height="504"
@@ -157,7 +160,7 @@ const image = post.featured_image?.url || '/banner.png';
                 }
 
                 <div
-                    class="prose prose-invert prose-lg lg:prose-xl xl:prose-2xl max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl"
+                    class="prose prose-invert prose-lg lg:prose-xl max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl"
                 >
                     {
                         post.data?.content && post.data.content.length > 0 ? (
