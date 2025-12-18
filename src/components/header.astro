@@ -1,14 +1,14 @@
 ---
-import Container from './ui/container.astro'
-import Button from './ui/button.astro'
+import Container from "./ui/container.astro";
+import Button from "./ui/button.astro";
 
-const isHome = Astro.url.pathname === '/'
+const isHome = Astro.url.pathname === "/";
 
 const navItems = [
-	{ label: 'Planos', href: isHome ? '#pricing' : '/#pricing' },
-	{ label: 'Cases', href: '/cases' },
-	{ label: 'Blog', href: '/blog' }
-]
+    { label: "Planos", href: isHome ? "#pricing" : "/#pricing" },
+    { label: "Cases", href: "/cases" },
+    { label: "Blog", href: "/blog" },
+];
 ---
 
 <header
@@ -20,10 +20,10 @@ const navItems = [
                 <img
                     src="/favicon.svg"
                     alt="Rafhael Marsigli Logo"
-                    class="w-8 h-8"
+                    class="w-12 h-12 lg:w-8 lg:h-8"
                 />
                 <span
-                    class="font-serif text-xl font-bold text-text-main group-hover:text-primary transition-colors duration-300"
+                    class="hidden md:block font-serif text-xl font-bold text-text-main group-hover:text-primary transition-colors duration-300"
                 >
                     Rafhael <span class="text-primary">Marsigli</span>
                 </span>
@@ -46,7 +46,7 @@ const navItems = [
         <div class="flex items-center gap-4">
             <a
                 href="https://app.rushcms.com/login?utm_source=rafhael&utm_medium=referral&utm_campaign=header"
-                class="hidden sm:block text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors"
+                class="hidden lg:block text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors"
                 target="_blank"
             >
                 Login
@@ -55,9 +55,9 @@ const navItems = [
                 href="https://wa.me/5512983173077"
                 variant="primary"
                 size="md"
-                className="shadow-lg shadow-primary/20"
+                className="hidden md:flex shadow-lg shadow-primary/20"
             >
-                Fale Comigo
+                <span>Fale Comigo</span>
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -71,6 +71,89 @@ const navItems = [
                         fill="currentColor"></path>
                 </svg>
             </Button>
+
+            <button
+                id="menu-toggle"
+                class="md:hidden flex items-center justify-center w-12 h-12 border border-white/20 rounded-lg text-text-main hover:text-primary transition-colors"
+                aria-label="Menu"
+            >
+                <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
     </Container>
+
+    <div
+        id="mobile-menu"
+        class="md:hidden fixed inset-0 top-[73px] opacity-0 pointer-events-none transition-opacity duration-300"
+    >
+        <Container className="py-8">
+            <nav
+                class="border border-primary/40 flex flex-col text-center rounded-lg shadow-primary/10 shadow-xl bg-black/98 backdrop-blur-lg"
+            >
+                {
+                    navItems.map((item) => (
+                        <a
+                            href={item.href}
+                            class="text-xl font-medium text-text-muted hover:text-text-main transition-colors py-4 px-3 border-b border-border/30"
+                        >
+                            {item.label}
+                        </a>
+                    ))
+                }
+                <a
+                    href="https://app.rushcms.com/login?utm_source=rafhael&utm_medium=referral&utm_campaign=header"
+                    class="text-xl font-medium text-text-muted hover:text-text-main transition-colors py-3 border-b border-border/30"
+                    target="_blank"
+                >
+                    Login
+                </a>
+            </nav>
+        </Container>
+    </div>
 </header>
+
+<script is:inline>
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener("click", () => {
+            const isOpen = mobileMenu.classList.contains("opacity-100");
+
+            if (isOpen) {
+                mobileMenu.classList.remove(
+                    "opacity-100",
+                    "pointer-events-auto",
+                );
+                mobileMenu.classList.add("opacity-0", "pointer-events-none");
+                document.body.style.overflow = "";
+            } else {
+                mobileMenu.classList.remove("opacity-0", "pointer-events-none");
+                mobileMenu.classList.add("opacity-100", "pointer-events-auto");
+                document.body.style.overflow = "hidden";
+            }
+        });
+
+        mobileMenu.addEventListener("click", (e) => {
+            if (e.target.tagName === "A") {
+                mobileMenu.classList.remove(
+                    "opacity-100",
+                    "pointer-events-auto",
+                );
+                mobileMenu.classList.add("opacity-0", "pointer-events-none");
+                document.body.style.overflow = "";
+            }
+        });
+    }
+</script>
