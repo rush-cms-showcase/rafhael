@@ -28,7 +28,13 @@ export interface BlogPost {
     slug: string;
     excerpt?: string;
     content: string;
-    cover_image?: string;
+    featured_image?: {
+        id: number;
+        name: string;
+        url: string;
+        thumb?: string;
+        preview?: string;
+    };
     published_at: string;
     category?: {
         name: string;
@@ -37,5 +43,11 @@ export interface BlogPost {
     author?: {
         name: string;
         avatar?: string;
+    };
+    data?: {
+        content?: Array<{
+            type: string;
+            data: Record<string, any>;
+        }>;
     };
 }

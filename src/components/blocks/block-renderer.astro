@@ -1,0 +1,35 @@
+---
+import type { Block } from '../../lib/blocks/types'
+import RichTextBlock from './richtext-block.astro'
+import CodeBlock from './code-block.astro'
+import ImageBlock from './image-block.astro'
+
+interface Props {
+	blocks: Block[]
+}
+
+const { blocks } = Astro.props
+
+if (!blocks || !Array.isArray(blocks)) {
+	console.warn('BlockRenderer: blocks prop is not an array', blocks)
+}
+---
+
+<div class="blocks-content">
+	{blocks && blocks.map((block) => {
+		switch (block.type) {
+			case 'richtext':
+				return <RichTextBlock block={block} />
+
+			case 'code':
+				return <CodeBlock block={block} />
+
+			case 'image':
+				return <ImageBlock block={block} />
+
+			default:
+				console.warn(`Unknown block type: ${block.type}`)
+				return null
+		}
+	})}
+</div>

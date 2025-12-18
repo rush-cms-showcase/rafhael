@@ -1,0 +1,37 @@
+---
+import type { ImageBlock } from '../../lib/blocks/types'
+import { Image } from 'astro:assets'
+
+interface Props {
+	block: ImageBlock
+}
+
+const { block } = Astro.props
+
+const { image, caption, alt, alignment } = block.data
+
+if (!image || !image.url) {
+	return null
+}
+
+const alignmentClass = {
+	'left': 'mr-auto',
+	'center': 'mx-auto',
+	'right': 'ml-auto',
+	'full': 'w-full'
+}[alignment || 'center'] || 'mx-auto'
+---
+
+<figure class={`image-block my-8 ${alignmentClass}`}>
+	<img
+		src={image.url}
+		alt={alt || image.name || ''}
+		loading="lazy"
+		class="rounded-2xl shadow-lg"
+	/>
+	{caption && (
+		<figcaption class="text-center text-sm text-text-muted mt-3 px-4">
+			{caption}
+		</figcaption>
+	)}
+</figure>

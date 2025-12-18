@@ -1,0 +1,182 @@
+---
+import type { CodeBlock } from "../../lib/blocks/types";
+import { codeToHtml } from "shiki";
+
+interface Props {
+    block: CodeBlock;
+}
+
+const { block } = Astro.props;
+
+const { code, language, filename, show_line_numbers } = block.data;
+
+const rawCode = code.trim();
+
+const html = await codeToHtml(rawCode, {
+    lang: language || "plaintext",
+    theme: "github-dark",
+});
+
+const totalLines = rawCode.split("\n").length;
+
+const blockId = `code-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="code-block-wrapper not-prose mb-8 group">
+    <div
+        class={`code-header flex items-center justify-between bg-[#1a1e24] border border-[#30363d] ${filename ? "rounded-t-lg" : "rounded-t-lg"} px-4 py-2.5`}
+    >
+        <div class="flex items-center gap-2">
+            {
+                filename && (
+                    <span class="text-xs font-mono text-[#7d8590]">
+                        {filename}
+                    </span>
+                )
+            }
+            {
+                !filename && (
+                    <span class="text-xs font-mono text-[#7d8590]">
+                        {language || "code"}
+                    </span>
+                )
+            }
+        </div>
+        <button
+            type="button"
+            class="copy-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-[#7d8590] hover:text-[#c9d1d9] hover:bg-[#30363d] transition-colors"
+            data-code-id={blockId}
+            aria-label="Copiar código"
+        >
+            <svg
+                class="copy-icon w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                ></path>
+            </svg>
+            <span class="copy-text">Copiar</span>
+        </button>
+    </div>
+    <div
+        class={`code-block-content relative overflow-hidden bg-[#0d1117] border border-t-0 border-[#30363d] ${filename ? "rounded-b-lg" : "rounded-b-lg"}`}
+    >
+        <div class="overflow-x-auto">
+            <div class="code-wrapper" data-show-lines={show_line_numbers}>
+                <pre
+                    id={blockId}
+                    class="code-pre not-prose"
+                    data-raw-code={rawCode}><code set:html={html.replace(/<pre[^>]*>|<\/pre>/g, '').replace(/<code[^>]*>|<\/code>/g, '')} /></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style define:vars={{ totalLines }}>
+    .code-block-wrapper {
+        position: relative;
+    }
+
+    .code-wrapper[data-show-lines="true"] .code-pre {
+        counter-reset: line;
+        padding-left: 2.5rem;
+    }
+
+    .code-wrapper[data-show-lines="true"] .code-pre code {
+        display: block;
+    }
+
+    .code-wrapper[data-show-lines="true"] .code-pre code .line {
+        counter-increment: line;
+        position: relative;
+    }
+
+    .code-wrapper[data-show-lines="true"] .code-pre code .line::before {
+        content: counter(line);
+        position: absolute;
+        left: -2rem;
+        width: 2.5rem;
+        text-align: right;
+        color: #484f58;
+        user-select: none;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .code-pre {
+        margin: 0;
+        padding: 1rem 1.25rem;
+        background: transparent !important;
+        overflow-x: auto;
+    }
+
+    .code-pre code {
+        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+        font-size: 0.8125rem;
+        line-height: 1.6;
+        tab-size: 4;
+        color: #c9d1d9;
+    }
+
+    @media screen and (min-width: 1024px) {
+        .code-pre code {
+            font-size: 1.15rem;
+        }
+    }
+
+    .code-pre :global(.line) {
+        display: inline-block;
+        width: 100%;
+        padding-right: 1rem;
+    }
+
+    .code-pre :global(.line):hover {
+        background-color: rgba(110, 118, 129, 0.1);
+    }
+
+    .copy-btn:active {
+        transform: scale(0.95);
+    }
+
+    .copy-btn.copied {
+        color: #3fb950;
+    }
+
+    .copy-btn.copied .copy-icon {
+        display: none;
+    }
+</style>
+
+<script>
+    document.querySelectorAll(".copy-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+            const codeId = btn.getAttribute("data-code-id");
+            const pre = document.getElementById(codeId as string);
+            const rawCode = pre?.getAttribute("data-raw-code");
+
+            if (!rawCode) return;
+
+            try {
+                await navigator.clipboard.writeText(rawCode);
+
+                const textEl = btn.querySelector(".copy-text");
+                const iconEl = btn.querySelector(".copy-icon");
+
+                if (textEl) textEl.textContent = "Copiado!";
+                btn.classList.add("copied");
+
+                setTimeout(() => {
+                    if (textEl) textEl.textContent = "Copiar";
+                    btn.classList.remove("copied");
+                }, 2000);
+            } catch (err) {
+                console.error("Falha ao copiar:", err);
+            }
+        });
+    });
+</script>
