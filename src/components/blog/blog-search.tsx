@@ -117,14 +117,14 @@ export default function BlogSearch({ initialPosts }: BlogSearchProps) {
 }
 
 function ArticleCard({ post }: { post: BlogPost }) {
-    const hasImage = !!post.cover_image;
+    const hasImage = !!post.featured_image;
 
     return (
         <article className={`group flex flex-col bg-bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 ${!hasImage ? 'animate-fade-in' : ''}`}>
-            {hasImage && (
+            {hasImage && post.featured_image && (
                 <a href={`/blog/${post.slug}`} className="relative aspect-video overflow-hidden block">
                     <img
-                        src={post.cover_image}
+                        src={post.featured_image.preview || post.featured_image.url}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"

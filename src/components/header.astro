@@ -1,14 +1,14 @@
 ---
-import Container from "./ui/container.astro";
-import Button from "./ui/button.astro";
+import Container from './ui/container.astro'
+import Button from './ui/button.astro'
+
+const isHome = Astro.url.pathname === '/'
 
 const navItems = [
-    { label: "Recursos", href: "#features" },
-    { label: "Benefícios", href: "#benefits" },
-    { label: "Planos", href: "#pricing" },
-    { label: "Cases", href: "#" },
-    { label: "Blog", href: "/blog" },
-];
+	{ label: 'Planos', href: isHome ? '#pricing' : '/#pricing' },
+	{ label: 'Cases', href: '/cases' },
+	{ label: 'Blog', href: '/blog' }
+]
 ---
 
 <header
@@ -35,7 +35,7 @@ const navItems = [
                 navItems.map((item) => (
                     <a
                         href={item.href}
-                        class="text-sm font-medium text-text-muted hover:text-text-main transition-colors"
+                        class="text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors"
                     >
                         {item.label}
                     </a>
@@ -45,8 +45,9 @@ const navItems = [
 
         <div class="flex items-center gap-4">
             <a
-                href="https://app.rushcms.com/login"
-                class="hidden sm:block text-sm font-medium text-text-muted hover:text-text-main transition-colors"
+                href="https://app.rushcms.com/login?utm_source=rafhael&utm_medium=referral&utm_campaign=header"
+                class="hidden sm:block text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors"
+                target="_blank"
             >
                 Login
             </a>
