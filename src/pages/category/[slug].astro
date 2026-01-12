@@ -1,0 +1,59 @@
+---
+import Layout from "../../layouts/layout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import Container from "../../components/ui/container.astro";
+import BlogSearch from "../../components/blog/blog-search";
+import { rush } from "../../lib/rush";
+import { homeContent } from "../../content/home";
+
+export async function getStaticPaths() {
+    const posts = await rush.getEntries("blog", { per_page: 1000 });
+    
+    // Extract unique categories
+    const categories = new Map();
+    posts.data.forEach(post => {
+        if (post.categories) {
+            post.categories.forEach(cat => {
+                categories.set(cat.slug, cat);
+            });
+        }
+    });
+
+    return Array.from(categories.values()).map(category => ({
+        params: { slug: category.slug },
+        props: { category }
+    }));
+}
+
+const { category } = Astro.props;
+const allPosts = await rush.getEntries("blog", { per_page: 1000 });
+// Filter posts that belong to this category
+const filteredPosts = allPosts.data.filter(post => 
+    post.categories?.some(c => c.slug === category.slug)
+) as any;
+
+const content = homeContent.en;
+---
+
+<Layout title={`${category.name} - ${content.metadata.title}`} description={`Read articles about ${category.name}`}>
+    <Header content={content.global.nav} locale="en" />
+    <Container className="pt-32 md:pt-48 pb-20">
+        <div class="max-w-3xl mx-auto text-center mb-16 md:mb-24">
+            <h1 class="font-serif text-5xl md:text-7xl mb-8 text-primary">
+                {category.name}
+            </h1>
+            <p class="text-xl text-text-muted">
+                {content.taxonomies.category.label}
+            </p>
+        </div>
+
+        <BlogSearch 
+            client:load 
+            initialPosts={filteredPosts} 
+            labels={content.blog}
+            taxonomies={content.taxonomies}
+        />
+    </Container>
+    <Footer content={content.global.footer} />
+</Layout>

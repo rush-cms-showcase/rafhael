@@ -1,49 +1,30 @@
 ---
 import Section from "./ui/section.astro";
+import type { HomeContent } from "../content/home";
 
-const steps = [
-    {
-        number: "1",
-        title: "Entendendo Você",
-        description:
-            "Reunião de briefing para mapear seus objetivos e público-alvo.",
-    },
-    {
-        number: "2",
-        title: "Proposta",
-        description:
-            "Apresentação do conceito visual e estrutura estratégica do site.",
-    },
-    {
-        number: "3",
-        title: "Desenvolvimento",
-        description:
-            "Codificação focada em performance e SEO, fiel ao design aprovado.",
-    },
-    {
-        number: "4",
-        title: "Homologação e Lançamento",
-        description:
-            "Testes finais, otimização de velocidade e publicação do seu site.",
-    },
-];
+interface Props {
+    content: HomeContent["process"];
+}
+
+const { content } = Astro.props;
+const steps = content.steps;
 ---
 
 <Section class="relative">
     <div class="text-center">
         <span
             class="text-xs font-bold text-primary uppercase tracking-widest mb-4 block animate-fade-in"
-            >Metodologia</span
+            >{content.label}</span
         >
         <h2
             class="font-serif text-3xl md:text-5xl font-bold mb-16 animate-fade-in"
         >
-            Do briefing ao ar em 4 etapas
+            {content.title}
         </h2>
 
         <div class="relative grid md:grid-cols-4 gap-8">
             <div
-                class="hidden md:block absolute top-14 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-border to-transparent -z-10"
+                class="hidden md:block absolute top-14 left-0 w-full h-0.5 bg-linear-to-r from-transparent via-border to-transparent -z-10"
             >
             </div>
 

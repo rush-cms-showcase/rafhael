@@ -1,0 +1,49 @@
+---
+interface Props {
+  currentLocale: string;
+}
+
+const { currentLocale } = Astro.props;
+
+// Icons could be SVG directly or from a library
+// Using simple text for clarity based on user request "Dropdown of idioms"
+// But making it look nice.
+---
+
+<div class="relative group z-50">
+  <button
+    class="flex items-center gap-2 text-text-muted hover:text-text-main transition-colors text-sm font-medium py-2"
+    aria-label="Select Language"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg>
+    <span class="uppercase">{currentLocale === 'pt_BR' ? 'BR' : 'EN'}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:rotate-180 transition-transform">
+        <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </button>
+
+  <div
+    class="absolute right-0 top-full mt-2 w-24 py-2 bg-bg-elevated border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right"
+  >
+    <a
+      href="/"
+      class={`flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
+        currentLocale === 'en' ? 'text-primary' : 'text-text-muted'
+      }`}
+    >
+      <span class="font-medium">EN</span>
+    </a>
+    <a
+      href="/br"
+      class={`flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
+        currentLocale === 'pt_BR' ? 'text-primary' : 'text-text-muted'
+      }`}
+    >
+      <span class="font-medium">BR</span>
+    </a>
+  </div>
+</div>

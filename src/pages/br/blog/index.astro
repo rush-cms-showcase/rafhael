@@ -1,23 +1,25 @@
 ---
-import Layout from "../../layouts/layout.astro";
-import Header from "../../components/header.astro";
-import Footer from "../../components/footer.astro";
-import Section from "../../components/ui/section.astro";
-import Container from "../../components/ui/container.astro";
-import BlogSearch from "../../components/blog/blog-search.tsx";
-import { rush, type BlogPost } from "../../lib/rush";
-import { homeContent } from "../../content/home";
+import Layout from "../../../layouts/layout.astro";
+import Header from "../../../components/header.astro";
+import Footer from "../../../components/footer.astro";
+import Section from "../../../components/ui/section.astro";
+import Container from "../../../components/ui/container.astro";
+import BlogSearch from "../../../components/blog/blog-search.tsx";
+import { rush, type BlogPost } from "../../../lib/rush";
+import { homeContent } from "../../../content/home";
 
-// Use English content
-const content = homeContent.en;
+// Use PT_BR content
+const content = homeContent.pt_BR;
 
 // Fetch posts from CMS
 let posts: BlogPost[] = [];
 try {
     const response = await rush.getEntries("blog", {
         per_page: 1000,
+        locale: 'pt_BR',
         include: 'featured_image'
     });
+    // console.log("BR Blog Fetch Response Titles:", response.data.map((p:any) => p.title));
     posts = response.data as unknown as BlogPost[];
 } catch (error) {
     console.error("Error fetching blog posts:", error);
@@ -30,7 +32,7 @@ const description =
 ---
 
 <Layout title="Blog | Rafhael Marsigli" description="Articles about software development, architecture and technology.">
-    <Header content={content.global.nav} locale="en" />
+    <Header content={content.global.nav} locale="pt_BR" />
     <main class="pt-16 md:pt-12">
         <Section>
             <Container>
@@ -45,6 +47,7 @@ const description =
                     client:load 
                     initialPosts={posts} 
                     labels={content.blog} 
+                    locale="pt_BR"
                     taxonomies={content.taxonomies}
                 />
             </Container>

@@ -1,37 +1,25 @@
 ---
 import Section from "./ui/section.astro";
+import type { HomeContent } from "../content/home";
 
-const problems = [
-    {
-        title: "Lentidão e Perda de Vendas",
-        description:
-            "Cada segundo de carregamento custa 7% em conversões. Sites lentos são abandonados antes mesmo de abrir.",
-        icon: "timer",
-    },
-    {
-        title: "Invisível no Google",
-        description:
-            "Sem a estrutura técnica correta (SEO), seu site nunca aparecerá na primeira página, perdendo tráfego gratuito e deixando anúncios mais caros.",
-        icon: "invisible",
-    },
-    {
-        title: "Design Amador",
-        description:
-            "A primeira impressão é a que fica. Um site com visual ultrapassado gera desconfiança imediata. Não dá para oferecer preço premium dom design amador.",
-        icon: "design",
-    },
-];
+interface Props {
+    content: HomeContent["problem"];
+}
+
+const { content } = Astro.props;
+const problems = content.items;
 ---
 
 <Section id="problems" class="bg-bg-elevated border-y border-border">
     <div class="text-center max-w-3xl mx-auto mb-20 animate-fade-in">
-        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6">
-            Seu site atual está <span class="text-primary">te sabotando?</span>
-        </h2>
-        <p class="text-text-muted text-lg">
-            A maioria dos sites são lentos, genéricos e difíceis de usar.
-            <br /> Isso custa clientes todos os dias.
-        </p>
+        <h2 
+            class="font-serif text-4xl md:text-5xl font-bold mb-6"
+            set:html={content.title}
+        />
+        <p 
+            class="text-text-muted text-lg"
+            set:html={content.subtitle}
+        />
     </div>
 
     <div class="grid md:grid-cols-3 gap-8">

@@ -1,18 +1,18 @@
 ---
-import Layout from "../layouts/layout.astro";
-import Header from "../components/header.astro";
-import Hero from "../components/hero.astro";
-import Problem from "../components/problem.astro";
-import Pricing from "../components/pricing.astro";
-import Process from "../components/process.astro";
-import Testimonial from "../components/testimonial.astro";
-import Footer from "../components/footer.astro";
-import Section from "../components/ui/section.astro";
-import Button from "../components/ui/button.astro";
-import { homeContent } from "../content/home";
+import Layout from "../../layouts/layout.astro";
+import Header from "../../components/header.astro";
+import Hero from "../../components/hero.astro";
+import Problem from "../../components/problem.astro";
+import Pricing from "../../components/pricing.astro";
+import Process from "../../components/process.astro";
+import Testimonial from "../../components/testimonial.astro";
+import Footer from "../../components/footer.astro";
+import Section from "../../components/ui/section.astro";
+import Button from "../../components/ui/button.astro";
+import { homeContent } from "../../content/home";
 
-// Use English content
-const content = homeContent.en;
+// Use PT_BR content
+const content = homeContent.pt_BR;
 
 // Page-specific metadata
 const title = content.metadata.title;
@@ -20,7 +20,7 @@ const description = content.metadata.description;
 ---
 
 <Layout title={title} description={description}>
-    <Header content={content.global.nav} locale="en" />
+    <Header content={content.global.nav} locale="pt_BR" />
 
     <main>
         <Hero content={content.hero} />
