@@ -17,8 +17,9 @@ export async function getStaticPaths() {
     try {
         const response = await rush.getEntries("blog", {
             per_page: 1000,
+            locale: 'en'
         });
-        const posts = response.data as unknown as BlogPost[];
+        const posts = (response as any).data as BlogPost[];
 
         return posts.map((post) => ({
             params: { slug: post.slug },
