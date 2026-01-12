@@ -15,7 +15,7 @@ const isHome = Astro.url.pathname === homeUrl;
 
 // Map the nav items from the content prop
 const navItems = [
-    { label: content.plans, href: isHome ? "#pricing" : `${homeUrl}#pricing` },
+    { label: content.about, href: locale === 'pt_BR' ? "/br/sobre-mim" : "/about-me" },
     { label: content.cases, href: `${homeUrl === "/" ? "" : homeUrl}/cases` },
     { label: content.blog, href: `${homeUrl === "/" ? "" : homeUrl}/blog` },
 ];

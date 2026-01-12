@@ -31,7 +31,8 @@ const { currentLocale } = Astro.props;
   >
     <a
       href="/"
-      class={`flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
+      data-lang="en"
+      class={`language-link flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
         currentLocale === 'en' ? 'text-primary' : 'text-text-muted'
       }`}
     >
@@ -39,11 +40,24 @@ const { currentLocale } = Astro.props;
     </a>
     <a
       href="/br"
-      class={`flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
+      data-lang="pt"
+      class={`language-link flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
         currentLocale === 'pt_BR' ? 'text-primary' : 'text-text-muted'
       }`}
     >
       <span class="font-medium">BR</span>
     </a>
   </div>
+  </div>
 </div>
+
+<script is:inline>
+  document.querySelectorAll('.language-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const lang = e.currentTarget.getAttribute('data-lang');
+      if (lang) {
+        localStorage.setItem('rush_lang_pref', lang);
+      }
+    });
+  });
+</script>

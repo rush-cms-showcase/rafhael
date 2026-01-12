@@ -51,24 +51,25 @@ const resolvedImage = new URL(image, siteUrl).toString();
     type="application/ld+json"
     set:html={JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        name: "Rush CMS",
-        applicationCategory: "WebsiteBuilder",
-        operatingSystem: "Web",
-        offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "BRL",
-        },
+        "@type": "ProfessionalService",
+        name: "Rafhael Marsigli",
+        image: resolvedImage,
         description: description,
         url: siteUrl,
-        publisher: {
-            "@type": "Organization",
-            name: "Rush CMS",
-            logo: {
-                "@type": "ImageObject",
-                url: `${siteUrl}/favicon.svg`,
-            },
+        priceRange: "$$$",
+        address: {
+            "@type": "PostalAddress",
+            addressCountry: "BR"
         },
+        founder: {
+            "@type": "Person",
+            name: "Rafhael Marsigli"
+        },
+        offers: {
+            "@type": "Offer",
+            price: "1200",
+            priceCurrency: "BRL",
+            description: "High Performance Website Development"
+        }
     })}
 />

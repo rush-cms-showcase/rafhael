@@ -45,4 +45,20 @@ const description = content.metadata.description;
     </main>
 
     <Footer content={content.global.footer} />
+    <script is:inline>
+        (function() {
+            try {
+                const savedLang = localStorage.getItem('rush_lang_pref');
+                const userLang = navigator.language || navigator.userLanguage;
+                
+                if (savedLang === 'pt') {
+                    window.location.href = '/br';
+                } else if (!savedLang && userLang && userLang.startsWith('pt')) {
+                    window.location.href = '/br';
+                }
+            } catch (e) {
+                console.error('Language redirect error:', e);
+            }
+        })();
+    </script>
 </Layout>
