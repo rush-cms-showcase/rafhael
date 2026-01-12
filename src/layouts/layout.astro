@@ -20,5 +20,9 @@ const { title, description, image } = Astro.props;
         class="bg-bg text-text-main antialiased selection:bg-primary selection:text-white overflow-x-hidden"
     >
         <slot />
+        <script is:inline>
+            // @ts-nocheck
+            !function(){var e='https://app.rushcms.com/api/v1/rafhael/analytics/pageview',t=function(){var e,t=document.querySelector('meta[name=\'entry-slug\']'),r=t?t.content:null,o=window.location.pathname.split('/').filter(Boolean),s=r||(o.length===0?'home':o.pop());if(s){var n={entry_slug:s,collection_slug:(e=document.querySelector('meta[name=\'collection-slug\']'))?e.content:null,session_id:function(){if(!window._sid){var e=navigator.userAgent+(new Date).toDateString(),t=0;for(let n=0;n<e.length;n++){const r=e.charCodeAt(n);t=(t<<5)-t+r,t&=t}window._sid=Math.abs(t).toString(16).padStart(32,'0').substring(0,32)}return window._sid}(),referrer:document.referrer||null,utm_source:new URLSearchParams(window.location.search).get('utm_source'),utm_medium:new URLSearchParams(window.location.search).get('utm_medium'),utm_campaign:new URLSearchParams(window.location.search).get('utm_campaign')};fetch(e,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(n),keepalive:!0}).catch(function(){})}};document.readyState!=='loading'?setTimeout(t,1e3):document.addEventListener('DOMContentLoaded',function(){setTimeout(t,1e3)})}();
+        </script>
     </body>
 </html>
