@@ -40,6 +40,22 @@ const title = `${post.title} | Rafhael Marsigli`;
 const description = post.excerpt || `Leia sobre ${post.title} no blog.`;
 const url = `${import.meta.env.PUBLIC_SITE_URL}/blog/${post.slug}`;
 const image = post.featured_image?.url || "/banner.png";
+
+let htmlContent = post.content || '';
+if (post.data?.content) {
+    try {
+        const doc = Array.isArray(post.data.content) 
+            ? { content: post.data.content } 
+            : post.data.content;
+        
+        const rendered = tiptapToHtml(doc as any);
+        if (rendered) {
+            htmlContent = rendered;
+        }
+    } catch (e) {
+        console.error("Error rendering TipTap content:", e);
+    }
+}
 ---
 
 <Layout title={title} description={description} image={image}>
@@ -203,13 +219,7 @@ const image = post.featured_image?.url || "/banner.png";
                 <div
                     class="prose prose-invert prose-lg lg:prose-xl max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl"
                 >
-                    {
-                        post.data?.content ? (
-                            <div set:html={tiptapToHtml(post.data.content as any)} />
-                        ) : (
-                            <div set:html={post.content} />
-                        )
-                    }
+                    <div set:html={htmlContent} />
                 </div>
                           {/* Tags Section */}
                 {post.tags && post.tags.length > 0 && (
