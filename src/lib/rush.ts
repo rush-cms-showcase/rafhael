@@ -1,26 +1,15 @@
-import { RushCMSClient } from "@rushcms/client";
+import { RushCMS } from "./client/index";
 
-const BASE_URL = import.meta.env.RUSH_BASE_URL;
-const API_TOKEN = import.meta.env.RUSH_API_TOKEN;
-const SITE_SLUG = import.meta.env.RUSH_SITE_SLUG;
+const BASE_URL = "https://app.rushcms.com";
+const API_TOKEN = "1|BpHoX36Uv9ziBdtFXV6Y4k9lYE1AJ2oBE4NmYnTb";
+const SITE_SLUG = "rafhael";
 
-if (!BASE_URL || !API_TOKEN || !SITE_SLUG) {
-    throw new Error(
-        "Rush CMS environment variables are missing. Please check .env file.",
-    );
-}
-
-const isDev = import.meta.env.DEV;
-
-export const rush = new RushCMSClient({
+export const rush = new RushCMS({
     baseUrl: BASE_URL,
     apiToken: API_TOKEN,
-    siteSlug: SITE_SLUG,
-    cache: {
-        enabled: !isDev,
-        ttl: 7200, // 2 horas
-    },
+    siteSlug: SITE_SLUG
 });
+
 
 export interface BlogPost {
     id: number;
@@ -36,10 +25,16 @@ export interface BlogPost {
         preview?: string;
     };
     published_at: string;
-    category?: {
+    categories?: Array<{
+        id: number;
         name: string;
         slug: string;
-    };
+    }>;
+    tags?: Array<{
+        id: number;
+        name: string;
+        slug: string;
+    }>;
     author?: {
         name: string;
         avatar?: string;

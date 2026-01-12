@@ -1,14 +1,14 @@
 ---
-import Layout from '../layouts/layout.astro'
-import Header from '../components/header.astro'
-import Footer from '../components/footer.astro'
-import Container from '../components/ui/container.astro'
-import BlockRenderer from '../components/blocks/block-renderer.astro'
-import { rush } from '../lib/rush'
-import { homeContent } from "../content/home";
+import Layout from '../../layouts/layout.astro'
+import Header from '../../components/header.astro'
+import Footer from '../../components/footer.astro'
+import Container from '../../components/ui/container.astro'
+import BlockRenderer from '../../components/blocks/block-renderer.astro'
+import { rush } from '../../lib/rush'
+import { homeContent } from "../../content/home";
 
-// Use English content
-const content = homeContent.en;
+// Use PT_BR content
+const content = homeContent.pt_BR;
 
 export async function getStaticPaths() {
 	try {
@@ -47,7 +47,7 @@ const description = page.content?.substring(0, 160) || `${page.title} - Rafhael 
 ---
 
 <Layout title={title} description={description}>
-	<Header content={content.global.nav} locale="en" />
+	<Header content={content.global.nav} locale="pt_BR" />
 	
 	<main class='pt-24'>
 		<article>

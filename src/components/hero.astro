@@ -3,6 +3,13 @@ import PageSpeedWidget from "./page-speed-widget.astro";
 import Particles from "./particles.astro";
 import Container from "./ui/container.astro";
 import Button from "./ui/button.astro";
+import type { HomeContent } from "../content/home";
+
+interface Props {
+    content: HomeContent["hero"];
+}
+
+const { content } = Astro.props;
 ---
 
 <section
@@ -22,19 +29,13 @@ import Button from "./ui/button.astro";
             <div class="relative z-10 max-lg:text-center">
                 <h1
                     class="font-serif text-5xl md:text-7xl font-bold leading-tight mb-6 animate-fade-in delay-100"
-                >
-                    Sites que
-                    <span class="text-primary italic">vendem</span> enquanto você
-                    trabalha
-                </h1>
+                    set:html={content.title}
+                />
 
                 <p
                     class="text-text-muted text-lg md:text-xl mb-10 max-w-lg leading-relaxed animate-fade-in delay-200"
-                >
-                    <b>Sites</b> e <b>Landing Pages</b> de alta performance para empresas
-                    de alto padrão. Carregamento em menos de 2 segundos, SEO otimizado,
-                    e gestão simples.
-                </p>
+                    set:html={content.subtitle}
+                />
 
                 <div
                     class="flex max-lg:justify-center flex-wrap gap-4 animate-fade-in-up delay-300"
@@ -45,7 +46,7 @@ import Button from "./ui/button.astro";
                         size="lg"
                         className="shadow-[0_10px_40px_rgba(63,145,240,0.3)]"
                     >
-                        Criar meu Site
+                        {content.ctaPrimary}
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -65,7 +66,7 @@ import Button from "./ui/button.astro";
                         variant="outline"
                         size="lg"
                     >
-                        Agendar Demo
+                        {content.ctaSecondary}
                     </Button>
                 </div>
             </div>
@@ -73,7 +74,7 @@ import Button from "./ui/button.astro";
             <div
                 class="relative z-10 animate-fade-in delay-500 hidden lg:block"
             >
-                <PageSpeedWidget />
+                <PageSpeedWidget stats={content.stats} />
             </div>
         </div>
     </Container>

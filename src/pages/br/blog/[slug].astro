@@ -1,23 +1,24 @@
 ---
-import Layout from "../../layouts/layout.astro";
-import Header from "../../components/header.astro";
-import Footer from "../../components/footer.astro";
-import Section from "../../components/ui/section.astro";
-import Container from "../../components/ui/container.astro";
-import BlockRenderer from "../../components/blocks/block-renderer.astro";
-import { tiptapToHtml } from "../../lib/blocks/tiptap-to-html";
-import { rush, type BlogPost } from "../../lib/rush";
-import { homeContent } from "../../content/home";
-import { formatDate } from "../../lib/date-utils";
-import { calculateReadingTime } from "../../lib/post-utils";
+import Layout from "../../../layouts/layout.astro";
+import Header from "../../../components/header.astro";
+import Footer from "../../../components/footer.astro";
+import Section from "../../../components/ui/section.astro";
+import Container from "../../../components/ui/container.astro";
+import BlockRenderer from "../../../components/blocks/block-renderer.astro";
+import { tiptapToHtml } from "../../../lib/blocks/tiptap-to-html";
+import { rush, type BlogPost } from "../../../lib/rush";
+import { homeContent } from "../../../content/home";
+import { formatDate } from "../../../lib/date-utils";
+import { calculateReadingTime } from "../../../lib/post-utils";
 
-// Use English content
-const content = homeContent.en;
+// Use PT_BR content
+const content = homeContent.pt_BR;
 
 export async function getStaticPaths() {
     try {
         const response = await rush.getEntries("blog", {
             per_page: 1000,
+            locale: 'pt_BR'
         });
         const posts = response.data as unknown as BlogPost[];
 
@@ -44,7 +45,7 @@ const image = post.featured_image?.url || "/banner.png";
 ---
 
 <Layout title={title} description={description} image={image}>
-    <Header content={content.global.nav} locale="en" />
+    <Header content={content.global.nav} locale="pt_BR" />
 
     <main class="pt-24">
         <article>
@@ -63,19 +64,19 @@ const image = post.featured_image?.url || "/banner.png";
                             <circle cx="12" cy="12" r="10"></circle>
                             <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
-                        <span>{calculateReadingTime(post, "en")}</span>
+                        <span>{calculateReadingTime(post, "pt_BR")}</span>
                    </div>
 
                    {post.published_at && (
                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                 <line x1="16" y1="2" x2="16" y2="6"></line>
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
                            <time datetime={post.published_at}>
-                               {formatDate(post.published_at, "en")}
+                               {formatDate(post.published_at, "pt_BR")}
                            </time>
                        </div>
                    )}
@@ -84,7 +85,7 @@ const image = post.featured_image?.url || "/banner.png";
                 {post.categories && post.categories.length > 0 && (
                     <div class="mb-8 flex flex-wrap gap-2">
                         {post.categories.map((cat) => (
-                            <a href={`/category/${cat.slug}`} class="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors">
+                            <a href={`/br/${content.taxonomies.category.slug}/${cat.slug}`} class="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors">
                                 {cat.name}
                             </a>
                         ))}
@@ -98,7 +99,7 @@ const image = post.featured_image?.url || "/banner.png";
                         data-platform="twitter"
                         data-url={url}
                         data-text={post.title}
-                        aria-label="Share on Twitter"
+                        aria-label="Compartilhar no Twitter"
                     >
                         <svg
                             class="w-4 h-4"
@@ -115,7 +116,7 @@ const image = post.featured_image?.url || "/banner.png";
                         class="share-btn w-9 h-9 rounded-full bg-bg-elevated hover:bg-bg-elevated/80 border border-border flex items-center justify-center transition-colors"
                         data-platform="linkedin"
                         data-url={url}
-                        aria-label="Share on LinkedIn"
+                        aria-label="Compartilhar no LinkedIn"
                     >
                         <svg
                             class="w-4 h-4"
@@ -133,7 +134,7 @@ const image = post.featured_image?.url || "/banner.png";
                         data-platform="whatsapp"
                         data-url={url}
                         data-text={post.title}
-                        aria-label="Share on WhatsApp"
+                        aria-label="Compartilhar no WhatsApp"
                     >
                         <svg
                             class="w-4 h-4"
@@ -149,7 +150,7 @@ const image = post.featured_image?.url || "/banner.png";
                         type="button"
                         class="copy-url-btn w-9 h-9 rounded-full bg-bg-elevated hover:bg-bg-elevated/80 border border-border flex items-center justify-center transition-colors"
                         data-url={url}
-                        aria-label="Copy Link"
+                        aria-label="Copiar link"
                     >
                         <svg
                             class="copy-url-icon w-4 h-4"
@@ -211,13 +212,14 @@ const image = post.featured_image?.url || "/banner.png";
                         )
                     }
                 </div>
-                          {/* Tags Section */}
+
+                {/* Tags Section */}
                 {post.tags && post.tags.length > 0 && (
                 <div class="mt-16 pt-8 border-t border-border/30">
                     <h3 class="text-sm uppercase tracking-widest text-text-muted mb-4 font-bold">Tags</h3>
                     <div class="flex flex-wrap gap-2">
                          {post.tags.map((tag) => (
-                             <a href={`/tag/${tag.slug}`} class="px-3 py-1 bg-bg-elevated border border-border rounded-lg text-sm text-text-subtle hover:text-primary hover:border-primary/30 transition-colors cursor-pointer">
+                             <a href={`/br/${content.taxonomies.tag.slug}/${tag.slug}`} class="px-3 py-1 bg-bg-elevated border border-border rounded-lg text-sm text-text-subtle hover:text-primary hover:border-primary/30 transition-colors cursor-pointer">
                                 {tag.name}
                             </a>
                         ))}

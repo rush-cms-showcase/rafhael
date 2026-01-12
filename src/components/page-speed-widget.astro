@@ -1,5 +1,11 @@
 ---
+import type { HomeContent } from "../content/home";
 
+interface Props {
+    stats: HomeContent["hero"]["stats"];
+}
+
+const { stats } = Astro.props;
 ---
 
 <div
@@ -22,7 +28,7 @@
                         stroke-width="3"></path>
                     <path
                         id="circle-perf"
-                        class="text-green-500 transition-all duration-\[2000ms] ease-out"
+                        class="text-green-500 transition-all duration-2000 ease-out"
                         stroke-dasharray="100, 100"
                         stroke-dashoffset="100"
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -36,7 +42,7 @@
                 >
             </div>
             <span class="text-[10px] text-text-muted font-medium"
-                >Performance</span
+                >{stats.performance}</span
             >
         </div>
 
@@ -54,7 +60,7 @@
                         stroke-width="3"></path>
                     <path
                         id="circle-access"
-                        class="text-green-500 transition-all duration-[2000ms] ease-out"
+                        class="text-green-500 transition-all duration-2000 ease-out"
                         stroke-dasharray="100, 100"
                         stroke-dashoffset="100"
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -68,7 +74,7 @@
                 >
             </div>
             <span class="text-[10px] text-text-muted font-medium"
-                >Acessibilidade</span
+                >{stats.accessibility}</span
             >
         </div>
 
@@ -86,7 +92,7 @@
                         stroke-width="3"></path>
                     <path
                         id="circle-practices"
-                        class="text-green-500 transition-all duration-[2000ms] ease-out"
+                        class="text-green-500 transition-all duration-2000 ease-out"
                         stroke-dasharray="100, 100"
                         stroke-dashoffset="100"
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -100,7 +106,7 @@
                 >
             </div>
             <span class="text-[10px] text-text-muted font-medium text-center"
-                >Práticas</span
+                >{stats.bestPractices}</span
             >
         </div>
 
@@ -118,7 +124,7 @@
                         stroke-width="3"></path>
                     <path
                         id="circle-seo"
-                        class="text-green-500 transition-all duration-[2000ms] ease-out"
+                        class="text-green-500 transition-all duration-2000 ease-out"
                         stroke-dasharray="100, 100"
                         stroke-dashoffset="100"
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -131,7 +137,7 @@
                     class="absolute text-xs font-bold text-text-main">0</span
                 >
             </div>
-            <span class="text-[10px] text-text-muted font-medium">SEO</span>
+            <span class="text-[10px] text-text-muted font-medium">{stats.seo}</span>
         </div>
     </div>
 
@@ -146,7 +152,7 @@
                     stroke-width="2.5"></path>
                 <path
                     id="progress-circle-main"
-                    class="text-green-500 transition-all duration-[2000ms] ease-out"
+                    class="text-green-500 transition-all duration-2000 ease-out"
                     stroke-dasharray="100, 100"
                     stroke-dashoffset="100"
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -163,12 +169,12 @@
             </div>
         </div>
 
-        <h3 class="text-2xl font-medium text-text-main mb-6">Desempenho</h3>
+        <h3 class="text-2xl font-medium text-text-main mb-6">{stats.mainLabel}</h3>
 
         <div class="flex items-center gap-6 text-sm">
             <div class="flex items-center gap-2">
                 <div
-                    class="w-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[10px] border-b-red-500"
+                    class="w-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-10 border-b-red-500"
                 >
                 </div>
                 <span class="text-text-muted">0-49</span>
