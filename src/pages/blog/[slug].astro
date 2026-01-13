@@ -18,7 +18,7 @@ const content = homeContent.en;
 export async function getStaticPaths() {
     try {
         const response = await rush.getEntries("blog", {
-            per_page: 1000,
+            per_page: 100,
             locale: 'en'
         });
         const posts = (response as any).data as BlogPost[];
