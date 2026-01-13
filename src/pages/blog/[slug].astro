@@ -5,6 +5,8 @@ import Footer from "../../components/footer.astro";
 import Section from "../../components/ui/section.astro";
 import Container from "../../components/ui/container.astro";
 import { tiptapToHtml } from "../../lib/blocks/tiptap-to-html";
+import { marked } from "marked";
+
 import { rush, type BlogPost } from "../../lib/rush";
 import { homeContent } from "../../content/home";
 import { formatDate } from "../../lib/date-utils";
@@ -43,7 +45,14 @@ const url = `${import.meta.env.PUBLIC_SITE_URL}/blog/${post.slug}`;
 const image = post.featured_image?.url || "/banner.png";
 
 let htmlContent = post.content || '';
-if (post.data?.content) {
+
+if (post.data?.markdown) {
+    try {
+        htmlContent = marked.parse(post.data.markdown) as string;
+    } catch (e) {
+        console.error("Error rendering Markdown content:", e);
+    }
+} else if (post.data?.content) {
     try {
         const doc = Array.isArray(post.data.content) 
             ? { content: post.data.content } 
