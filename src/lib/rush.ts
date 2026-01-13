@@ -40,6 +40,7 @@ export interface BlogPost {
         avatar?: string;
     };
     data?: {
+        markdown?: string;
         content?: Array<{
             type: string;
             data: Record<string, any>;

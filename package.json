@@ -20,6 +20,7 @@
     "@types/react-dom": "^19.2.3",
     "astro": "^5.16.6",
     "astro-seo": "^0.8.4",
+    "marked": "^17.0.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "shiki": "^3.20.0",
