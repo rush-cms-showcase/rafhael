@@ -17,10 +17,10 @@ const content = homeContent.pt_BR;
 export async function getStaticPaths() {
     try {
         const response = await rush.getEntries("blog", {
-            per_page: 1000,
+            per_page: 100,
             locale: 'pt_BR'
         });
-        const posts = response.data as unknown as BlogPost[];
+        const posts = (response as any).data as BlogPost[];
 
         return posts.map((post) => ({
             params: { slug: post.slug },
@@ -44,6 +44,7 @@ const url = `${import.meta.env.PUBLIC_SITE_URL}/blog/${post.slug}`;
 const image = post.featured_image?.url || "/banner.png";
 
 let htmlContent = post.content || '';
+
 
 if (post.data?.markdown) {
     try {
