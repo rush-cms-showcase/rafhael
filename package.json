@@ -1,7 +1,7 @@
 {
   "name": "rafhael",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -20,6 +20,7 @@
     "@types/react-dom": "^19.2.3",
     "astro": "^5.16.6",
     "astro-seo": "^0.8.4",
+    "fuse.js": "^7.1.0",
     "marked": "^17.0.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

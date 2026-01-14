@@ -1,0 +1,77 @@
+---
+import Layout from "../../layouts/layout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import Section from "../../components/ui/section.astro";
+import Container from "../../components/ui/container.astro";
+import BlogList from "../../components/blog/blog-list.tsx";
+import type { BlogPost } from "../../lib/rush";
+import { fetchAllPosts } from "../../lib/blog-fetcher";
+import { homeContent } from "../../content/home";
+import { rushConfig } from "../../../rush.config";
+import type { Page } from 'astro';
+
+// Use English content
+const content = homeContent.en;
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+    const posts = await fetchAllPosts({ locale: 'en' });
+    
+    // Sort by date desc
+    posts.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+
+    // Extract unique categories
+    const allCategories = posts.flatMap(p => p.categories || []);
+    const categories = Array.from(new Map(allCategories.map(c => [c.slug, c])).values());
+
+    return paginate(posts, { 
+        pageSize: rushConfig.defaults?.perPage || 12,
+        props: { categories }
+    });
+}
+
+interface Props {
+    page: Page<BlogPost>;
+    categories: { name: string; slug: string }[];
+}
+
+const { page, categories } = Astro.props;
+const currentPosts = page.data as BlogPost[];
+
+const title = "Blog - Rafhael Marsigli";
+const description =
+    "Artigos sobre performance web, SEO e estratégias digitais para arquitetos e empresas de alto padrão.";
+---
+
+<Layout title="Blog | Rafhael Marsigli" description="Articles about software development, architecture and technology.">
+    <Header content={content.global.nav} locale="en" />
+    <main class="pt-16 md:pt-12">
+        <Section>
+            <Container>
+                <div class="text-center">
+                    <h2
+                        class="text-primary text-4xl lg:text-6xl font-bold mb-8"
+                    >
+                        Blog
+                    </h2>
+                </div>
+                <BlogList 
+                    client:load 
+                    initialPosts={currentPosts} 
+                    categories={categories}
+                    labels={content.blog} 
+                    taxonomies={content.taxonomies}
+                    pagination={{
+                        currentPage: page.currentPage,
+                        lastPage: page.lastPage,
+                        url: {
+                            prev: page.url.prev,
+                            next: page.url.next
+                        }
+                    }}
+                />
+            </Container>
+        </Section>
+    </main>
+    <Footer content={content.global.footer} />
+</Layout>

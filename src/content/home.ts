@@ -4,7 +4,7 @@ export const homeContent = {
       title: "Sites que <span class=\"text-primary italic\">vendem</span> enquanto você trabalha",
       subtitle: "<b>Sites</b> e <b>Landing Pages</b> de alta performance para empresas de alto padrão. Carregamento em menos de 2 segundos, SEO otimizado, e gestão simples.",
       ctaPrimary: "Criar meu Site",
-      ctaSecondary: "Agendar Demo",
+      ctaSecondary: "Agendar Meet",
       stats: {
         performance: "Performance",
         accessibility: "Acessibilidade",
@@ -116,7 +116,9 @@ export const homeContent = {
       },
       footer: {
         terms: "Termos",
+        termsLink: "/br/termos-de-uso",
         privacy: "Privacidade",
+        privacyLink: "/br/politica-de-privacidade",
         rights: "Todos os direitos reservados.",
         created_by: "Criado por",
         powered_by: "Powered by"
@@ -154,7 +156,7 @@ export const homeContent = {
       title: "Websites that <span class=\"text-primary italic\">sell</span> while you work",
       subtitle: "High-performance <b>Websites</b> and <b>Landing Pages</b> for premium companies. Loading in under 2 seconds, optimized SEO, and simple management.",
       ctaPrimary: "Create my Website",
-      ctaSecondary: "Schedule Demo",
+      ctaSecondary: "Schedule Meet",
       stats: {
         performance: "Performance",
         accessibility: "Accessibility",
@@ -266,7 +268,9 @@ export const homeContent = {
       },
       footer: {
         terms: "Terms",
+        termsLink: "/terms-of-use",
         privacy: "Privacy",
+        privacyLink: "/privacy-policy",
         rights: "All rights reserved.",
         created_by: "Created by",
         powered_by: "Powered by"
