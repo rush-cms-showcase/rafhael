@@ -25,10 +25,10 @@ const { content } = Astro.props;
             <div class="text-center md:text-left">
                 <div class="text-sm text-text-muted uppercase tracking-widest mb-2">{content.startingAt}</div>
                 <div class="font-serif text-5xl md:text-6xl font-bold text-text-main mb-2">
-                    <span class="text-lg mr-1 align-top relative top-2">R$</span>{content.price}
+                    <span class="text-lg mr-1 align-top relative top-2">{content.currency}</span>{content.price}
                 </div>
                 <div class="text-text-muted text-lg">
-                    + R$ {content.monthly} <span class="text-sm opacity-80">{content.monthlyLabel}</span>
+                    + {content.currency} {content.monthly} <span class="text-sm opacity-80">{content.monthlyLabel}</span>
                 </div>
             </div>
             
