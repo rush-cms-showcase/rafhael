@@ -1,7 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { tiptapToHtml } from "../../lib/blocks/tiptap-to-html";
 import { formatDate } from "../../lib/date-utils";
 import type { BlogPost } from "../../lib/rush";
+import Fuse from 'fuse.js';
+import { fetchSearchIndex, type SearchIndexItem } from "../../lib/search-service";
 
 interface BlogSearchProps {
     initialPosts: BlogPost[];
@@ -17,12 +19,29 @@ interface BlogSearchProps {
         category: { label: string; slug: string };
         tag: { label: string; slug: string };
     };
+    pagination?: {
+        currentPage: number;
+        lastPage: number;
+        url: {
+            prev?: string;
+            next?: string;
+        };
+    };
 }
 
-export default function BlogSearch({ initialPosts, labels, locale = "en", taxonomies }: BlogSearchProps) {
+export default function BlogSearch({ initialPosts, labels, locale = "en", taxonomies, pagination }: BlogSearchProps) {
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    
+    // Search State
+    const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const [searchResults, setSearchResults] = useState<SearchIndexItem[]>([]);
+    const [isLoadingIndex, setIsLoadingIndex] = useState(false);
+    const [searchIndex, setSearchIndex] = useState<SearchIndexItem[]>([]);
+    const fuseRef = useRef<Fuse<SearchIndexItem> | null>(null);
+    const searchContainerRef = useRef<HTMLDivElement>(null);
 
+    // Categories Logic (Client-side from current page - could be improved but keeping as is for filters)
     const categories = useMemo(() => {
         const cats = new Set<string>();
         initialPosts.forEach((post) => {
@@ -33,27 +52,75 @@ export default function BlogSearch({ initialPosts, labels, locale = "en", taxono
         return Array.from(cats);
     }, [initialPosts]);
 
+    // Local filtering for the LIST view (standard behavior)
     const filteredPosts = useMemo(() => {
         return initialPosts.filter((post) => {
-            const matchesSearch =
-                post.title.toLowerCase().includes(search.toLowerCase()) ||
-                post.excerpt?.toLowerCase().includes(search.toLowerCase());
+            // Note: We only filter categories here for the list view. 
+            // Text search is now handled by the Global Search dropdown.
             const matchesCategory = selectedCategory
                 ? post.categories?.some((cat) => cat.name === selectedCategory)
                 : true;
 
-            return matchesSearch && matchesCategory;
+            return matchesCategory;
         });
-    }, [initialPosts, search, selectedCategory]);
+    }, [initialPosts, selectedCategory]);
+
+
+    // Fetch Search Index on Focus
+    const handleSearchFocus = async () => {
+        setIsSearchFocused(true);
+        if (searchIndex.length === 0 && !isLoadingIndex) {
+            setIsLoadingIndex(true);
+            const index = await fetchSearchIndex(locale);
+            setSearchIndex(index);
+            
+            // Initialize Fuse
+            fuseRef.current = new Fuse(index, {
+                keys: ['title'],
+                threshold: 0.3, // Fuzzy match sensitivity
+                includeScore: true
+            });
+            
+            setIsLoadingIndex(false);
+        }
+    };
+
+    // Perform Search
+    useEffect(() => {
+        if (!search || !fuseRef.current) {
+            setSearchResults([]);
+            return;
+        }
+
+        const results = fuseRef.current.search(search);
+        setSearchResults(results.map(r => r.item).slice(0, 5)); // Limit to 5 results
+    }, [search]);
+
+    // Close dropdown on click outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+                setIsSearchFocused(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const basePrefix = locale === "pt_BR" ? "/br" : "";
 
     return (
-        <div className="w-full">
-            <div className="mb-12 space-y-6">
+        <div className="w-full relative" ref={searchContainerRef}>
+            <div className={`mb-12 space-y-6 ${isSearchFocused ? 'z-50 relative' : ''}`}>
                 <div className="relative max-w-xl mx-auto">
                     <input
                         type="text"
                         placeholder={labels.searchPlaceholder}
                         value={search}
+                        onFocus={handleSearchFocus}
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full pl-12 pr-4 py-4 bg-bg-card border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-text-main placeholder-text-muted"
                     />
@@ -68,10 +135,54 @@ export default function BlogSearch({ initialPosts, labels, locale = "en", taxono
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
+
+                    {/* Algolia-Style Dropdown */}
+                    {isSearchFocused && (
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-bg-card border border-border rounded-xl shadow-2xl overflow-hidden animate-fade-in z-50">
+                            {isLoadingIndex && searchIndex.length === 0 && (
+                                <div className="p-4 text-center text-text-muted text-sm">
+                                    <span className="inline-block animate-pulse">Wait, loading {locale === 'pt_BR' ? 'artigos' : 'articles'}...</span>
+                                </div>
+                            )}
+
+                            {!isLoadingIndex && search.length > 0 && searchResults.length === 0 && (
+                                <div className="p-4 text-center text-text-muted text-sm">
+                                    {labels.emptyStateTitle}
+                                </div>
+                            )}
+
+                            {searchResults.length > 0 && (
+                                <ul className="divide-y divide-border/50">
+                                    {searchResults.map((result) => (
+                                        <li key={result.id}>
+                                            <a 
+                                                href={`${basePrefix}/blog/${result.slug}`}
+                                                className="block p-4 hover:bg-bg-elevated transition-colors group"
+                                            >
+                                                <h4 className="font-bold text-text-main group-hover:text-primary transition-colors">
+                                                    {result.title}
+                                                </h4>
+                                                <span className="text-xs text-text-muted">
+                                                    {result.published_at ? formatDate(result.published_at, locale) : ''}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                            
+                             {!isLoadingIndex && search.length === 0 && searchIndex.length > 0 && (
+                                <div className="p-4 text-center text-xs text-text-muted">
+                                    Type to search across all articles
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
-                {categories.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-2">
+                {/* Categories - Only show if we are NOT searching globally to avoid clutter */}
+                {!isSearchFocused && categories.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-2 animate-fade-in">
                         <button
                             onClick={() => setSelectedCategory(null)}
                             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === null
@@ -97,7 +208,12 @@ export default function BlogSearch({ initialPosts, labels, locale = "en", taxono
                 )}
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+            {/* Backdrop for Focus Mode */}
+            {isSearchFocused && (
+                <div className="fixed inset-0 bg-bg-main/80 backdrop-blur-sm z-40 transition-opacity" aria-hidden="true" />
+            )}
+
+            <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in ${isSearchFocused ? 'opacity-50 pointer-events-none filter blur-sm' : ''}`}>
                 {filteredPosts.length > 0 ? (
                     filteredPosts.map((post) => (
                         <ArticleCard 
@@ -132,6 +248,39 @@ export default function BlogSearch({ initialPosts, labels, locale = "en", taxono
                     </div>
                 )}
             </div>
+            
+            {/* Pagination Controls */}
+            {pagination && pagination.lastPage > 1 && !isSearchFocused && (
+                <div className="flex justify-center gap-4 mt-16 animate-fade-in-up">
+                    {pagination.url.prev && (
+                        <a 
+                            href={pagination.url.prev}
+                            className="flex items-center gap-2 px-6 py-3 rounded-full bg-bg-elevated border border-border hover:border-primary hover:text-primary transition-all font-medium"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                            {locale === 'pt_BR' ? 'Anterior' : 'Previous'}
+                        </a>
+                    )}
+                    
+                    <span className="flex items-center px-4 font-serif font-bold text-text-muted">
+                        {pagination.currentPage} / {pagination.lastPage}
+                    </span>
+                    
+                    {pagination.url.next && (
+                        <a 
+                            href={pagination.url.next}
+                            className="flex items-center gap-2 px-6 py-3 rounded-full bg-bg-elevated border border-border hover:border-primary hover:text-primary transition-all font-medium"
+                        >
+                            {locale === 'pt_BR' ? 'Próxima' : 'Next'}
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </a>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

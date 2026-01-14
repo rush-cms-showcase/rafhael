@@ -1,0 +1,79 @@
+---
+import Layout from "../../layouts/layout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import Container from "../../components/ui/container.astro";
+import Button from "../../components/ui/button.astro";
+import { homeContent } from "../../content/home";
+
+interface Props {
+    locale: "pt_BR" | "en";
+}
+
+const { locale } = Astro.props;
+const content = homeContent[locale];
+
+const translations = {
+    pt_BR: {
+        title: "Página não encontrada",
+        description: "O conteúdo que você procurou não está acessível ou foi movido.",
+        metaDescription: "A página que você está procurando não existe.",
+        backToHome: "Voltar para o Início",
+        readBlog: "Ver Blog",
+        homeLink: "/br",
+        blogLink: "/br/blog"
+    },
+    en: {
+        title: "Page not found",
+        description: "The content you are looking for is not accessible or has been moved.",
+        metaDescription: "The page you are looking for does not exist.",
+        backToHome: "Back to Home",
+        readBlog: "Read Blog",
+        homeLink: "/",
+        blogLink: "/blog"
+    }
+};
+
+const t = translations[locale];
+const pageTitle = `404 - ${t.title} | Rafhael Marsigli`;
+---
+
+<Layout title={pageTitle} description={t.metaDescription}>
+    <div class="min-h-screen flex flex-col">
+        <Header content={content.global.nav} locale={locale} />
+        
+        <main class="flex-1 flex items-center justify-center relative overflow-hidden pt-32">
+            {/* Background decoration */}
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px]"></div>
+            </div>
+
+            <Container className="relative z-10 text-center mb-32">
+                <div class="mb-8">
+                    <span class="text-[10rem] md:text-[14rem] font-serif font-bold text-primary/10 leading-none select-none animate-fade-in block">
+                        404
+                    </span>
+                </div>
+                
+                <h1 class="text-3xl md:text-5xl font-bold mb-6 animate-fade-in delay-100">
+                    {t.title}
+                </h1>
+                
+                <p class="text-text-muted text-lg md:text-xl mb-12 max-w-lg mx-auto leading-relaxed animate-fade-in delay-200">
+                    {t.description}
+                </p>
+
+                <div class="flex flex-col lg:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300">
+                    <Button href={t.homeLink} variant="primary" size="lg" className="w-full lg:w-auto">
+                        {t.backToHome}
+                    </Button>
+                    <Button href={t.blogLink} variant="outline" size="lg" className="w-full lg:w-auto">
+                        {t.readBlog}
+                    </Button>
+                </div>
+            </Container>
+        </main>
+
+        <Footer content={content.global.footer} />
+    </div>
+</Layout>

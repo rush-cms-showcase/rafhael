@@ -1,0 +1,145 @@
+---
+import Layout from "../../layouts/layout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import Container from "../../components/ui/container.astro";
+import { homeContent } from "../../content/home";
+
+interface Props {
+    locale: "pt_BR" | "en";
+}
+
+const { locale } = Astro.props;
+const content = homeContent[locale];
+
+const translations = {
+    pt_BR: {
+        title: "Fale Comigo",
+        description: "Escolha seu canal preferido e vamos conversar sobre seu projeto.",
+        channels: {
+            whatsapp: "WhatsApp (Direto)",
+            email: "E-mail",
+            telegram: "Telegram",
+            call: "Ligar"
+        },
+        hello: "Olá! 👋"
+    },
+    en: {
+        title: "Contact Me",
+        description: "Choose your preferred channel and let's talk about your project.",
+        channels: {
+            whatsapp: "WhatsApp (Direct)",
+            email: "E-mail",
+            telegram: "Telegram",
+            call: "Call Me"
+        },
+        hello: "Hello! 👋"
+    }
+};
+
+const t = translations[locale];
+const pageTitle = `${t.title} | Rafhael Marsigli`;
+
+const channels = [
+    {
+        name: t.channels.whatsapp,
+        value: "+55 12 98317 3077",
+        href: "https://wa.me/5512983173077",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>`,
+        color: "hover:border-green-500 hover:text-green-500 hover:bg-green-500/10"
+    },
+    {
+        name: t.channels.email,
+        value: "oi@rafhael.com.br",
+        href: "mailto:oi@rafhael.com.br",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
+        color: "hover:border-primary hover:text-primary hover:bg-primary/10"
+    },
+    {
+        name: t.channels.telegram,
+        value: "@rmarsigli",
+        href: "https://t.me/rmarsigli",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>`,
+        color: "hover:border-blue-400 hover:text-blue-400 hover:bg-blue-400/10"
+    },
+    {
+        name: t.channels.call,
+        value: "+55 12 98317 3077",
+        href: "tel:5512983173077",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+        color: "hover:border-orange-500 hover:text-orange-500 hover:bg-orange-500/10"
+    }
+];
+---
+
+<Layout title={pageTitle} description={t.description}>
+    <div class="min-h-screen flex flex-col">
+        <Header content={content.global.nav} locale={locale} />
+        
+        <main class="flex-1 flex items-center pt-32 pb-32">
+            <Container className="max-w-4xl relative z-10">
+                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+                <div class="text-center mb-16 animate-fade-in">
+                    <div class="relative inline-block mx-auto mb-6">
+                        <div class="w-32 h-32 rounded-full border-4 border-bg-elevated shadow-xl overflow-hidden relative peer z-10">
+                            <div class="w-full h-full relative transition-all duration-[1500ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:rotate-[720deg] hover:scale-[5] origin-[55%_37%] group">
+                                <img 
+                                    src="/profile-pic.webp" 
+                                    alt="Rafhael Marsigli" 
+                                    class="w-full h-full object-cover transition-all duration-700 group-hover:sepia group-hover:hue-rotate-[100deg] group-hover:saturate-[300%] group-hover:contrast-125"
+                                />
+                                {/* Illuminati Triangle - Centered on the Eye (Origin) */}
+                                <svg 
+                                    class="absolute left-[54%] top-[38%] -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-white/30 pointer-events-none mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                                    viewBox="0 0 24 24" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    stroke-width="1" 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M12 2L2 22h20L12 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        {/* Speech Bubble */}
+                        <div class="absolute -top-6 -right-12 bg-bg-card border border-border px-4 py-2 rounded-xl rounded-bl-none shadow-lg z-20 animate-bounce [animation-duration:2s] opacity-0 peer-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <span class="text-sm font-bold text-text-main whitespace-nowrap">{t.hello}</span>
+                        </div>
+                    </div>
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                        {t.title}
+                    </h1>
+                    <p class="text-text-muted text-lg md:text-xl max-w-2xl mx-auto">
+                        {t.description}
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 animate-fade-in-up delay-200">
+                    {channels.map((channel) => (
+                        <a 
+                            href={channel.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class={`group p-8 rounded-2xl border border-border/50 bg-bg-elevated/50 backdrop-blur-sm transition-all duration-300 flex flex-col items-center justify-center text-center gap-4 ${channel.color}`}
+                        >
+                            <div class="w-16 h-16 rounded-full bg-bg-card flex items-center justify-center text-text-muted group-hover:text-inherit transition-colors shadow-lg group-hover:shadow-xl group-hover:scale-110 duration-300" set:html={channel.icon} />
+                            
+                            <div>
+                                <h3 class="font-bold text-lg mb-1 text-text-main group-hover:text-inherit">
+                                    {channel.name}
+                                </h3>
+                                <p class="text-text-muted text-sm group-hover:text-inherit/80">
+                                    {channel.value}
+                                </p>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            </Container>
+        </main>
+
+        <Footer content={content.global.footer} />
+    </div>
+</Layout>

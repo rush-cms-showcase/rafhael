@@ -7,14 +7,17 @@ import BlockRenderer from '../components/blocks/block-renderer.astro'
 import { rush } from '../lib/rush'
 import { homeContent } from "../content/home";
 
+import { tiptapToHtml } from '../lib/blocks/tiptap-to-html';
+
 // Use English content
 const content = homeContent.en;
 
 export async function getStaticPaths() {
 	try {
-        // ID 2 is the 'Pages' collection
-		const response = await rush.getEntries(2)
-		const pages = response.data
+        // ID 2 is the 'Pages' collection. getEntries expects string or number, but Typescript complained.
+        // Casting to any or string to satisfy. 
+		const response = await rush.getEntries(2 as any, { locale: 'en' })
+		const pages = response.data as any[]
 
 		return pages.map((page) => ({
 			params: { slug: page.slug },
@@ -49,7 +52,7 @@ const description = page.content?.substring(0, 160) || `${page.title} - Rafhael 
 <Layout title={title} description={description}>
 	<Header content={content.global.nav} locale="en" />
 	
-	<main class='pt-24'>
+	<main class='pt-32 md:pt-40'>
 		<article>
 			<Container className='max-w-4xl mb-24'>
 				<h1
@@ -58,15 +61,25 @@ const description = page.content?.substring(0, 160) || `${page.title} - Rafhael 
 					{page.title}
 				</h1>
 
+
 				<div
 					class='prose prose-invert prose-lg lg:prose-xl xl:prose-2xl max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl'
 				>
 					{
-						page.data?.content && page.data.content.length > 0 ? (
-							<BlockRenderer blocks={page.data.content} />
-						) : (
-							<div set:html={page.content} />
-						)
+						(() => {
+                            if (page.data?.content) {
+                                let doc = page.data.content;
+                                // If it's an array, wrap it to match TipTapDocument interface
+                                if (Array.isArray(doc)) {
+                                    doc = { content: doc };
+                                }
+                                // If it's an object but missing content (or has it), pass it.
+                                // tiptapToHtml expects { content: [...] }
+                                const html = tiptapToHtml(doc as any);
+                                return <div set:html={html} />;
+                            }
+                            return <div set:html={page.content} />;
+                        })()
 					}
 				</div>
 			</Container>

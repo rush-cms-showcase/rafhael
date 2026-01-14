@@ -1,0 +1,85 @@
+---
+import Layout from "../../../layouts/layout.astro";
+import Header from "../../../components/header.astro";
+import Footer from "../../../components/footer.astro";
+import Section from "../../../components/ui/section.astro";
+import Container from "../../../components/ui/container.astro";
+import BlogList from "../../../components/blog/blog-list.tsx";
+import type { BlogPost } from "../../../lib/rush";
+import { fetchAllPosts } from "../../../lib/blog-fetcher";
+import { homeContent } from "../../../content/home";
+import { rushConfig } from "../../../../rush.config";
+import type { Page } from 'astro';
+
+// Use English content
+const content = homeContent.en;
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+    const posts = await fetchAllPosts({ locale: 'en' });
+    
+    // Extract unique categories
+    const allCategories = posts.flatMap(p => p.categories || []);
+    const uniqueCategories = Array.from(new Map(allCategories.map(c => [c.slug, c])).values());
+
+    return uniqueCategories.flatMap((category) => {
+        const categoryPosts = posts.filter(post => 
+            post.categories?.some(c => c.slug === category.slug)
+        );
+        
+        // Sort by date desc
+        categoryPosts.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+
+        return paginate(categoryPosts, {
+            params: { category: category.slug },
+            pageSize: rushConfig.defaults?.perPage || 12,
+            props: { categoryName: category.name, allCategories: uniqueCategories }
+        });
+    });
+}
+
+interface Props {
+    page: Page<BlogPost>;
+    categoryName: string;
+    allCategories: { name: string; slug: string }[];
+}
+
+const { page, categoryName, allCategories } = Astro.props;
+const currentPosts = page.data as BlogPost[];
+
+const title = `${categoryName} - Blog | Rafhael Marsigli`;
+const description = `Articles about ${categoryName}`;
+---
+
+<Layout title={title} description={description}>
+    <Header content={content.global.nav} locale="en" />
+    <main class="pt-16 md:pt-12">
+        <Section>
+            <Container>
+                <div class="text-center mb-16 md:mb-24">
+                     <h1 class="font-serif text-5xl md:text-7xl mb-8 text-primary">
+                        {categoryName}
+                    </h1>
+                     <p class="text-xl text-text-muted">
+                        {content.taxonomies.category.label}
+                    </p>
+                </div>
+                <BlogList 
+                    client:load 
+                    initialPosts={currentPosts} 
+                    categories={allCategories}
+                    labels={content.blog} 
+                    taxonomies={content.taxonomies}
+                    pagination={{
+                        currentPage: page.currentPage,
+                        lastPage: page.lastPage,
+                        url: {
+                            prev: page.url.prev,
+                            next: page.url.next
+                        }
+                    }}
+                />
+            </Container>
+        </Section>
+    </main>
+    <Footer content={content.global.footer} />
+</Layout>
