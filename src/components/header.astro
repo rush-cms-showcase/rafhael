@@ -96,11 +96,12 @@ const searchLabels = {
 
             <button
                 id="menu-toggle"
-                class="md:hidden flex items-center justify-center w-12 h-12 border border-white/20 rounded-lg text-text-main hover:text-primary transition-colors"
+                class="md:hidden flex items-center justify-center w-12 h-12 border border-white/20 rounded-lg text-text-main hover:text-primary transition-colors relative z-50 bg-bg/50 backdrop-blur-sm"
                 aria-label="Menu"
             >
                 <svg
-                    class="w-6 h-6"
+                    id="icon-menu"
+                    class="w-6 h-6 transition-transform duration-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -111,35 +112,59 @@ const searchLabels = {
                         stroke-width="2"
                         d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
+                <svg
+                    id="icon-close"
+                    class="w-6 h-6 absolute inset-0 m-auto opacity-0 scale-75 transition-all duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
             </button>
         </div>
     </Container>
-
-    <div
-        id="mobile-menu"
-        class="md:hidden fixed inset-0 top-[73px] opacity-0 pointer-events-none transition-opacity duration-300"
-    >
-        <Container className="py-8">
-            <nav
-                class="border border-primary/40 flex flex-col text-center rounded-lg shadow-primary/10 shadow-xl bg-black/98 backdrop-blur-lg"
-            >
-                {
-                    navItems.map((item) => (
-                        <a
-                            href={item.href}
-                            class="text-xl font-medium text-text-muted hover:text-text-main transition-colors py-4 px-3 border-b border-border/30"
-                        >
-                            {item.label}
-                        </a>
-                    ))
-                }
-                <div class="py-3 border-b border-border/30 flex justify-center">
-                    <LanguageSelector currentLocale={locale} isMobile={true} />
-                </div>
-            </nav>
-        </Container>
-    </div>
 </header>
+
+<div
+    id="mobile-menu"
+    class="md:hidden fixed inset-0 z-40 bg-[#0a0a0a]/98 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center text-center overflow-hidden"
+>
+    <nav class="flex flex-col gap-6 w-full max-w-sm px-6 relative z-10 pt-24">
+        {
+            navItems.map((item) => (
+                <a
+                    href={item.href}
+                    class="text-4xl font-serif font-bold text-text-muted hover:text-primary transition-colors py-2"
+                >
+                    {item.label}
+                </a>
+            ))
+        }
+        
+        <div class="h-px bg-border/20 w-24 mx-auto my-4"></div>
+
+        <div class="flex justify-center mb-6">
+            <LanguageSelector currentLocale={locale} isMobile={true} />
+        </div>
+
+        <Button
+            href={locale === "pt_BR" ? "/br/contato" : "/contact"}
+            variant="primary"
+            size="lg"
+            className="w-full justify-center shadow-xl shadow-primary/20"
+        >
+            <span>{content.contact}</span>
+        </Button>
+    </nav>
+    
+    {/* Decorative background blob */}
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+</div>
 
 <script is:inline>
     // Search Trigger Logic
@@ -152,33 +177,44 @@ const searchLabels = {
 
     const menuToggle = document.getElementById("menu-toggle");
     const mobileMenu = document.getElementById("mobile-menu");
+    const iconMenu = document.getElementById("icon-menu");
+    const iconClose = document.getElementById("icon-close");
+
+    function toggleMenu(forceClose = false) {
+        if (!mobileMenu || !iconMenu || !iconClose) return;
+
+        const isOpen = mobileMenu.classList.contains("opacity-100");
+        const shouldClose = forceClose || isOpen;
+
+        if (shouldClose) {
+            // Close Menu
+            mobileMenu.classList.remove("opacity-100", "pointer-events-auto");
+            mobileMenu.classList.add("opacity-0", "pointer-events-none");
+            document.body.style.overflow = "";
+            
+            // Icon Animation
+            iconMenu.classList.remove("opacity-0", "rotate-90", "scale-75");
+            iconClose.classList.add("opacity-0", "scale-75");
+            iconClose.classList.remove("rotate-90");
+        } else {
+            // Open Menu
+            mobileMenu.classList.remove("opacity-0", "pointer-events-none");
+            mobileMenu.classList.add("opacity-100", "pointer-events-auto");
+            document.body.style.overflow = "hidden";
+
+            // Icon Animation
+            iconMenu.classList.add("opacity-0", "rotate-90", "scale-75");
+            iconClose.classList.remove("opacity-0", "scale-75");
+            iconClose.classList.add("rotate-90");
+        }
+    }
 
     if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener("click", () => {
-            const isOpen = mobileMenu.classList.contains("opacity-100");
-
-            if (isOpen) {
-                mobileMenu.classList.remove(
-                    "opacity-100",
-                    "pointer-events-auto",
-                );
-                mobileMenu.classList.add("opacity-0", "pointer-events-none");
-                document.body.style.overflow = "";
-            } else {
-                mobileMenu.classList.remove("opacity-0", "pointer-events-none");
-                mobileMenu.classList.add("opacity-100", "pointer-events-auto");
-                document.body.style.overflow = "hidden";
-            }
-        });
+        menuToggle.addEventListener("click", () => toggleMenu());
 
         mobileMenu.addEventListener("click", (e) => {
             if (e.target.tagName === "A") {
-                mobileMenu.classList.remove(
-                    "opacity-100",
-                    "pointer-events-auto",
-                );
-                mobileMenu.classList.add("opacity-0", "pointer-events-none");
-                document.body.style.overflow = "";
+                toggleMenu(true);
             }
         });
     }
