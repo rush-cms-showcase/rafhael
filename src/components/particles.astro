@@ -14,14 +14,18 @@
             this.width = 0
             this.height = 0
             
+            let resizeTimeout
             this.resizeObserver = new ResizeObserver((entries) => {
                  for (const entry of entries) {
                     if (entry.target === this.canvas) {
-                        this.width = entry.contentRect.width
-                        this.height = entry.contentRect.height
-                        this.canvas.width = this.width
-                        this.canvas.height = this.height
-                        this.init()
+                        clearTimeout(resizeTimeout)
+                        resizeTimeout = setTimeout(() => {
+                            this.width = entry.contentRect.width
+                            this.height = entry.contentRect.height
+                            this.canvas.width = this.width
+                            this.canvas.height = this.height
+                            this.init()
+                        }, 200)
                     }
                  }
             })
