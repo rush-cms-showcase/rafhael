@@ -24,7 +24,9 @@ const navItems = [
 const searchLabels = {
     placeholder: locale === 'pt_BR' ? "Buscar artigos..." : "Search articles...",
     emptyTitle: locale === 'pt_BR' ? "Nenhum artigo encontrado" : "No articles found",
-    emptyText: locale === 'pt_BR' ? "Tente outros termos." : "Try other terms."
+    emptyText: locale === 'pt_BR' ? "Tente outros termos." : "Try other terms.",
+    initialText: locale === 'pt_BR' ? "Digite para buscar em todos os artigos" : "Type to search across all articles",
+    loadingText: locale === 'pt_BR' ? "Carregando índice..." : "Loading index..."
 };
 ---
 
@@ -132,7 +134,7 @@ const searchLabels = {
                     ))
                 }
                 <div class="py-3 border-b border-border/30 flex justify-center">
-                    <LanguageSelector currentLocale={locale} />
+                    <LanguageSelector currentLocale={locale} isMobile={true} />
                 </div>
             </nav>
         </Container>
