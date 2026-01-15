@@ -110,15 +110,17 @@ function ArticleCard({ post, readMoreLabel, locale = "en", taxonomies }: {
     return (
         <article className={`group flex flex-col bg-bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 ${!hasImage ? 'animate-fade-in' : ''}`}>
             {hasImage && post.featured_image && (
-                <a href={`${basePrefix}/blog/${post.slug}`} className="relative aspect-video overflow-hidden block">
-                    <img
-                        src={post.featured_image.preview || post.featured_image.url}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                    />
+                <div className="relative aspect-video overflow-hidden block">
+                    <a href={`${basePrefix}/blog/${post.slug}`} className="block w-full h-full">
+                        <img
+                            src={post.featured_image.preview || post.featured_image.url}
+                            alt={post.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        />
+                    </a>
                     {post.categories && post.categories.length > 0 && (
-                        <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                        <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
                             {post.categories.map((cat) => (
                                 <a 
                                     key={cat.slug} 
@@ -130,7 +132,7 @@ function ArticleCard({ post, readMoreLabel, locale = "en", taxonomies }: {
                             ))}
                         </div>
                     )}
-                </a>
+                </div>
             )}
 
             <div className={`flex-1 p-6 flex flex-col ${!hasImage ? 'justify-center' : ''}`}>
