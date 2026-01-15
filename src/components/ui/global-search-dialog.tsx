@@ -10,6 +10,8 @@ interface GlobalSearchDialogProps {
         placeholder: string;
         emptyTitle: string;
         emptyText: string;
+        initialText: string;
+        loadingText: string;
     };
 }
 
@@ -162,7 +164,7 @@ export default function GlobalSearchDialog({ locale = "en", labels }: GlobalSear
                     {isLoadingIndex && (
                         <div className="p-8 text-center text-text-muted">
                             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                            Loading index...
+                            {labels.loadingText}
                         </div>
                     )}
 
@@ -175,7 +177,7 @@ export default function GlobalSearchDialog({ locale = "en", labels }: GlobalSear
                     
                     {!isLoadingIndex && search.length === 0 && (
                          <div className="p-12 text-center text-text-muted">
-                            <p className="text-sm">Type to search across all articles</p>
+                             <p className="text-sm">{labels.initialText}</p>
                         </div>
                     )}
 
