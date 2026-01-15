@@ -21,6 +21,14 @@ const canonicalURL =
 const resolvedImage = new URL(image, siteUrl).toString();
 ---
 
+<!-- Resource Hints -->
+<link rel="dns-prefetch" href="https://app.rushcms.com">
+<link rel="preconnect" href="https://app.rushcms.com" crossorigin>
+
+<!-- Font Preloads -->
+<link rel="preload" href="/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/libre-baskerville-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
