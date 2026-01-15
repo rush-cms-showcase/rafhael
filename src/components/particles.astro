@@ -11,26 +11,40 @@
 
             this.ctx = this.canvas.getContext('2d')
             this.particles = []
-            this.resize()
+            this.width = 0
+            this.height = 0
+            
+            this.resizeObserver = new ResizeObserver((entries) => {
+                 for (const entry of entries) {
+                    if (entry.target === this.canvas) {
+                        this.width = entry.contentRect.width
+                        this.height = entry.contentRect.height
+                        this.canvas.width = this.width
+                        this.canvas.height = this.height
+                        this.init()
+                    }
+                 }
+            })
+            
+            this.resizeObserver.observe(this.canvas)
+            // Initial size set
+            this.width = window.innerWidth
+            this.height = window.innerHeight
+            this.canvas.width = this.width
+            this.canvas.height = this.height
+            
             this.init()
             this.animate()
-
-            window.addEventListener('resize', () => this.resize())
-        }
-
-        resize() {
-            this.canvas.width = window.innerWidth
-            this.canvas.height = window.innerHeight
         }
 
         init() {
             this.particles = []
-            const particleCount = Math.min(window.innerWidth / 10, 100)
+            const particleCount = Math.min(this.width / 10, 100)
 
             for (let i = 0; i < particleCount; i++) {
                 this.particles.push({
-                    x: Math.random() * this.canvas.width,
-                    y: Math.random() * this.canvas.height,
+                    x: Math.random() * this.width,
+                    y: Math.random() * this.height,
                     vx: (Math.random() - 0.5) * 0.5,
                     vy: (Math.random() - 0.5) * 0.5,
                     size: Math.random() * 2 + 1,
@@ -40,7 +54,7 @@
         }
 
         draw() {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+            this.ctx.clearRect(0, 0, this.width, this.height)
 
             this.ctx.strokeStyle = 'rgba(63, 145, 240, 0.1)'
             this.ctx.lineWidth = 1
@@ -51,8 +65,8 @@
                 p.x += p.vx
                 p.y += p.vy
 
-                if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1
-                if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1
+                if (p.x < 0 || p.x > this.width) p.vx *= -1
+                if (p.y < 0 || p.y > this.height) p.vy *= -1
 
                 this.ctx.beginPath()
                 this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
@@ -63,9 +77,9 @@
                     const p2 = this.particles[j]
                     const dx = p.x - p2.x
                     const dy = p.y - p2.y
-                    const distance = Math.sqrt(dx * dx + dy * dy)
+                    const distance = dx * dx + dy * dy // Optimization: Avoid sqrt until necessary
 
-                    if (distance < 150) {
+                    if (distance < 22500) { // 150 * 150 = 22500
                         this.ctx.beginPath()
                         this.ctx.moveTo(p.x, p.y)
                         this.ctx.lineTo(p2.x, p2.y)
