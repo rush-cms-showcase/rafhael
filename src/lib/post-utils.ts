@@ -2,7 +2,9 @@ import { tiptapToHtml } from "./blocks/tiptap-to-html";
 
 export function calculateReadingTime(post: any, locale: string = 'en'): string {
     let text = "";
-    if (post.data?.content) {
+    if (post.data?.markdown) {
+        text = post.data.markdown;
+    } else if (post.data?.content) {
         if (Array.isArray(post.data.content)) {
             text = tiptapToHtml({ content: post.data.content } as any);
         }
