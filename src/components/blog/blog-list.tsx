@@ -1,4 +1,4 @@
-import { tiptapToHtml } from "../../lib/blocks/tiptap-to-html";
+import { calculateReadingTime } from "../../lib/post-utils";
 import { formatDate } from "../../lib/date-utils";
 import type { BlogPost } from "../../lib/rush";
 
@@ -161,22 +161,7 @@ function ArticleCard({ post, readMoreLabel, locale = "en", taxonomies }: {
 
                 <div className="flex items-center justify-between pt-6 mt-auto">
                     {(() => {
-                        let text = "";
-                        if (post.data?.content) {
-                                if (Array.isArray(post.data.content)) {
-                                    text = tiptapToHtml({ content: post.data.content } as any);
-                                } 
-                                else if ((post.data.content as any).content && Array.isArray((post.data.content as any).content)) {
-                                    text = tiptapToHtml(post.data.content as any);
-                                }
-                        } else {
-                                text = post.content || "";
-                        }
-                        
-                        const cleanText = text.replace(/<[^>]*>/g, ' ');
-                        const words = cleanText.split(/\s+/).filter(w => w.length > 0).length;
-                        const minutes = Math.max(1, Math.ceil(words / 200));
-                        const readingTime = `${minutes} ${locale === "pt_BR" ? "min de leitura" : "min read"}`;
+                        const readingTime = calculateReadingTime(post, locale);
                         const date = post.published_at ? formatDate(post.published_at, locale) : "";
 
                         return (
