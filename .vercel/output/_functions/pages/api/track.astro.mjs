@@ -18,13 +18,18 @@ const POST = async ({ request }) => {
     const body = await request.json();
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5e3);
+    const forwardHeaders = {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    };
+    const userAgent = request.headers.get("user-agent");
+    if (userAgent) forwardHeaders["User-Agent"] = userAgent;
+    const origin = request.headers.get("origin") || "https://www.rafhael.com.br";
+    forwardHeaders["Origin"] = origin;
+    forwardHeaders["Referer"] = origin;
     const response = await fetch("https://app.rushcms.com/api/v1/rafhael/analytics/pageview", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "User-Agent": "Rafhael-Website/1.0"
-      },
+      headers: forwardHeaders,
       body: JSON.stringify(body),
       signal: controller.signal
     });
