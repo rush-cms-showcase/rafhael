@@ -58,10 +58,10 @@ const formattedDate = new Date(post.published_at).toLocaleDateString("pt-BR", {
             )
         }
         {
-            post.category && (
+            post.categories && post.categories.length > 0 && (
                 <div class="absolute top-4 left-4">
                     <Badge variant="primary" className="shadow-lg">
-                        {post.category.name}
+                        {post.categories[0].name}
                     </Badge>
                 </div>
             )

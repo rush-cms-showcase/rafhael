@@ -43,8 +43,8 @@ interface Props {
     allCategories: { name: string; slug: string }[];
 }
 
-const { page, categoryName, allCategories } = Astro.props;
-const currentPosts = page.data as BlogPost[];
+const { page, categoryName, allCategories } = Astro.props as Props
+const currentPosts = page.data
 
 const title = `${categoryName} - Blog | Rafhael Marsigli`;
 const description = `Articles about ${categoryName}`;

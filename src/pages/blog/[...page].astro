@@ -35,8 +35,8 @@ interface Props {
     categories: { name: string; slug: string }[];
 }
 
-const { page, categories } = Astro.props;
-const currentPosts = page.data as BlogPost[];
+const { page, categories } = Astro.props as Props
+const currentPosts = page.data
 
 const title = "Blog - Rafhael Marsigli";
 const description =

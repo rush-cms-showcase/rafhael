@@ -15,10 +15,10 @@ const content = homeContent.pt_BR;
 export async function getStaticPaths() {
 	try {
         // ID 2 is the 'Pages' collection
-		const response = await rush.getEntries(2 as any, { locale: 'pt_BR' })
-		const pages = response.data as any[]
+		const response = await rush.getEntries(2 as any, { locale: 'pt_BR' }) as { data: any[] }
+		const pages = response.data
 
-		return pages.map((page) => ({
+		return pages.map((page: any) => ({
 			params: { slug: page.slug },
 			props: { page }
 		}))
@@ -67,14 +67,14 @@ const description = page.content?.substring(0, 160) || `${page.title} - Rafhael 
 					{
 						(() => {
                             if (page.data?.content) {
-                                let doc = page.data.content;
+                                let doc: any = page.data.content
                                 if (Array.isArray(doc)) {
-                                    doc = { content: doc };
+                                    doc = { content: doc }
                                 }
-                                const html = tiptapToHtml(doc as any);
-                                return <div set:html={html} />;
+                                const html = tiptapToHtml(doc as any)
+                                return <div set:html={html} />
                             }
-                            return <div set:html={page.content} />;
+                            return <div set:html={page.content} />
                         })()
 					}
 				</div>

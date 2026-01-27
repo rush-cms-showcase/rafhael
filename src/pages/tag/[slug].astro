@@ -4,33 +4,33 @@ import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
 import Container from "../../components/ui/container.astro";
 import BlogSearch from "../../components/blog/blog-search";
-import { rush } from "../../lib/rush";
+import { rush, type BlogPost } from "../../lib/rush";
 import { homeContent } from "../../content/home";
 
 export async function getStaticPaths() {
-    const posts = await rush.getEntries("blog", { per_page: 1000 });
-    
-    // Extract unique tags
-    const tags = new Map();
-    posts.data.forEach(post => {
-        if (post.tags) {
-            post.tags.forEach(tag => {
-                tags.set(tag.slug, tag);
-            });
-        }
-    });
+    const posts = await rush.getEntries("blog", { per_page: 1000 }) as { data: BlogPost[] }
 
-    return Array.from(tags.values()).map(tag => ({
+    // Extract unique tags
+    const tags = new Map()
+    posts.data.forEach((post: BlogPost) => {
+        if (post.tags) {
+            post.tags.forEach((tag: { id: number; name: string; slug: string }) => {
+                tags.set(tag.slug, tag)
+            })
+        }
+    })
+
+    return Array.from(tags.values()).map((tag: { name: string; slug: string }) => ({
         params: { slug: tag.slug },
         props: { tag }
-    }));
+    }))
 }
 
-const { tag } = Astro.props;
-const allPosts = await rush.getEntries("blog", { per_page: 1000 });
-const filteredPosts = allPosts.data.filter(post => 
-    post.tags?.some(t => t.slug === tag.slug)
-) as any;
+const { tag } = Astro.props
+const allPosts = await rush.getEntries("blog", { per_page: 1000 }) as { data: BlogPost[] }
+const filteredPosts = allPosts.data.filter((post: BlogPost) =>
+    post.tags?.some((t: { id: number; name: string; slug: string }) => t.slug === tag.slug)
+)
 
 const content = homeContent.en;
 ---

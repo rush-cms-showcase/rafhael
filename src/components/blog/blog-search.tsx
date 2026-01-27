@@ -154,7 +154,7 @@ export default function BlogSearch({ initialPosts, labels, locale = "en", taxono
                             {searchResults.length > 0 && (
                                 <ul className="divide-y divide-border/50">
                                     {searchResults.map((result) => (
-                                        <li key={result.id}>
+                                        <li key={result.slug}>
                                             <a 
                                                 href={`${basePrefix}/blog/${result.slug}`}
                                                 className="block p-4 hover:bg-bg-elevated transition-colors group"
