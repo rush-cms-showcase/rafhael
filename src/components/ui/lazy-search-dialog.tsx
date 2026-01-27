@@ -14,7 +14,6 @@ interface GlobalSearchDialogProps {
 
 export default function LazySearchDialog(props: GlobalSearchDialogProps) {
     const [Component, setComponent] = useState<React.ComponentType<GlobalSearchDialogProps> | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -23,7 +22,6 @@ export default function LazySearchDialog(props: GlobalSearchDialogProps) {
              try {
                  const mod = await import("./global-search-dialog");
                  setComponent(() => mod.default);
-                 setIsVisible(true);
              } finally {
                  setIsLoading(false);
              }

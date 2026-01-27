@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { rushConfig } from '../../../rush.config';
 
 export function getStaticPaths() {
   return [

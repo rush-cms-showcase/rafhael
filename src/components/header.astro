@@ -12,7 +12,6 @@ interface Props {
 
 const { content, locale = "pt_BR" } = Astro.props;
 const homeUrl = locale === "pt_BR" ? "/br" : "/";
-const isHome = Astro.url.pathname === homeUrl;
 
 // Map the nav items from the content prop
 const navItems = [

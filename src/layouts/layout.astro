@@ -19,20 +19,18 @@ const { title, description, image } = Astro.props;
             import.meta.env.GTAG && (
                 <>
                     <script
+                        is:inline
                         async
                         src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.GTAG}`}
                     />
-                    <script
-                        define:vars={{ GTAG: import.meta.env.GTAG }}
-                    >
+                    <script is:inline set:html={`
                         window.dataLayer = window.dataLayer || [];
                         function gtag() {
                             dataLayer.push(arguments);
                         }
                         gtag("js", new Date());
-
-                        gtag("config", GTAG);
-                    </script>
+                        gtag("config", "${import.meta.env.GTAG}");
+                    `} />
                 </>
             )
         }
