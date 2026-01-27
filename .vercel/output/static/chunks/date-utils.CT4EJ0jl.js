@@ -1,0 +1,1 @@
+function r(n,e="en"){const t=new Date(n);return isNaN(t.getTime())?"":e==="pt_BR"||e==="pt"?new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"}).format(t):new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",year:"numeric"}).format(t)}export{r as f};
