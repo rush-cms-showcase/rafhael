@@ -10,14 +10,13 @@ interface Props {
 const {
     title = "Rafhael Marsigli — Sites de Alta Performance",
     description = "Desenvolvimento de sites de alta performance que convertem visitantes em clientes. Especialista em PageSpeed e SEO.",
-    image = "/banner.png",
+    image = "/banner.webp",
     canonical,
     noindex = false,
 } = Astro.props;
 
-const siteUrl = Astro.site ? Astro.site.toString() : "https://rushcms.com.br"; // Fallback dev
-const canonicalURL =
-    canonical || new URL(Astro.url.pathname, siteUrl).toString();
+const siteUrl = Astro.site?.origin || import.meta.env.SITE || "https://rushcms.com.br";
+const canonicalURL = canonical || new URL(Astro.url.pathname, siteUrl).toString();
 const resolvedImage = new URL(image, siteUrl).toString();
 ---
 
