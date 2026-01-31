@@ -14,7 +14,6 @@ export default defineConfig({
 		inlineStylesheets: 'always'
 	},
 
-	output: 'server',
 	adapter: vercel({
 		webAnalytics: {
 			enabled: true
