@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
+import vercel from '@astrojs/vercel'
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +13,13 @@ export default defineConfig({
 	build: {
 		inlineStylesheets: 'always'
 	},
+
+	output: 'server',
+	adapter: vercel({
+		webAnalytics: {
+			enabled: true
+		}
+	}),
 
 	vite: {
 		plugins: [tailwindcss()],
