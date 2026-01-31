@@ -3,7 +3,7 @@ import Container from "./ui/container.astro";
 import Button from "./ui/button.astro";
 import type { HomeContent } from "../content/home";
 import LanguageSelector from "./language-selector.astro";
-import LazySearchDialog from "./ui/lazy-search-dialog";
+import GlobalSearchDialog from "./ui/global-search-dialog.astro";
 
 interface Props {
     content: HomeContent["global"]["nav"];
@@ -79,7 +79,7 @@ const searchLabels = {
                     ⌘ K
                 </span>
             </button>
-            <LazySearchDialog client:idle locale={locale} labels={searchLabels} />
+            <GlobalSearchDialog locale={locale} labels={searchLabels} />
 
             <div class="hidden lg:block px-2">
                 <LanguageSelector currentLocale={locale} />
@@ -131,7 +131,7 @@ const searchLabels = {
 
 <div
     id="mobile-menu"
-    class="md:hidden fixed inset-0 z-40 bg-[#0a0a0a]/98 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center text-center overflow-hidden"
+    class="md:hidden fixed inset-0 z-40 bg-bg/98 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center text-center overflow-hidden"
 >
     <nav class="flex flex-col gap-6 w-full max-w-sm px-6 relative z-10 pt-24">
         {

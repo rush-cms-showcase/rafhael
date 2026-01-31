@@ -4,7 +4,7 @@ import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
 import Section from "../../components/ui/section.astro";
 import Container from "../../components/ui/container.astro";
-import BlogList from "../../components/blog/blog-list.tsx";
+import BlogList from "../../components/blog/blog-list.astro";
 import type { BlogPost } from "../../lib/rush";
 import { fetchAllPosts } from "../../lib/blog-fetcher";
 import { homeContent } from "../../content/home";
@@ -52,7 +52,6 @@ const currentPosts = page.data
                     </h2>
                 </div>
                 <BlogList 
-                    client:load 
                     initialPosts={currentPosts} 
                     categories={categories}
                     labels={content.blog} 

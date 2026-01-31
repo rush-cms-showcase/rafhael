@@ -1,0 +1,316 @@
+---
+interface Props {
+    locale?: "en" | "pt_BR";
+    labels: {
+        placeholder: string;
+        emptyTitle: string;
+        emptyText: string;
+        initialText: string;
+        loadingText: string;
+    };
+}
+
+const { locale = "en", labels } = Astro.props;
+const basePrefix = locale === "pt_BR" ? "/br" : "";
+---
+
+<div 
+    id="global-search-dialog" 
+    class="fixed inset-0 z-100 hidden items-start justify-center pt-[15vh] px-4 font-sans text-text-main"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+>
+    {/* Backdrop */}
+    <div 
+        id="global-search-backdrop"
+        class="absolute inset-0 bg-bg-main/80 backdrop-blur-sm transition-opacity" 
+    />
+
+    {/* Modal */}
+    <div class="relative w-full max-w-2xl bg-bg-card border border-border rounded-xl shadow-2xl overflow-hidden animate-fade-in-up">
+        
+        {/* Header / Input */}
+        <div class="flex items-center border-b border-border p-4">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-text-muted mr-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+                id="global-search-input"
+                type="text" 
+                placeholder={labels.placeholder}
+                class="flex-1 bg-transparent border-none outline-none text-lg text-text-main placeholder-text-muted h-10"
+                autocomplete="off"
+            />
+            <button 
+                id="global-search-close"
+                class="p-2 ml-2 text-text-muted hover:text-text-main hover:bg-bg-elevated rounded-md transition-colors"
+                aria-label="Close"
+            >
+                <kbd class="hidden md:inline-block px-2 py-0.5 text-xs font-mono bg-bg-elevated rounded border border-border">ESC</kbd>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        {/* Results Area */}
+        <div id="global-search-results-container" class="max-h-[60vh] overflow-y-auto">
+            {/* Loading State */}
+            <div id="global-search-loading" class="hidden p-8 text-center text-text-muted">
+                <div class="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                {labels.loadingText}
+            </div>
+
+            {/* Empty State */}
+            <div id="global-search-empty" class="hidden p-12 text-center text-text-muted">
+                <p class="font-medium mb-1">{labels.emptyTitle}</p>
+                <p class="text-sm">{labels.emptyText}</p>
+            </div>
+            
+            {/* Initial State */}
+            <div id="global-search-initial" class="p-12 text-center text-text-muted">
+                <p class="text-sm">{labels.initialText}</p>
+            </div>
+
+            {/* Results List */}
+            <ul id="global-search-results-list" class="divide-y divide-border/50 hidden">
+                {/* Dynamically populated */}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script define:vars={{ locale, basePrefix }}>
+    // Type definitions for clarity (not used in JS runtime but good for mental model)
+    // interface SearchIndexItem { title: string; slug: string; type: string; published_at: string; }
+
+    let fuse = null;
+    let searchIndex = [];
+    let isLoadingIndex = false;
+    let isOpen = false;
+    let selectedIndex = -1;
+    let results = [];
+
+    const dialog = document.getElementById('global-search-dialog');
+    const backdrop = document.getElementById('global-search-backdrop');
+    const closeBtn = document.getElementById('global-search-close');
+    const input = document.getElementById('global-search-input');
+    const loadingEl = document.getElementById('global-search-loading');
+    const emptyEl = document.getElementById('global-search-empty');
+    const initialEl = document.getElementById('global-search-initial');
+    const resultsList = document.getElementById('global-search-results-list');
+
+    // Date formatting helper
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        try {
+            return new Date(dateString).toLocaleDateString(locale === 'pt_BR' ? 'pt-BR' : 'en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        } catch (e) {
+            return '';
+        }
+    }
+
+    // Toggle Modal
+    function toggleModal(show) {
+        isOpen = show;
+        if (show) {
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+            dialog.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => input.focus(), 50);
+            
+            if (searchIndex.length === 0 && !isLoadingIndex) {
+                loadIndex();
+            }
+        } else {
+            dialog.classList.add('hidden');
+            dialog.classList.remove('flex');
+            dialog.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            input.value = '';
+            results = [];
+            selectedIndex = -1;
+            renderResults();
+        }
+    }
+
+    // Load Fuse Index
+    async function loadIndex() {
+        if (isLoadingIndex) return;
+        setIsLoadingIndex(true);
+        updateUIState('loading');
+
+        try {
+            const { fetchSearchIndex } = await import('../../lib/search-service');
+            const Fuse = (await import('fuse.js')).default;
+            
+            searchIndex = await fetchSearchIndex(locale);
+            
+            fuse = new Fuse(searchIndex, {
+                keys: ['title'],
+                threshold: 0.3,
+                includeScore: true
+            });
+        } catch (error) {
+            console.error('Failed to load search index', error);
+        } finally {
+            setIsLoadingIndex(false);
+            // If user closed dialog while loading, don't show initial state
+            if (isOpen) {
+                 if (input.value.trim() === '') {
+                    updateUIState('initial');
+                 } else {
+                    performSearch(input.value);
+                 }
+            }
+        }
+    }
+
+    // Perform Search
+    function performSearch(query) {
+        if (!query || !fuse) {
+            results = [];
+            renderResults();
+            updateUIState(query ? 'empty' : 'initial');
+            return;
+        }
+
+        const fuseResults = fuse.search(query);
+        results = fuseResults.map(r => r.item).slice(0, 8);
+        selectedIndex = -1;
+        renderResults();
+        
+        if (results.length === 0) {
+            updateUIState('empty');
+        } else {
+            updateUIState('results');
+        }
+    }
+
+    // Render Results
+    function renderResults() {
+        resultsList.innerHTML = '';
+        
+        results.forEach((result, index) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            
+            a.href = `${basePrefix}/blog/${result.slug}`;
+            a.className = `block p-4 transition-colors group border-l-4 ${
+                index === selectedIndex 
+                ? 'bg-primary/10 border-primary' 
+                : 'hover:bg-bg-elevated border-transparent'
+            }`;
+            
+            const title = document.createElement('h4');
+            title.className = `font-bold text-lg transition-colors ${
+                index === selectedIndex ? 'text-primary' : 'text-text-main group-hover:text-primary'
+            }`;
+            title.textContent = result.title;
+            
+            const meta = document.createElement('span');
+            meta.className = 'text-xs text-text-muted mt-1 block';
+            meta.textContent = result.type === 'blog' && result.published_at 
+                ? formatDate(result.published_at) 
+                : '';
+                
+            a.appendChild(title);
+            a.appendChild(meta);
+            li.appendChild(a);
+            
+            // Click handler
+            a.addEventListener('click', () => toggleModal(false));
+            
+            resultsList.appendChild(li);
+        });
+    }
+
+    // Update UI State Helper
+    function updateUIState(state) {
+        loadingEl.classList.add('hidden');
+        emptyEl.classList.add('hidden');
+        initialEl.classList.add('hidden');
+        resultsList.classList.add('hidden');
+
+        switch(state) {
+            case 'loading':
+                loadingEl.classList.remove('hidden');
+                break;
+            case 'empty':
+                emptyEl.classList.remove('hidden');
+                break;
+            case 'initial':
+                initialEl.classList.remove('hidden');
+                break;
+            case 'results':
+                resultsList.classList.remove('hidden');
+                break;
+        }
+    }
+
+    // Event Listeners
+    
+    // Open/Close Shortcuts
+    window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            toggleModal(true);
+        }
+        if (e.key === 'Escape' && isOpen) {
+            toggleModal(false);
+        }
+    });
+
+    window.addEventListener('open-global-search', () => toggleModal(true));
+
+    // UI Interaction
+    backdrop?.addEventListener('click', () => toggleModal(false));
+    closeBtn?.addEventListener('click', () => toggleModal(false));
+
+    // Input Handling
+    input?.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+    });
+
+    input?.addEventListener('keydown', (e) => {
+        if (!isOpen || results.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedIndex = (selectedIndex + 1) % results.length;
+            renderResults();
+            // Scroll to selected?
+            // Element.scrollIntoView if needed
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedIndex = (selectedIndex - 1 + results.length) % results.length;
+            renderResults();
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (selectedIndex !== -1) {
+                const selectedResult = results[selectedIndex];
+                if (selectedResult) {
+                     window.location.href = `${basePrefix}/blog/${selectedResult.slug}`;
+                     toggleModal(false);
+                }
+            } else if (results.length > 0) {
+                 // Select first if none selected on Enter? Standard behavior arguably yes or no
+            }
+        }
+    });
+</script>
