@@ -5,7 +5,7 @@ import Footer from "../../components/footer.astro";
 import Section from "../../components/ui/section.astro";
 import Container from "../../components/ui/container.astro";
 import { tiptapToHtml } from "../../lib/blocks/tiptap-to-html";
-import { marked } from "marked";
+import { configureMarked } from "../../lib/markdown-renderer";
 
 import { rush, type BlogPost } from "../../lib/rush";
 import { homeContent } from "../../content/home";
@@ -53,11 +53,14 @@ const description = post.excerpt || `Leia sobre ${post.title} no blog.`;
 const image = post.featured_image?.url || "/banner.webp";
 const url = new URL(`/blog/${post.slug}`, Astro.site || "https://rafhael.pro").toString();
 
+// Initialize marked once if possible, or per render
+const markdownParser = configureMarked();
+
 let htmlContent = post.content || '';
 
 if (post.data?.markdown) {
     try {
-        htmlContent = marked.parse(post.data.markdown) as string;
+        htmlContent = markdownParser.parse(post.data.markdown) as string;
     } catch (e) {
         console.error("Error rendering Markdown content:", e);
     }
