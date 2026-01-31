@@ -21,7 +21,20 @@ export async function getStaticPaths() {
             per_page: 100,
             locale: 'en'
         });
-        const posts = (response as any).data as BlogPost[];
+        const listPosts = (response as any).data as BlogPost[];
+
+        // Workaround: Fetch full details for each post to ensure correct locale content
+        // The List API endpoint currently returns default locale for content body
+        const posts = await Promise.all(listPosts.map(async (p) => {
+            try {
+                // Ensure we call specific entry endpoint
+                const fullPost = await rush.entries.getBySlug('blog', p.slug, { locale: 'en' });
+                return fullPost as BlogPost;
+            } catch (err) {
+                console.error(`Error fetching detail for ${p.slug}, using list data:`, err);
+                return p;
+            }
+        }));
 
         return posts.map((post) => ({
             params: { slug: post.slug },
@@ -64,7 +77,7 @@ if (post.data?.markdown) {
 }
 ---
 
-<Layout title={title} description={description} image={image}>
+<Layout title={title} description={description} image={image} lang="en">
     <Header content={content.global.nav} locale="en" />
 
     <main class="pt-24">

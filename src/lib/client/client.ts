@@ -44,6 +44,7 @@ export class RushClient {
         }
 
         // console.log(`[RushClient] Fetching: ${url}`);
+        // console.error(`[RushClient] Headers:`, JSON.stringify(headers));
 
         const response = await fetch(url, { 
             headers,
