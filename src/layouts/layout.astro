@@ -40,5 +40,45 @@ const { title, description, image, lang = "pt-BR" } = Astro.props;
         class="bg-bg text-text-main antialiased selection:bg-primary selection:text-white overflow-x-hidden"
     >
         <slot />
+        
+        <script>
+            // Customização do botão de cópia do Expressive Code
+            document.addEventListener('click', (e) => {
+                const target = e.target as HTMLElement;
+                const btn = target.closest('.expressive-code .copy button');
+                if (!btn) return;
+                
+                // Adiciona a classe animada
+                btn.classList.add('copied-joinha');
+                
+                // Remove após 2 segundos
+                setTimeout(() => {
+                    btn.classList.remove('copied-joinha');
+                }, 2000);
+            });
+        </script>
+        
+        <style is:global>
+            /* Oculta o tooltip padrão "Copied!" do expressive code */
+            .expressive-code .copy .feedback {
+                display: none !important;
+            }
+            
+            /* Define o ícone de joinha em data URI (SVG thumbs-up) */
+            :root {
+                --ec-frm-joinhaIcon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'%3E%3C/path%3E%3C/svg%3E");
+            }
+            
+            /* Substitui o ícone de cópia quando a classe 'copied-joinha' está ativa */
+            .expressive-code .copy button.copied-joinha::after {
+                mask-image: var(--ec-frm-joinhaIcon) !important;
+                -webkit-mask-image: var(--ec-frm-joinhaIcon) !important;
+            }
+            
+            /* Opcional: Animação sutil ao trocar o ícone */
+            .expressive-code .copy button::after {
+                transition: -webkit-mask-image 0.2s ease, mask-image 0.2s ease;
+            }
+        </style>
     </body>
 </html>
