@@ -5,7 +5,7 @@ import Footer from "../../components/footer.astro";
 import Section from "../../components/ui/section.astro";
 import Container from "../../components/ui/container.astro";
 import { tiptapToHtml } from "../../lib/blocks/tiptap-to-html";
-import { configureMarked } from "../../lib/markdown-renderer";
+import { renderMarkdown } from "../../lib/markdown-renderer";
 
 import { rush, type BlogPost } from "../../lib/rush";
 import { homeContent } from "../../content/home";
@@ -53,31 +53,43 @@ const description = post.excerpt || `Leia sobre ${post.title} no blog.`;
 const image = post.featured_image?.url || "/banner.webp";
 const url = new URL(`/blog/${post.slug}`, Astro.site || "https://rafhael.pro").toString();
 
-// Initialize marked once if possible, or per render
-const markdownParser = configureMarked();
+let rawMarkdown = post.data?.markdown;
+let htmlContent = '';
 
-let htmlContent = post.content || '';
-
-if (post.data?.markdown) {
-    try {
-        htmlContent = markdownParser.parse(post.data.markdown) as string;
-    } catch (e) {
-        console.error("Error rendering Markdown content:", e);
-    }
-} else if (post.data?.content) {
-    try {
-        const doc = Array.isArray(post.data.content) 
-            ? { content: post.data.content } 
-            : post.data.content;
+if (rawMarkdown && typeof rawMarkdown === 'string') {
+    htmlContent = await renderMarkdown(rawMarkdown);
+} else if (post.data?.content || post.content) {
+    const doc = Array.isArray(post.data?.content) 
+        ? { content: post.data.content } 
+        : (post.data?.content || post.content);
         
-        const rendered = tiptapToHtml(doc as any);
-        if (rendered) {
+    const rendered = tiptapToHtml(doc as any);
+    if (rendered) {
+        // Tiptap outputs basic <pre><code>. Let's pass it through expressive code too!
+        import { unified } from 'unified';
+        import rehypeParse from 'rehype-parse';
+        import rehypeExpressiveCode from 'rehype-expressive-code';
+        import rehypeStringify from 'rehype-stringify';
+        
+        try {
+            const processed = await unified()
+                .use(rehypeParse, { fragment: true })
+                .use(rehypeExpressiveCode, {
+                    themes: ['github-dark'],
+                    useThemedScrollbars: false,
+                    styleOverrides: { borderRadius: '0.75rem', uiFontFamily: 'inherit' }
+                })
+                .use(rehypeStringify)
+                .process(rendered);
+                
+            htmlContent = String(processed);
+        } catch (e) {
+            console.error("Error processing tiptap with expressive-code:", e);
             htmlContent = rendered;
         }
-    } catch (e) {
-        console.error("Error rendering TipTap content:", e);
     }
 }
+
 ---
 
 <Layout title={title} description={description} image={image} lang="en">
