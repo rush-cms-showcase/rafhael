@@ -1,0 +1,51 @@
+---
+import Container from "./ui/container.astro";
+import Section from "./ui/section.astro";
+import type { HomeContent } from "../content/home";
+
+interface Props {
+    content: HomeContent["beyond"];
+}
+
+const { content } = Astro.props;
+---
+
+<Section>
+    <Container>
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold">
+                    {content.title}
+                </h2>
+            </div>
+
+            <div class="space-y-6">
+                {content.paragraphs.map((paragraph, i) => (
+                    <div class="flex gap-6 items-start group">
+                        <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary text-sm font-bold mt-0.5 group-hover:bg-primary/20 transition-colors duration-300">
+                            {i + 1}
+                        </div>
+                        <p class="text-text-muted text-lg leading-relaxed pt-0.5">
+                            {paragraph}
+                        </p>
+                    </div>
+                ))}
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-border flex flex-wrap gap-6 items-center">
+                <div class="flex items-center gap-2 text-text-muted text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    São Paulo, Brazil (UTC-3)
+                </div>
+                <div class="flex items-center gap-2 text-text-muted text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    Professional English — written & spoken
+                </div>
+                <div class="flex items-center gap-2 text-text-muted text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    Full remote — 10+ years experience
+                </div>
+            </div>
+        </div>
+    </Container>
+</Section>

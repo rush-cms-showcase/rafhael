@@ -1,0 +1,44 @@
+---
+import Container from "./ui/container.astro";
+import Section from "./ui/section.astro";
+import type { HomeContent } from "../content/home";
+
+interface Props {
+    content: HomeContent["stack"];
+}
+
+const { content } = Astro.props;
+---
+
+<Section>
+    <Container>
+        <div class="text-center mb-14">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold">
+                {content.title}
+            </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            {content.groups.map((group) => (
+                <div class={`rounded-2xl p-7 border transition-all duration-300 ${group.highlight ? 'bg-linear-to-br from-amber-500/10 to-orange-500/5 border-amber-500/30' : 'bg-bg-card border-border hover:border-primary/30'}`}>
+                    <h3 class={`text-xs font-semibold uppercase tracking-widest mb-5 ${group.highlight ? 'text-amber-400' : 'text-text-muted'}`}>
+                        {group.label}
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        {group.tags.map((tag) => (
+                            <span class={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 ${group.highlight ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-bg-elevated border border-border text-text-main hover:border-primary/40 hover:text-primary'}`}>
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                    {group.highlight && (
+                        <p class="text-amber-400/70 text-xs mt-4 flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            Active learning — side projects & open source
+                        </p>
+                    )}
+                </div>
+            ))}
+        </div>
+    </Container>
+</Section>
