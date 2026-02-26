@@ -44,6 +44,13 @@ export default defineConfig({
 	},
 
 	integrations: [
-		sitemap()
+		sitemap({
+			filter: (page) =>
+				!page.includes('/404') &&
+				!/\/blog\/\d+\/$/.test(page) &&
+				!/\/br\/blog\/\d+\/$/.test(page) &&
+				!/\/categoria\/[^/]+\/\d+\/$/.test(page) &&
+				!/\/category\/[^/]+\/\d+\/$/.test(page)
+		})
 	]
 })
