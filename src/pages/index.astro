@@ -2,21 +2,21 @@
 import Layout from "../layouts/layout.astro";
 import Header from "../components/header.astro";
 import Hero from "../components/hero.astro";
-import Problem from "../components/problem.astro";
-import Pricing from "../components/pricing.astro";
-import Process from "../components/process.astro";
+import Philosophy from "../components/philosophy.astro";
+import Stack from "../components/stack.astro";
+import Projects from "../components/projects.astro";
+import Beyond from "../components/beyond.astro";
 import Testimonial from "../components/testimonial.astro";
 import Footer from "../components/footer.astro";
 import Section from "../components/ui/section.astro";
 import Button from "../components/ui/button.astro";
 import { homeContent } from "../content/home";
 
-// Use English content
 const content = homeContent.en;
 
-// Page-specific metadata
 const title = content.metadata.title;
 const description = content.metadata.description;
+const scheduleUrl = import.meta.env.PUBLIC_SCHEDULE_URL ?? "https://cal.com/rafhael";
 ---
 
 <Layout title={title} description={description}>
@@ -24,9 +24,10 @@ const description = content.metadata.description;
 
     <main>
         <Hero content={content.hero} />
-        <Problem content={content.problem} />
-        <Pricing content={content.pricing} />
-        <Process content={content.process} />
+        <Philosophy content={content.philosophy} />
+        <Stack content={content.stack} />
+        <Projects content={content.projects} />
+        <Beyond content={content.beyond} />
         <Testimonial content={content.testimonial} />
 
         <Section class="text-center">
@@ -34,7 +35,7 @@ const description = content.metadata.description;
                 {content.ctaSection.title}
             </h2>
             <Button
-                href="https://wa.me/5512983173077"
+                href={scheduleUrl}
                 variant="primary"
                 size="lg"
                 className="shadow-lg shadow-primary/25"
@@ -50,7 +51,7 @@ const description = content.metadata.description;
             try {
                 const savedLang = localStorage.getItem('rush_lang_pref');
                 const userLang = navigator.language || navigator.userLanguage;
-                
+
                 if (savedLang === 'pt') {
                     window.location.href = '/br';
                 } else if (!savedLang && userLang && userLang.startsWith('pt')) {
