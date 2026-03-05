@@ -25,7 +25,7 @@ const globalContent = homeContent[locale];
 const title = content.metadata.title;
 const description = content.metadata.description;
 const ogImage = locale === "pt_BR" ? "/images/lps/fast-website-banner-br.webp" : "/images/lps/fast-website-banner.webp";
-const siteUrl = Astro.site?.origin || import.meta.env.SITE || "https://rushcms.com.br";
+const siteUrl = Astro.site?.origin || import.meta.env.SITE || "https://rushcms.com";
 
 // Determine currency info from locale
 const currency = locale === "pt_BR" ? "BRL" : "USD";

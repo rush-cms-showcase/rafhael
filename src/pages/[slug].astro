@@ -18,7 +18,9 @@ export async function getStaticPaths() {
 		const response = await rush.getEntries(2 as any, { locale: 'en' }) as { data: any[] }
 		const pages = response.data
 
-		return pages.map((page: any) => ({
+		return pages
+            .filter((page: any) => page.slug !== 'about-me')
+            .map((page: any) => ({
 			params: { slug: page.slug },
 			props: { page }
 		}))
