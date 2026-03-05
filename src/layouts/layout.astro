@@ -1,5 +1,5 @@
 ---
-import SeoHead from "../components/seo-head.astro";
+import SeoHead from "../components/layout/seo-head.astro";
 import "../styles/app.css";
 
 interface Props {
@@ -7,15 +7,16 @@ interface Props {
     description?: string;
     image?: string;
     lang?: string;
+    schema?: any;
 }
 
-const { title, description, image, lang = "pt-BR" } = Astro.props;
+const { title, description, image, lang = "pt-BR", schema } = Astro.props;
 ---
 
 <!doctype html>
 <html lang={lang} class="scroll-smooth">
     <head>
-        <SeoHead title={title} description={description} image={image} />
+        <SeoHead title={title} description={description} image={image} schema={schema} />
         {
             import.meta.env.GTAG && (
                 <>
