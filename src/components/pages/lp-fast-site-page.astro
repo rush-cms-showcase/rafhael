@@ -1,0 +1,91 @@
+---
+import Layout from "../../layouts/layout.astro";
+import HeaderLP from "../layout/header.astro";
+import HeroLP from "../sections/lp/hero.astro";
+import ProblemLP from "../sections/lp/problem.astro";
+import SolutionLP from "../sections/lp/solution.astro";
+import ProcessLP from "../sections/lp/process.astro";
+import PricingLP from "../sections/lp/pricing.astro";
+import FaqLP from "../sections/common/faq.astro";
+import Footer from "../layout/footer.astro";
+import WhatsappFloat from "../ui/whatsapp-float.astro";
+
+import { lpFastSiteContent } from "../../content/lp-fast-site";
+import { homeContent } from "../../content/home";
+
+interface Props {
+    locale: "en" | "pt_BR";
+}
+
+const { locale } = Astro.props;
+
+const content = lpFastSiteContent[locale];
+const globalContent = homeContent[locale];
+
+const title = content.metadata.title;
+const description = content.metadata.description;
+const ogImage = locale === "pt_BR" ? "/images/lps/fast-website-banner-br.webp" : "/images/lps/fast-website-banner.webp";
+const siteUrl = Astro.site?.origin || import.meta.env.SITE || "https://rushcms.com.br";
+
+// Determine currency info from locale
+const currency = locale === "pt_BR" ? "BRL" : "USD";
+const priceRaw = locale === "pt_BR" ? "597" : "120";
+
+// Generate SEO Schema (Service, WebPage, and FAQPage combined)
+const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebPage",
+            "@id": `${siteUrl}/${locale === "pt_BR" ? "br/site-rapido" : "fast-website"}`,
+            "url": `${siteUrl}/${locale === "pt_BR" ? "br/site-rapido" : "fast-website"}`,
+            "name": title,
+            "description": description,
+            "image": `${siteUrl}${ogImage}`
+        },
+        {
+            "@type": "Service",
+            "serviceType": "High Performance Website Development",
+            "provider": {
+                "@type": "Person",
+                "name": "Rafhael Marsigli"
+            },
+            "description": description,
+            "offers": {
+                "@type": "Offer",
+                "priceCurrency": currency,
+                "price": priceRaw,
+                "url": `${siteUrl}/${locale === "pt_BR" ? "br/site-rapido" : "fast-website"}#pricing`
+            }
+        },
+        {
+            "@type": "FAQPage",
+            "mainEntity": content.faq.items.map((item: any) => ({
+                "@type": "Question",
+                "name": item.question,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": item.answer
+                }
+            }))
+        }
+    ]
+};
+---
+
+<Layout title={title} description={description} lang={locale.replace('_', '-')} image={ogImage} schema={schema}>
+    <HeaderLP locale={locale} variant="minimal" position="absolute" />
+
+    <main>
+        <HeroLP content={content.hero} />
+        <ProblemLP content={content.problem} />
+        <SolutionLP content={content.solution} />
+        <ProcessLP content={content.process} />
+        <PricingLP content={content.pricing} />
+        <FaqLP content={content.faq} />
+    </main>
+
+    <Footer content={globalContent.global.footer} />
+    
+    <WhatsappFloat message={content.pricing.whatsappMessage || ""} />
+</Layout>
