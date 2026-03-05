@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
+import Icons from 'unplugin-icons/vite'
 
 import sitemap from '@astrojs/sitemap'
 import vercel from '@astrojs/vercel'
@@ -20,7 +21,13 @@ export default defineConfig({
     }),
 
 	vite: {
-		plugins: [tailwindcss()],
+		plugins: [
+			tailwindcss(),
+			Icons({
+				compiler: 'astro',
+				autoInstall: true,
+			})
+		],
 		resolve: {
 			conditions: ['development', 'browser']
 		},
@@ -50,7 +57,22 @@ export default defineConfig({
 				!/\/blog\/\d+\/$/.test(page) &&
 				!/\/br\/blog\/\d+\/$/.test(page) &&
 				!/\/categoria\/[^/]+\/\d+\/$/.test(page) &&
-				!/\/category\/[^/]+\/\d+\/$/.test(page)
+				!/\/category\/[^/]+\/\d+\/$/.test(page),
+			serialize(item) {
+				if (item.url.includes('/fast-website')) {
+					item.links = [
+						{ lang: 'en', url: item.url },
+						{ lang: 'pt-BR', url: item.url.replace('/fast-website', '/br/site-rapido') }
+					];
+				}
+				if (item.url.includes('/br/site-rapido')) {
+					item.links = [
+						{ lang: 'pt-BR', url: item.url },
+						{ lang: 'en', url: item.url.replace('/br/site-rapido', '/fast-website') }
+					];
+				}
+				return item;
+			}
 		})
 	]
 })
