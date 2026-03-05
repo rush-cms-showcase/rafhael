@@ -1,0 +1,50 @@
+---
+import Container from "../../ui/container.astro";
+import Section from "../../ui/section.astro";
+import type { LPFastSiteContent } from "../../../content/lp-fast-site";
+import IconTimer from "~icons/lucide/timer";
+import IconInvisible from "~icons/lucide/eye-off";
+import IconDesign from "~icons/lucide/pen-tool";
+
+interface Props {
+    content: LPFastSiteContent["problem"];
+}
+
+const { content } = Astro.props;
+---
+
+<Section class="bg-bg-elevated/30">
+    <Container>
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 
+                class="font-serif text-3xl md:text-5xl font-bold mb-6"
+                set:html={content.title}
+            />
+            <p 
+                class="text-text-muted text-lg md:text-xl"
+                set:html={content.subtitle}
+            />
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            {content.items.map((item, index) => (
+                <div 
+                    class="bg-bg-card border border-border p-8 rounded-2xl transition-colors animate-fade-in-up"
+                    style={`animation-delay: ${index * 150}ms`}
+                >
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                        {item.icon === "timer" && <IconTimer class="w-6 h-6 text-primary" />}
+                        {item.icon === "invisible" && <IconInvisible class="w-6 h-6 text-primary" />}
+                        {item.icon === "design" && <IconDesign class="w-6 h-6 text-primary" />}
+                    </div>
+                    <h3 class="text-xl font-bold text-text-main mb-3">
+                        {item.title}
+                    </h3>
+                    <p class="text-text-muted leading-relaxed">
+                        {item.description}
+                    </p>
+                </div>
+            ))}
+        </div>
+    </Container>
+</Section>

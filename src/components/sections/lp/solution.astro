@@ -1,0 +1,61 @@
+---
+import Container from "../../ui/container.astro";
+import Section from "../../ui/section.astro";
+import type { LPFastSiteContent } from "../../../content/lp-fast-site";
+import IconLightning from "~icons/lucide/zap";
+import IconChart from "~icons/lucide/trending-up";
+import IconTarget from "~icons/lucide/target";
+import IconMobile from "~icons/lucide/smartphone";
+
+interface Props {
+    content: LPFastSiteContent["solution"];
+}
+
+const { content } = Astro.props;
+---
+
+<Section>
+    <Container>
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+            <div class="lg:w-1/3">
+                <span class="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6 border border-primary/20">
+                    {content.label}
+                </span>
+                
+                <h2 class="font-serif text-3xl md:text-5xl font-bold mb-6 text-text-main">
+                    {content.title}
+                </h2>
+                
+                <p class="text-text-muted text-lg leading-relaxed mb-8">
+                    {content.intro}
+                </p>
+            </div>
+            
+            <div class="lg:w-2/3 grid sm:grid-cols-2 gap-6 w-full">
+                {content.items.map((item, index) => (
+                    <div 
+                        class="bg-bg border border-border/50 p-6 rounded-2xl animate-fade-in-up"
+                        style={`animation-delay: ${index * 100}ms`}
+                    >
+                        <div class="flex gap-4 items-start">
+                            <div class="mt-1">
+                                {item.icon === "lightning" && <IconLightning class="w-6 h-6 text-primary" />}
+                                {item.icon === "chart" && <IconChart class="w-6 h-6 text-primary" />}
+                                {item.icon === "target" && <IconTarget class="w-6 h-6 text-primary" />}
+                                {item.icon === "mobile" && <IconMobile class="w-6 h-6 text-primary" />}
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-text-main mb-2">
+                                    {item.title}
+                                </h3>
+                                <p class="text-text-muted text-sm leading-relaxed">
+                                    {item.description}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </Container>
+</Section>

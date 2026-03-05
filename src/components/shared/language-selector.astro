@@ -2,9 +2,16 @@
 interface Props {
   currentLocale: string;
   isMobile?: boolean;
+  ptHref?: string;
+  enHref?: string;
 }
 
-const { currentLocale, isMobile = false } = Astro.props;
+const { 
+  currentLocale, 
+  isMobile = false,
+  ptHref = "/br",
+  enHref = "/"
+} = Astro.props;
 
 // Icons could be SVG directly or from a library
 // Using simple text for clarity based on user request "Dropdown of idioms"
@@ -14,7 +21,7 @@ const { currentLocale, isMobile = false } = Astro.props;
 {isMobile ? (
   <div class="flex items-center gap-4 justify-center">
       <a
-        href="/"
+        href={enHref}
         data-lang="en"
         class={`language-link px-4 py-2 rounded-lg transition-colors border ${
           currentLocale === 'en' 
@@ -25,7 +32,7 @@ const { currentLocale, isMobile = false } = Astro.props;
         <span class="font-bold text-sm">EN</span>
       </a>
       <a
-        href="/br"
+        href={ptHref}
         data-lang="pt"
         class={`language-link px-4 py-2 rounded-lg transition-colors border ${
           currentLocale === 'pt_BR' 
@@ -57,7 +64,7 @@ const { currentLocale, isMobile = false } = Astro.props;
     class="absolute right-0 top-full mt-2 w-24 py-2 bg-bg-elevated border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right"
   >
     <a
-      href="/"
+      href={enHref}
       data-lang="en"
       class={`language-link flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
         currentLocale === 'en' ? 'text-primary' : 'text-text-muted'
@@ -66,7 +73,7 @@ const { currentLocale, isMobile = false } = Astro.props;
       <span class="font-medium">EN</span>
     </a>
     <a
-      href="/br"
+      href={ptHref}
       data-lang="pt"
       class={`language-link flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/5 transition-colors ${
         currentLocale === 'pt_BR' ? 'text-primary' : 'text-text-muted'

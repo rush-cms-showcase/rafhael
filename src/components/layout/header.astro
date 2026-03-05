@@ -1,24 +1,26 @@
 ---
-import Container from "./ui/container.astro";
-import Button from "./ui/button.astro";
-import type { HomeContent } from "../content/home";
-import LanguageSelector from "./language-selector.astro";
-import GlobalSearchDialog from "./ui/global-search-dialog.astro";
+import Container from "../ui/container.astro";
+import Button from "../ui/button.astro";
+import type { HomeContent } from "../../content/home";
+import LanguageSelector from "../shared/language-selector.astro";
+import GlobalSearchDialog from "../ui/global-search-dialog.astro";
 
 interface Props {
-    content: HomeContent["global"]["nav"];
+    content?: HomeContent["global"]["nav"];
     locale?: "en" | "pt_BR";
+    variant?: "default" | "minimal";
+    position?: "fixed" | "absolute";
 }
 
-const { content, locale = "pt_BR" } = Astro.props;
+const { content, locale = "pt_BR", variant = "default", position = "fixed" } = Astro.props;
 const homeUrl = locale === "pt_BR" ? "/br" : "/";
 
 // Map the nav items from the content prop
-const navItems = [
+const navItems = content ? [
     { label: content.about, href: locale === 'pt_BR' ? "/br/sobre-mim" : "/about-me" },
     { label: content.cases, href: `${homeUrl === "/" ? "" : homeUrl}/cases` },
     { label: content.blog, href: `${homeUrl === "/" ? "" : homeUrl}/blog` },
-];
+] : [];
 
 const searchLabels = {
     placeholder: locale === 'pt_BR' ? "Buscar artigos..." : "Search articles...",
@@ -30,7 +32,7 @@ const searchLabels = {
 ---
 
 <header
-    class="fixed top-0 left-0 right-0 z-50 py-5 bg-bg/95 backdrop-blur-md border-b border-border/50 transition-all duration-300"
+    class={`${position} top-0 left-0 right-0 z-50 py-5 bg-bg/95 backdrop-blur-md border-b border-border/50 transition-all duration-300`}
 >
     <Container className="flex justify-between items-center">
         <a href={homeUrl} class="flex items-center gap-2 group">
@@ -51,23 +53,25 @@ const searchLabels = {
             </div>
         </a>
 
-        <nav class="hidden md:flex gap-10 items-center ml-auto mr-8">
-            {
-                navItems.map((item) => (
-                    <a
-                        href={item.href}
-                        class="text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors"
-                    >
-                        {item.label}
-                    </a>
-                ))
-            }
-        </nav>
+        {variant !== "minimal" && (
+            <nav class="hidden md:flex gap-10 items-center ml-auto mr-8">
+                {
+                    navItems.map((item) => (
+                        <a
+                            href={item.href}
+                            class="text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors"
+                        >
+                            {item.label}
+                        </a>
+                    ))
+                }
+            </nav>
+        )}
 
-        <div class="flex items-center gap-4">
-            {/* Search Trigger */}
-            <button
-                id="search-trigger"
+        <div class={`flex items-center gap-4 ${variant === "minimal" ? "ml-auto" : ""}`}>
+            {variant !== "minimal" && (
+                <button
+                    id="search-trigger"
                 class="flex items-center justify-center w-10 h-10 text-text-muted hover:text-primary transition-colors hover:bg-bg-elevated rounded-lg group relative"
                 aria-label="Search"
             >
@@ -78,13 +82,23 @@ const searchLabels = {
                 <span class="absolute -top-1.5 -right-1.5 flex h-4 w-6 items-center justify-center rounded bg-bg-elevated/90 border border-border/50 text-[9px] font-bold text-text-muted shadow-sm backdrop-blur-sm group-hover:border-primary/50 group-hover:text-primary transition-colors pointer-events-none">
                     ⌘ K
                 </span>
-            </button>
-            <GlobalSearchDialog locale={locale} labels={searchLabels} />
+                </button>
+            )}
+            
+            {variant !== "minimal" && (
+                <GlobalSearchDialog locale={locale} labels={searchLabels} />
+            )}
 
-            <div class="hidden lg:block px-2">
-                <LanguageSelector currentLocale={locale} />
+            <div class={variant === "minimal" ? "px-2" : "hidden lg:block px-2"}>
+                <LanguageSelector 
+                    currentLocale={locale} 
+                    enHref={variant === "minimal" ? "/fast-website" : "/"} 
+                    ptHref={variant === "minimal" ? "/br/site-rapido" : "/br"} 
+                />
             </div>
-            <Button
+            
+            {variant !== "minimal" && content && (
+                <Button
                 href={locale === "pt_BR" ? "/br/contato" : "/contact"}
                 variant="primary"
                 size="md"
@@ -92,12 +106,14 @@ const searchLabels = {
             >
                 <span>{content.contact}</span>
             </Button>
+            )}
 
-            <button
-                id="menu-toggle"
-                class="md:hidden flex items-center justify-center w-12 h-12 border border-white/20 rounded-lg text-text-main hover:text-primary transition-colors relative z-50 bg-bg/50 backdrop-blur-sm"
-                aria-label="Menu"
-            >
+            {variant !== "minimal" && (
+                <button
+                    id="menu-toggle"
+                    class="md:hidden flex items-center justify-center w-12 h-12 border border-white/20 rounded-lg text-text-main hover:text-primary transition-colors relative z-50 bg-bg/50 backdrop-blur-sm"
+                    aria-label="Menu"
+                >
                 <svg
                     id="icon-menu"
                     class="w-6 h-6 transition-transform duration-300"
@@ -125,15 +141,17 @@ const searchLabels = {
                         d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
+            )}
         </div>
     </Container>
 </header>
 
-<div
-    id="mobile-menu"
-    class="md:hidden fixed inset-0 z-40 bg-bg/98 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center text-center overflow-hidden"
->
-    <nav class="flex flex-col gap-6 w-full max-w-sm px-6 relative z-10 pt-24">
+{variant !== "minimal" && (
+    <div
+        id="mobile-menu"
+        class="md:hidden fixed inset-0 z-40 bg-bg/98 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center text-center overflow-hidden"
+    >
+        <nav class="flex flex-col gap-6 w-full max-w-sm px-6 relative z-10 pt-24">
         {
             navItems.map((item) => (
                 <a
@@ -151,19 +169,20 @@ const searchLabels = {
             <LanguageSelector currentLocale={locale} isMobile={true} />
         </div>
 
-        <Button
-            href={locale === "pt_BR" ? "/br/contato" : "/contact"}
-            variant="primary"
-            size="lg"
-            className="w-full justify-center shadow-xl shadow-primary/20"
-        >
-            <span>{content.contact}</span>
-        </Button>
-    </nav>
-    
-    {/* Decorative background blob */}
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
-</div>
+            <Button
+                href={locale === "pt_BR" ? "/br/contato" : "/contact"}
+                variant="primary"
+                size="lg"
+                className="w-full justify-center shadow-xl shadow-primary/20"
+            >
+                <span>{content?.contact}</span>
+            </Button>
+        </nav>
+        
+        {/* Decorative background blob */}
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+    </div>
+)}
 
 <script is:inline>
     // Search Trigger Logic

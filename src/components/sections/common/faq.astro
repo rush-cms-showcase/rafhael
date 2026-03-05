@@ -1,0 +1,92 @@
+---
+import Container from "../../ui/container.astro";
+import Section from "../../ui/section.astro";
+import type { LPFastSiteContent } from "../../../content/lp-fast-site";
+import IconChevronDown from "~icons/lucide/chevron-down";
+
+interface Props {
+    content: LPFastSiteContent["faq"];
+}
+
+const { content } = Astro.props;
+---
+
+<Section class="bg-bg border-t border-border/50 py-24">
+    <Container>
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="font-serif text-3xl md:text-5xl font-bold mb-6">
+                {content.title}
+            </h2>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-6">
+            {content.items.map((item, index) => (
+                <details class="group bg-bg-card border border-border rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-bg-elevated/50 transition-colors">
+                        <h3 class="text-lg font-bold text-text-main pr-8">
+                            {item.question}
+                        </h3>
+                        <span class="relative w-6 h-6 shrink-0 text-text-muted transition-transform duration-300 group-open:rotate-180 flex items-center justify-center">
+                            <IconChevronDown class="w-5 h-5" />
+                        </span>
+                    </summary>
+                    <div class="faq-content overflow-hidden transition-[height] duration-300 ease-in-out" style="height: 0;">
+                        <div class="px-6 pb-6 text-text-muted leading-relaxed">
+                            <p>{item.answer}</p>
+                        </div>
+                    </div>
+                </details>
+            ))}
+        </div>
+    </Container>
+</Section>
+
+<script is:inline>
+    // Smooth accordion logic
+    const accordions = document.querySelectorAll('details.group');
+    accordions.forEach(acc => {
+        const summary = acc.querySelector('summary');
+        const content = acc.querySelector('.faq-content');
+        if (!summary || !content) return;
+        
+        // Initial setup for default open items
+        if (acc.hasAttribute('open')) {
+            content.style.height = content.scrollHeight + 'px';
+        }
+        
+        summary.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = acc.hasAttribute('open');
+            
+            if (isOpen) {
+                // Animate closing
+                content.style.height = content.scrollHeight + 'px';
+                // Trigger reflow
+                content.offsetHeight;
+                content.style.height = '0px';
+                setTimeout(() => acc.removeAttribute('open'), 300);
+            } else {
+                // Open and animate
+                acc.setAttribute('open', '');
+                const height = content.scrollHeight;
+                content.style.height = '0px';
+                // Trigger reflow
+                content.offsetHeight;
+                content.style.height = height + 'px';
+                
+                // Close others
+                accordions.forEach(other => {
+                    if (other !== acc && other.hasAttribute('open')) {
+                        const otherContent = other.querySelector('.faq-content');
+                        if (otherContent) {
+                            otherContent.style.height = otherContent.scrollHeight + 'px';
+                            otherContent.offsetHeight;
+                            otherContent.style.height = '0px';
+                            setTimeout(() => other.removeAttribute('open'), 300);
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

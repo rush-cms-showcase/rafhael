@@ -5,6 +5,7 @@ interface Props {
     image?: string;
     canonical?: string;
     noindex?: boolean;
+    schema?: any;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
     image = "/banner.webp",
     canonical,
     noindex = false,
+    schema,
 } = Astro.props;
 
 const siteUrl = Astro.site?.origin || import.meta.env.SITE || "https://rushcms.com.br";
@@ -56,27 +58,19 @@ const resolvedImage = new URL(image, siteUrl).toString();
 
 <script is:inline
     type="application/ld+json"
-    set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        name: "Rafhael Marsigli",
-        image: resolvedImage,
-        description: description,
-        url: siteUrl,
-        priceRange: "$$$",
-        address: {
-            "@type": "PostalAddress",
-            addressCountry: "BR"
-        },
-        founder: {
-            "@type": "Person",
-            name: "Rafhael Marsigli"
-        },
-        offers: {
-            "@type": "Offer",
-            price: "1200",
-            priceCurrency: "BRL",
-            description: "High Performance Website Development"
+    set:html={JSON.stringify(
+        schema || {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            name: "Rafhael Marsigli",
+            image: resolvedImage,
+            description: description,
+            url: siteUrl,
+            priceRange: "$$$",
+            founder: {
+                "@type": "Person",
+                name: "Rafhael Marsigli"
+            },
         }
-    })}
+    )}
 />

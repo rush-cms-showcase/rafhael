@@ -1,0 +1,48 @@
+---
+import Container from "../../ui/container.astro";
+import Section from "../../ui/section.astro";
+import type { LPFastSiteContent } from "../../../content/lp-fast-site";
+
+interface Props {
+    content: LPFastSiteContent["process"];
+}
+
+const { content } = Astro.props;
+---
+
+<Section class="py-24">
+    <Container>
+        <div class="text-center max-w-3xl mx-auto mb-20">
+            <h2 
+                class="font-serif text-3xl md:text-5xl font-bold mb-6"
+                set:html={content.title}
+            />
+        </div>
+
+        <div class="relative max-w-4xl mx-auto">
+            {/* Desktop Timeline Line */}
+            <div class="hidden md:block absolute top-[45px] left-[10%] right-[10%] h-0.5 bg-linear-to-r from-transparent via-primary/30 to-transparent">
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 relative z-10">
+                {content.steps.map((step, index) => (
+                    <div class="relative text-center">
+                        <div 
+                            class="w-24 h-24 mx-auto bg-bg-card border-2 border-border rounded-full flex items-center justify-center text-3xl font-serif font-bold text-text-muted mb-8 shadow-sm"
+                        >
+                            {step.number}
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-text-main mb-4">
+                            {step.title}
+                        </h3>
+                        
+                        <p class="text-text-muted leading-relaxed">
+                            {step.description}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </Container>
+</Section>

@@ -1,0 +1,90 @@
+---
+import Particles from "../../ui/particles.astro";
+import Container from "../../ui/container.astro";
+import Button from "../../ui/button.astro";
+import IconArrowRight from "~icons/lucide/arrow-right";
+import type { LPFastSiteContent } from "../../../content/lp-fast-site";
+
+interface Props {
+    content: LPFastSiteContent["hero"];
+}
+
+const { content } = Astro.props;
+
+// Use the existing WhatsApp number from env variables
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "5511999999999"; 
+const whatsappMessage = "Olá! Gostaria de ter um site rápido e de alta conversão.";
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+// Placeholder for the photo (you can replace this later with the transparent cutout)
+const photoUrl = "/rafhael-marsigli-hero.webp"; 
+---
+
+<section
+    class="relative min-h-[90vh] flex items-center pt-32 pb-0 overflow-hidden"
+>
+    <Particles />
+
+    <div class="absolute inset-0 pointer-events-none">
+        <div
+            class="absolute top-0 right-0 w-[60%] h-full bg-[radial-gradient(ellipse_at_70%_30%,var(--color-primary)_0%,transparent_60%)] opacity-10"
+        >
+        </div>
+    </div>
+
+    <Container className="p-0">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Content */}
+            <div class="relative z-10 max-lg:text-center flex flex-col items-start align-center gap-4 lg:mb-32">
+                <h1
+                    class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-fade-in delay-100"
+                    set:html={content.title}
+                />
+
+                <p
+                    class="text-text-muted text-base md:text-lg lg:text-xl max-w-lg leading-relaxed animate-fade-in delay-200"
+                    set:html={content.subtitle}
+                />
+
+                <div
+                    class="flex max-lg:justify-center flex-wrap gap-4 animate-fade-in-up delay-300"
+                >
+                    <Button
+                        href={whatsappUrl}
+                        variant="primary"
+                        size="lg"
+                        className="shadow-[0_10px_40px_rgba(63,145,240,0.3)] w-full sm:w-auto text-base md:text-lg py-4 md:py-6"
+                        target="_blank"
+                    >
+                        {content.ctaPrimary}
+                        <IconArrowRight class="w-5 h-5 ml-1" />
+                    </Button>
+                </div>
+            </div>
+
+            {/* Right: Image */}
+            <div class="relative z-10 animate-fade-in delay-500 lg:flex justify-end hidden h-full">
+                <div class="relative h-full w-full max-w-xl mx-auto lg:mx-0 flex justify-center items-end">
+                    <div class="absolute inset-0 bg-primary/20 blur-[100px] rounded-full pointer-events-none z-0"></div>
+                    <img 
+                        src={photoUrl} 
+                        alt="Rafhael Marsigli" 
+                        class="relative z-10 object-contain object-bottom-left w-full h-full scale-110 origin-bottom drop-shadow-2xl"
+                    />
+                </div>
+            </div>
+            
+            {/* Mobile Image */}
+            <div class="relative z-10 animate-fade-in delay-500 lg:hidden flex justify-center mt-8">
+                <div class="relative w-full max-w-[280px] sm:max-w-xs mx-auto flex justify-center">
+                    <div class="absolute inset-0 bg-primary/20 blur-[50px] rounded-full pointer-events-none z-0"></div>
+                    <img 
+                        src={photoUrl} 
+                        alt="Rafhael Marsigli" 
+                        class="relative z-10 object-contain object-bottom w-full h-[350px] drop-shadow-xl"
+                    />
+                </div>
+            </div>
+        </div>
+    </Container>
+</section>
