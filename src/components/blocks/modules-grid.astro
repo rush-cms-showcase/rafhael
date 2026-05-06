@@ -1,0 +1,85 @@
+---
+import Container from '@/components/ui/container.astro'
+import { Icons, type IconName } from '@/lib/icons'
+
+export interface ModuleItemData {
+	tag: string
+	title: string
+	desc: string
+	bullets: string[]
+	icon: IconName | string
+	accent?: boolean
+}
+
+export interface ModulesGridContent {
+	title: string
+	italicWord?: string
+	lede: string
+	items: ModuleItemData[]
+}
+
+interface Props {
+	content: ModulesGridContent
+}
+
+const { content } = Astro.props
+---
+
+<div class='w-full'>
+	<Container>
+		{(content.title || content.lede) && (
+			<div class='mb-4 lg:mb-8 flex flex-col items-start justify-start gap-2'>
+				{content.title && (
+					<h2 class='font-serif text-2xl lg:text-4xl font-bold leading-tight'>
+						{content.title} {content.italicWord && <span class='text-primary italic'>{content.italicWord}</span>}
+					</h2>
+				)}
+				{content.lede && <p class='text-xl text-text-muted leading-relaxed max-w-3xl'>{content.lede}</p>}
+			</div>
+		)}
+
+		<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+			{content.items.map((m) => {
+				const Icon = Icons[m.icon as IconName] || Icons.help
+
+				return (
+					<article class:list={[
+						'flex min-h-[240px] flex-col gap-6 rounded-2xl border p-8 transition-all duration-300',
+						m.accent
+							? 'border-primary/30 bg-linear-to-b from-primary/10 to-bg-elevated shadow-lg shadow-primary/5'
+							: 'border-border bg-bg-card hover:border-primary/40',
+					]}>
+						<div class='flex items-center justify-between'>
+							<h3 class='font-serif text-2xl font-bold text-text-main'>
+								{m.title}
+							</h3>
+							<div class:list={[
+								'grid size-12 place-items-center rounded-xl border transition-colors',
+								m.accent
+									? 'border-primary bg-primary text-white shadow-lg shadow-primary/20'
+									: 'border-border bg-bg-elevated text-primary',
+							]}>
+								<Icon class='size-6' stroke-width={1.6} />
+							</div>
+						</div>
+
+						<p class='text-sm leading-relaxed text-text-muted'>
+							{m.desc}
+						</p>
+
+						{m.bullets && m.bullets.length > 0 && (
+							<ul class='mt-auto flex list-none flex-col gap-2 p-0 text-sm text-text-muted'>
+								{m.bullets.map((b) => (
+									<li class='flex items-center gap-2'>
+										<span class='size-1.5 rounded-full bg-primary'></span>
+										{b}
+									</li>
+								))}
+							</ul>
+						)}
+					</article>
+				)
+			})}
+		</div>
+	</Container>
+</div>
