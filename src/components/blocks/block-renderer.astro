@@ -1,9 +1,9 @@
 ---
-import type { Block, RichTextBlock as RichTextBlockType, CodeBlock as CodeBlockType, ImageBlock as ImageBlockType, DividerBlock as DividerBlockType } from '../../lib/blocks/types'
-import RichTextBlock from './richtext-block.astro'
-import CodeBlock from './code-block.astro'
-import ImageBlock from './image-block.astro'
-import DividerBlock from './divider-block.astro'
+import type { Block, RichTextBlock as RichTextBlockType, CodeBlock as CodeBlockType, ImageBlock as ImageBlockType, DividerBlock as DividerBlockType } from '@/lib/blocks/types'
+import RichTextBlock from '@/components/blocks/richtext-block.astro'
+import CodeBlock from '@/components/blocks/code-block.astro'
+import ImageBlock from '@/components/blocks/image-block.astro'
+import DividerBlock from '@/components/blocks/divider-block.astro'
 
 interface Props {
 	blocks: Block[]
@@ -16,7 +16,7 @@ if (!blocks || !Array.isArray(blocks)) {
 }
 ---
 
-<div class="blocks-content">
+<div class='blocks-content'>
 	{blocks && blocks.map((block) => {
 		switch (block.type) {
 			case 'richtext':

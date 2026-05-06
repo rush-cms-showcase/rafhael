@@ -31,6 +31,7 @@
   "devDependencies": {
     "@iconify-json/logos": "^1.2.10",
     "@iconify-json/lucide": "^1.2.95",
+    "@iconify-json/simple-icons": "^1.2.81",
     "@tailwindcss/typography": "^0.5.19",
     "unplugin-icons": "^23.0.1"
   },

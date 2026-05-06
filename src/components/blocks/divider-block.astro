@@ -1,5 +1,5 @@
 ---
-import type { DividerBlock } from '../../lib/blocks/types'
+import type { DividerBlock } from '@/lib/blocks/types'
 
 interface Props {
 	block: DividerBlock
@@ -24,9 +24,9 @@ const styleClass = {
 
 <div class={`divider-block ${spacingClass}`}>
 	{label ? (
-		<div class="flex items-center gap-4">
+		<div class='flex items-center gap-4'>
 			<div class={`flex-1 ${styleClass}`}></div>
-			<span class="text-sm text-text-muted font-medium">{label}</span>
+			<span class='text-sm text-text-muted font-medium'>{label}</span>
 			<div class={`flex-1 ${styleClass}`}></div>
 		</div>
 	) : (

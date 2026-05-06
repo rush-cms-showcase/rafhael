@@ -1,6 +1,6 @@
 ---
-import type { RichTextBlock } from '../../lib/blocks/types'
-import { tiptapToHtml } from '../../lib/blocks/tiptap-to-html'
+import type { RichTextBlock } from '@/lib/blocks/types'
+import { tiptapToHtml } from '@/lib/blocks/tiptap-to-html'
 
 interface Props {
 	block: RichTextBlock
@@ -11,4 +11,4 @@ const { block } = Astro.props
 const html = tiptapToHtml(block.data.content)
 ---
 
-<div class="richtext-block" set:html={html} />
+<div class='richtext-block' set:html={html} />

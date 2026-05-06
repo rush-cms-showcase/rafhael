@@ -1,45 +1,56 @@
 ---
-import Section from "../../ui/section.astro";
-import Container from "../../ui/container.astro";
-import type { HomeContent } from "../../../content/home";
+import Section from '@/components/ui/section.astro'
+import Container from '@/components/ui/container.astro'
 
-interface Props {
-    content: HomeContent["testimonial"];
+export interface TestimonialContent {
+	quote: string
+	author: string
+	role: string
 }
 
-const { content } = Astro.props;
+interface Props {
+	content: TestimonialContent
+}
+
+const { content } = Astro.props
+
+const initials = content.author
+	.split(' ')
+	.map((w) => w[0])
+	.join('')
+	.toUpperCase()
 ---
 
-<Section class="bg-bg-card border-y border-border" noContainer>
-    <div
-        class="absolute top-10 left-10 font-serif text-[150px] leading-none text-primary/5 pointer-events-none select-none"
-    >
-        "
-    </div>
+<Section class='bg-bg-card border-y border-border' noContainer>
+	<div
+		class='absolute top-10 left-10 font-serif text-[150px] leading-none text-primary/5 pointer-events-none select-none'
+	>
+		"
+	</div>
 
-    <Container className="relative z-10 text-center">
-        <div class="max-w-4xl mx-auto">
-            <p
-                class="font-serif text-2xl md:text-4xl italic leading-relaxed text-text-main mb-12"
-            >
-                {content.quote}
-            </p>
+	<Container className='relative z-10 text-center'>
+		<div class='max-w-4xl mx-auto'>
+			<p
+				class='font-serif text-2xl md:text-4xl italic leading-relaxed text-text-main mb-12'
+			>
+				{content.quote}
+			</p>
 
-            <div class="flex items-center justify-center gap-4">
-                <div
-                    class="w-14 h-14 bg-bg-elevated rounded-full border border-border flex items-center justify-center font-bold text-primary text-xl"
-                >
-                    JL
-                </div>
-                <div class="text-left">
-                    <div class="font-bold text-white">{content.author}</div>
-                    <div
-                        class="text-sm text-primary uppercase tracking-wider font-semibold"
-                    >
-                        {content.role}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </Container>
+			<div class='flex items-center justify-center gap-4'>
+				<div
+					class='w-14 h-14 bg-bg-elevated rounded-full border border-border flex items-center justify-center font-bold text-primary text-xl'
+				>
+					{initials}
+				</div>
+				<div class='text-left'>
+					<div class='font-bold text-white'>{content.author}</div>
+					<div
+						class='text-sm text-primary uppercase tracking-wider font-semibold'
+					>
+						{content.role}
+					</div>
+				</div>
+			</div>
+		</div>
+	</Container>
 </Section>

@@ -1,4 +1,4 @@
-import type { TipTapDocument, TipTapNode, TipTapMark } from './types'
+import type { TipTapDocument, TipTapNode, TipTapMark } from '@/lib/blocks/types'
 
 export function tiptapToHtml(doc: TipTapDocument): string {
 	if (!doc || !doc.content) {
@@ -38,7 +38,7 @@ function nodeToHtml(node: TipTapNode): string {
 		case 'codeBlock':
 			const language = node.attrs?.language || 'plaintext'
 			const code = node.content?.[0]?.text || ''
-			return `<pre><code class="language-${language}">${escapeHtml(code)}</code></pre>`
+			return `<pre><code class='language-${language}'>${escapeHtml(code)}</code></pre>`
 
 		case 'horizontalRule':
 			return '<hr />'
@@ -98,12 +98,12 @@ function applyMarks(text: string, marks: TipTapMark[]): string {
 			case 'link':
 				const href = mark.attrs?.href || '#'
 				const target = mark.attrs?.target || '_self'
-				result = `<a href="${escapeHtml(href)}" target="${target}">${result}</a>`
+				result = `<a href='${escapeHtml(href)}' target='${target}'>${result}</a>`
 				break
 
 			case 'highlight':
 				const color = mark.attrs?.color || 'yellow'
-				result = `<mark style="background-color: ${color}">${result}</mark>`
+				result = `<mark style='background-color: ${color}'>${result}</mark>`
 				break
 		}
 	}

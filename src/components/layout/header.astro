@@ -1,85 +1,67 @@
 ---
-import Container from "../ui/container.astro";
-import Button from "../ui/button.astro";
-import type { HomeContent } from "../../content/home";
-import LanguageSelector from "../shared/language-selector.astro";
-import GlobalSearchDialog from "../ui/global-search-dialog.astro";
+import Container from '@/components/ui/container.astro'
+import Button from '@/components/ui/button.astro'
+import LanguageSelector from '@/components/shared/language-selector.astro'
+import GlobalSearchDialog from '@/components/ui/global-search-dialog.astro'
+import HeaderLogo from '@/components/layout/header-logo.astro'
+import HeaderNav from '@/components/layout/header-nav.astro'
+import MobileMenu from '@/components/layout/mobile-menu.astro'
+import { Icons } from '@/lib/icons'
 
-interface Props {
-    content?: HomeContent["global"]["nav"];
-    locale?: "en" | "pt_BR";
-    variant?: "default" | "minimal";
-    position?: "fixed" | "absolute";
+const SearchIcon = Icons.search
+
+export interface NavContent {
+    about: string
+    cases: string
+    blog: string
+    login: string
+    contact: string
 }
 
-const { content, locale = "pt_BR", variant = "default", position = "fixed" } = Astro.props;
-const homeUrl = locale === "pt_BR" ? "/br" : "/";
+interface Props {
+    content?: NavContent
+    locale?: 'en' | 'pt_BR'
+    variant?: 'default' | 'minimal'
+    position?: 'fixed' | 'absolute'
+}
 
-// Map the nav items from the content prop
+const { content, locale = 'pt_BR', variant = 'default', position = 'fixed' } = Astro.props
+const homeUrl = locale === 'pt_BR' ? '/br' : '/'
+
 const navItems = content ? [
-    { label: content.about, href: locale === 'pt_BR' ? "/br/sobre-mim" : "/about-me" },
-    { label: content.cases, href: `${homeUrl === "/" ? "" : homeUrl}/cases` },
-    { label: content.blog, href: `${homeUrl === "/" ? "" : homeUrl}/blog` },
-] : [];
+    { label: content.about, href: locale === 'pt_BR' ? '/br/sobre-mim' : '/about-me' },
+    { label: content.cases, href: `${homeUrl === '/' ? '' : homeUrl}/cases` },
+    { label: content.blog, href: `${homeUrl === '/' ? '' : homeUrl}/blog` },
+] : []
 
 const searchLabels = {
-    placeholder: locale === 'pt_BR' ? "Buscar artigos..." : "Search articles...",
-    emptyTitle: locale === 'pt_BR' ? "Nenhum artigo encontrado" : "No articles found",
-    emptyText: locale === 'pt_BR' ? "Tente outros termos." : "Try other terms.",
-    initialText: locale === 'pt_BR' ? "Digite para buscar em todos os artigos" : "Type to search across all articles",
-    loadingText: locale === 'pt_BR' ? "Carregando índice..." : "Loading index..."
-};
+    placeholder: locale === 'pt_BR' ? 'Buscar artigos...' : 'Search articles...',
+    emptyTitle: locale === 'pt_BR' ? 'Nenhum artigo encontrado' : 'No articles found',
+    emptyText: locale === 'pt_BR' ? 'Tente outros termos.' : 'Try other terms.',
+    initialText: locale === 'pt_BR' ? 'Digite para buscar em todos os artigos' : 'Type to search across all articles',
+    loadingText: locale === 'pt_BR' ? 'Carregando índice...' : 'Loading index...'
+}
 ---
 
 <header
     class={`${position} top-0 left-0 right-0 z-50 py-5 bg-bg/95 backdrop-blur-md border-b border-border/50 transition-all duration-300`}
 >
-    <Container className="flex justify-between items-center">
-        <a href={homeUrl} class="flex items-center gap-2 group">
-            <div class="flex items-center gap-3">
-                <img
-                    src="/favicon.svg"
-                    fetchpriority="high"
-                    width={48}
-                    height={48}
-                    alt="Rafhael Marsigli Logo"
-                    class="w-12 h-12 lg:w-8 lg:h-8"
-                />
-                <span
-                    class="hidden md:block font-serif text-xl font-bold text-text-main group-hover:text-primary transition-colors duration-300"
-                >
-                    Rafhael <span class="text-primary">Marsigli</span>
-                </span>
-            </div>
-        </a>
+    <Container className='flex justify-between items-center'>
+        <HeaderLogo homeUrl={homeUrl} />
 
         {variant !== "minimal" && (
-            <nav class="hidden md:flex gap-10 items-center ml-auto mr-8">
-                {
-                    navItems.map((item) => (
-                        <a
-                            href={item.href}
-                            class="text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors"
-                        >
-                            {item.label}
-                        </a>
-                    ))
-                }
-            </nav>
+            <HeaderNav items={navItems} />
         )}
 
         <div class={`flex items-center gap-4 ${variant === "minimal" ? "ml-auto" : ""}`}>
             {variant !== "minimal" && (
                 <button
-                    id="search-trigger"
-                class="flex items-center justify-center w-10 h-10 text-text-muted hover:text-primary transition-colors hover:bg-bg-elevated rounded-lg group relative"
-                aria-label="Search"
+                    id='search-trigger'
+                class='flex items-center justify-center w-10 h-10 text-text-muted hover:text-primary transition-colors hover:bg-bg-elevated rounded-lg group relative'
+                aria-label='Search'
             >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <span class="absolute -top-1.5 -right-1.5 flex h-4 w-6 items-center justify-center rounded bg-bg-elevated/90 border border-border/50 text-[9px] font-bold text-text-muted shadow-sm backdrop-blur-sm group-hover:border-primary/50 group-hover:text-primary transition-colors pointer-events-none">
+                <SearchIcon class='w-5 h-5' />
+                <span class='absolute -top-1.5 -right-1.5 flex h-4 w-6 items-center justify-center rounded bg-bg-elevated/90 border border-border/50 text-[9px] font-bold text-text-muted shadow-sm backdrop-blur-sm group-hover:border-primary/50 group-hover:text-primary transition-colors pointer-events-none'>
                     ⌘ K
                 </span>
                 </button>
@@ -100,140 +82,28 @@ const searchLabels = {
             {variant !== "minimal" && content && (
                 <Button
                 href={locale === "pt_BR" ? "/br/contato" : "/contact"}
-                variant="primary"
-                size="md"
-                className="hidden md:flex shadow-lg shadow-primary/20"
+                variant='primary'
+                size='md'
+                className='hidden md:flex shadow-lg shadow-primary/20'
             >
                 <span>{content.contact}</span>
             </Button>
             )}
 
             {variant !== "minimal" && (
-                <button
-                    id="menu-toggle"
-                    class="md:hidden flex items-center justify-center w-12 h-12 border border-white/20 rounded-lg text-text-main hover:text-primary transition-colors relative z-50 bg-bg/50 backdrop-blur-sm"
-                    aria-label="Menu"
-                >
-                <svg
-                    id="icon-menu"
-                    class="w-6 h-6 transition-transform duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-                <svg
-                    id="icon-close"
-                    class="w-6 h-6 absolute inset-0 m-auto opacity-0 scale-75 transition-all duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+                <MobileMenu items={navItems} locale={locale} contactLabel={content?.contact || ''} />
             )}
         </div>
     </Container>
 </header>
 
-{variant !== "minimal" && (
-    <div
-        id="mobile-menu"
-        class="md:hidden fixed inset-0 z-40 bg-bg/98 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center text-center overflow-hidden"
-    >
-        <nav class="flex flex-col gap-6 w-full max-w-sm px-6 relative z-10 pt-24">
-        {
-            navItems.map((item) => (
-                <a
-                    href={item.href}
-                    class="text-4xl font-serif font-bold text-text-muted hover:text-primary transition-colors py-2"
-                >
-                    {item.label}
-                </a>
-            ))
-        }
-        
-        <div class="h-px bg-border/20 w-24 mx-auto my-4"></div>
-
-        <div class="flex justify-center mb-6">
-            <LanguageSelector currentLocale={locale} isMobile={true} />
-        </div>
-
-            <Button
-                href={locale === "pt_BR" ? "/br/contato" : "/contact"}
-                variant="primary"
-                size="lg"
-                className="w-full justify-center shadow-xl shadow-primary/20"
-            >
-                <span>{content?.contact}</span>
-            </Button>
-        </nav>
-        
-        {/* Decorative background blob */}
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
-    </div>
-)}
-
 <script is:inline>
-    // Search Trigger Logic
-    const searchTrigger = document.getElementById("search-trigger");
-    if (searchTrigger) {
-        searchTrigger.addEventListener("click", () => {
-             window.dispatchEvent(new CustomEvent("open-global-search"));
-        });
-    }
-
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const iconMenu = document.getElementById("icon-menu");
-    const iconClose = document.getElementById("icon-close");
-
-    function toggleMenu(forceClose = false) {
-        if (!mobileMenu || !iconMenu || !iconClose) return;
-
-        const isOpen = mobileMenu.classList.contains("opacity-100");
-        const shouldClose = forceClose || isOpen;
-
-        if (shouldClose) {
-            // Close Menu
-            mobileMenu.classList.remove("opacity-100", "pointer-events-auto");
-            mobileMenu.classList.add("opacity-0", "pointer-events-none");
-            document.body.style.overflow = "";
-            
-            // Icon Animation
-            iconMenu.classList.remove("opacity-0", "rotate-90", "scale-75");
-            iconClose.classList.add("opacity-0", "scale-75");
-            iconClose.classList.remove("rotate-90");
-        } else {
-            // Open Menu
-            mobileMenu.classList.remove("opacity-0", "pointer-events-none");
-            mobileMenu.classList.add("opacity-100", "pointer-events-auto");
-            document.body.style.overflow = "hidden";
-
-            // Icon Animation
-            iconMenu.classList.add("opacity-0", "rotate-90", "scale-75");
-            iconClose.classList.remove("opacity-0", "scale-75");
-            iconClose.classList.add("rotate-90");
+    (function() {
+        const searchTrigger = document.getElementById("search-trigger");
+        if (searchTrigger) {
+            searchTrigger.addEventListener("click", () => {
+                 window.dispatchEvent(new CustomEvent("open-global-search"));
+            });
         }
-    }
-
-    if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener("click", () => toggleMenu());
-
-        mobileMenu.addEventListener("click", (e) => {
-            if (e.target.tagName === "A") {
-                toggleMenu(true);
-            }
-        });
-    }
+    })();
 </script>

@@ -5,6 +5,8 @@ import Icons from 'unplugin-icons/vite'
 
 import sitemap from '@astrojs/sitemap'
 import vercel from '@astrojs/vercel'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,6 +31,9 @@ export default defineConfig({
 			})
 		],
 		resolve: {
+			alias: {
+				'@': path.resolve(path.dirname(fileURLToPath(import.meta.url)), './src')
+			},
 			conditions: ['development', 'browser']
 		},
 		build: {

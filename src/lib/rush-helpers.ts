@@ -1,4 +1,4 @@
-import type { LocaleCode } from '../types/rush-config'
+import type { LocaleCode } from '@/types/rush-config'
 import { rushConfig } from '../../rush.config'
 
 export const getCollectionPath = (collectionId: number): string => {
@@ -55,7 +55,7 @@ export const getLocalePath = (locale: LocaleCode): string => {
 }
 
 export const getNav = (
-  locale: LocaleCode, 
+  locale: LocaleCode,
   nav: 'header' | 'footer'
 ): string | undefined => {
   const localeConfig = rushConfig.locales[locale]

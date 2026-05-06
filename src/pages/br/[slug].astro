@@ -1,15 +1,15 @@
 ---
-import Layout from '../../layouts/layout.astro'
-import Header from '../../components/layout/header.astro'
-import Footer from '../../components/layout/footer.astro'
-import Container from '../../components/ui/container.astro'
-import { rush } from '../../lib/rush'
-import { homeContent } from "../../content/home";
+import Layout from '@/layouts/layout.astro'
+import Header from '@/components/layout/header.astro'
+import Footer from '@/components/layout/footer.astro'
+import Container from '@/components/ui/container.astro'
+import { rush } from '@/lib/rush'
+import { homeContent } from '@/content/home'
 
-import { tiptapToHtml } from '../../lib/blocks/tiptap-to-html';
+import { tiptapToHtml } from '@/lib/blocks/tiptap-to-html'
 
 // Use PT_BR content
-const content = homeContent.pt_BR;
+const content = homeContent.pt_BR
 
 export async function getStaticPaths() {
 	try {
@@ -50,7 +50,7 @@ const description = page.content?.substring(0, 160) || `${page.title} - Rafhael 
 ---
 
 <Layout title={title} description={description}>
-	<Header content={content.global.nav} locale="pt_BR" />
+	<Header content={content.global.nav} locale='pt_BR' />
 	
 	<main class='pt-32 md:pt-40'>
 		<article>

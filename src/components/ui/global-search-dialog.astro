@@ -1,4 +1,9 @@
 ---
+import { Icons } from '@/lib/icons'
+
+const SearchIcon = Icons.search
+const XIcon = Icons.x
+
 interface Props {
     locale?: "en" | "pt_BR";
     labels: {
@@ -32,17 +37,7 @@ const basePrefix = locale === "pt_BR" ? "/br" : "";
         
         {/* Header / Input */}
         <div class="flex items-center border-b border-border p-4">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5 text-text-muted mr-3"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <SearchIcon class='w-5 h-5 text-text-muted mr-3' />
             <input 
                 id="global-search-input"
                 type="text" 
@@ -56,10 +51,7 @@ const basePrefix = locale === "pt_BR" ? "/br" : "";
                 aria-label="Close"
             >
                 <kbd class="hidden md:inline-block px-2 py-0.5 text-xs font-mono bg-bg-elevated rounded border border-border">ESC</kbd>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+                <XIcon class='w-5 h-5 md:hidden' />
             </button>
         </div>
 

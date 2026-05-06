@@ -4,14 +4,14 @@ export interface Block {
 }
 
 export interface RichTextBlock extends Block {
-	type: 'richtext'
+type: 'richtext'
 	data: {
 		content: TipTapDocument
 	}
 }
 
 export interface CodeBlock extends Block {
-	type: 'code'
+type: 'code'
 	data: {
 		code: string
 		language: string
@@ -22,7 +22,7 @@ export interface CodeBlock extends Block {
 }
 
 export interface ImageBlock extends Block {
-	type: 'image'
+type: 'image'
 	data: {
 		image?: MediaData
 		caption?: string
@@ -40,7 +40,7 @@ export interface ImageBlock extends Block {
 }
 
 export interface DividerBlock extends Block {
-	type: 'divider'
+type: 'divider'
 	data: {
 		label?: string | null
 		style?: 'solid' | 'dashed' | 'dotted'
@@ -60,7 +60,7 @@ export interface MediaData {
 }
 
 export interface TipTapDocument {
-	type: 'doc'
+type: 'doc'
 	content: TipTapNode[]
 }
 

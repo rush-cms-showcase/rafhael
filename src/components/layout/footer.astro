@@ -1,81 +1,90 @@
 ---
-import Container from "../ui/container.astro";
-import type { HomeContent } from "../../content/home";
+import Container from '@/components/ui/container.astro'
 
-interface Props {
-    content: HomeContent["global"]["footer"];
+export interface FooterContent {
+    terms: string
+    termsLink: string
+    privacy: string
+    privacyLink: string
+    rights: string
+    created_by: string
+    powered_by: string
 }
 
-const { content } = Astro.props;
-const currentYear = new Date().getFullYear();
+interface Props {
+    content: FooterContent
+}
+
+const { content } = Astro.props
+const currentYear = new Date().getFullYear()
 ---
 
-<footer class="flex items-center flex-col border-t border-border-subtle bg-bg">
-    <div class="w-full py-12">
+<footer class='flex items-center flex-col border-t border-border-subtle bg-bg'>
+    <div class='w-full py-12'>
         <Container
-            className="relative flex flex-col md:flex-row justify-between items-center gap-6"
+            className='relative flex flex-col md:flex-row justify-between items-center gap-6'
         >
-            <div class="flex items-center gap-2">
-                <span class="font-serif text-xl font-bold text-text-main">
-                    Rafhael <span class="text-primary">Marsigli</span>
+            <div class='flex items-center gap-2'>
+                <span class='font-serif text-xl font-bold text-text-main'>
+                    Rafhael <span class='text-primary'>Marsigli</span>
                 </span>
             </div>
 
             <div
-                class="lg:absolute lg:top-1/2 lg:left-1/2 lg:-ml-[32px] lg:-mt-[32px]"
+                class='lg:absolute lg:top-1/2 lg:left-1/2 lg:ml-[-32px] lg:mt-[-32px]'
             >
                 <img
-                    src="/favicon.svg"
-                    width="64"
-                    height="64"
-                    alt="Rafhael Marsigli"
+                    src='/favicon.svg'
+                    width='64'
+                    height='64'
+                    alt='Rafhael Marsigli'
                 />
             </div>
 
-            <div class="flex gap-6">
+            <div class='flex gap-6'>
                 <a
                     href={content.termsLink}
-                    class="text-sm text-text-muted hover:text-primary transition-colors"
+                    class='text-sm text-text-muted hover:text-primary transition-colors'
                     >{content.terms}</a
                 >
                 <a
                     href={content.privacyLink}
-                    class="text-sm text-text-muted hover:text-primary transition-colors"
+                    class='text-sm text-text-muted hover:text-primary transition-colors'
                     >{content.privacy}</a
                 >
             </div>
         </Container>
     </div>
     <small
-        class="w-full text-sm text-text-muted p-4 lg:p-8 border-t border-border-subtle/40"
+        class='w-full text-sm text-text-muted p-4 lg:p-8 border-t border-border-subtle/40'
     >
         <Container
-            className="flex flex-col lg:flex-row lg:justify-between items-center gap-2"
+            className='flex flex-col lg:flex-row lg:justify-between items-center gap-2'
         >
-            <span class="text-center lg:text-left">
+            <span class='text-center lg:text-left'>
                 &copy; {currentYear} Rafhael Marsigli. {content.rights}
             </span>
-            <div class="flex flex-row items-center justify-center gap-2">
+            <div class='flex flex-row items-center justify-center gap-2'>
                 {content.created_by}
                 <a
-                    href="https://rafhael.com.br?utm_source=rafhael&utm_medium=footer&utm_campaign=footer"
+                    href='https://rafhael.com.br?utm_source=rafhael&utm_medium=footer&utm_campaign=footer'
                 >
                     <img
-                        src="/favicon.svg"
-                        width="32"
-                        height="32"
-                        alt="Rafhael Marsigli"
+                        src='/favicon.svg'
+                        width='32'
+                        height='32'
+                        alt='Rafhael Marsigli'
                     />
                 </a>
                 {content.powered_by}
                 <a
-                    href="https://rushcms.com?utm_source=rafhael&utm_medium=footer&utm_campaign=footer"
+                    href='https://rushcms.com?utm_source=rafhael&utm_medium=footer&utm_campaign=footer'
                 >
                     <img
-                        src="/rush-cms.svg"
-                        width="32"
-                        height="32"
-                        alt="Rush CMS"
+                        src='/rush-cms.svg'
+                        width='32'
+                        height='32'
+                        alt='Rush CMS'
                     />
                 </a>
             </div>
