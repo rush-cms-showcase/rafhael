@@ -1,0 +1,25 @@
+---
+interface Props {
+    homeUrl: string
+}
+
+const { homeUrl } = Astro.props
+---
+
+<a href={homeUrl} class='flex items-center gap-2 group'>
+    <div class='flex items-center gap-3'>
+        <img
+            src='/favicon.svg'
+            fetchpriority='high'
+            width={48}
+            height={48}
+            alt='Rafhael Marsigli Logo'
+            class='w-12 h-12 lg:w-8 lg:h-8'
+        />
+        <span
+            class='hidden md:block font-serif text-xl font-bold text-text-main group-hover:text-primary transition-colors duration-300'
+        >
+            Rafhael <span class='text-primary'>Marsigli</span>
+        </span>
+    </div>
+</a>

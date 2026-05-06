@@ -1,0 +1,20 @@
+---
+interface Props {
+    items: { label: string; href: string }[]
+}
+
+const { items } = Astro.props
+---
+
+<nav class='hidden md:flex gap-10 items-center ml-auto mr-8'>
+    {
+        items.map((item) => (
+            <a
+                href={item.href}
+                class='text-sm lg:text-lg font-medium text-text-muted hover:text-text-main transition-colors'
+            >
+                {item.label}
+            </a>
+        ))
+    }
+</nav>
