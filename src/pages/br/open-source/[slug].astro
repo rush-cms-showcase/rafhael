@@ -1,0 +1,61 @@
+---
+import Layout from '@/layouts/layout.astro'
+import Header from '@/components/layout/header.astro'
+import Footer from '@/components/layout/footer.astro'
+import BlockRenderer from '@/components/blocks/builder/block-renderer.astro'
+
+import { homeContent } from '@/content/home'
+
+export async function getStaticPaths() {
+	const allProjects = import.meta.glob('@/content/open-source/*.ts', { eager: true })
+	
+	return Object.entries(allProjects).map(([filepath, module]: [string, any]) => {
+		const slug = filepath.split('/').pop()?.replace('.ts', '')
+		
+		const contentKey = Object.keys(module).find(key => module[key]?.en && module[key]?.pt_BR)
+		const content = contentKey ? module[contentKey] : null
+
+        // Only include projects that use the new block renderer format
+        if (!content?.en?.blocks) return null
+
+		return {
+			params: { slug },
+			props: { projectData: content }
+		}
+	}).filter(route => route !== null && route.props.projectData !== null)
+}
+
+interface Props {
+	projectData: any
+}
+
+const { projectData } = Astro.props
+const locale = 'pt_BR'
+
+// If no data, render a simple 404-like state or redirect
+if (!projectData || !projectData[locale]) {
+	return Astro.redirect('/404')
+}
+
+const data = projectData[locale]
+const siteContent = homeContent[locale]
+
+const title = `${data.page.title} - Rafhael Marsigli`
+const description = data.page.description
+const ogImage = `/br/open-source/${Astro.params.slug}/og.jpg`
+---
+
+<Layout
+	title={title}
+	description={description}
+	lang="pt-BR"
+	image={ogImage}
+>
+	<Header content={siteContent.global.nav} locale={locale} />
+	
+	<main>
+		<BlockRenderer blocks={data.blocks} />
+	</main>
+
+	<Footer content={siteContent.global.footer} />
+</Layout>
