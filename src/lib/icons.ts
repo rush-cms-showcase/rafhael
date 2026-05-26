@@ -44,6 +44,18 @@ import IconWhatsapp from '~icons/simple-icons/whatsapp'
 import IconTelegram from '~icons/simple-icons/telegram'
 import IconTwitterX from '~icons/simple-icons/x'
 import IconBookOpen from '~icons/lucide/book-open'
+import IconSquareCheck from '~icons/lucide/square-check'
+import IconQuote from '~icons/lucide/quote'
+import IconInfo from '~icons/lucide/info'
+import IconMeta from '~icons/simple-icons/meta'
+import IconGoogle from '~icons/simple-icons/google'
+import IconAnthropic from '~icons/simple-icons/anthropic'
+import IconOpenAI from '~icons/simple-icons/openai'
+import IconAWS from '~icons/simple-icons/amazonaws'
+import IconCloudflare from '~icons/simple-icons/cloudflare'
+import IconSentry from '~icons/simple-icons/sentry'
+import IconBot from '~icons/lucide/bot'
+import IconBox from '~icons/lucide/box'
 
 export const Icons = {
 	calendar: IconCalendar,
@@ -99,6 +111,18 @@ export const Icons = {
 	lightning: IconZap,
 	mobile: IconSmartphone,
 	book: IconBookOpen,
+	square_check: IconSquareCheck,
+	quote: IconQuote,
+	info: IconInfo,
+	meta: IconMeta,
+	google: IconGoogle,
+	anthropic: IconAnthropic,
+	openai: IconOpenAI,
+	aws: IconAWS,
+	cloudflare: IconCloudflare,
+	sentry: IconSentry,
+	bot: IconBot,
+	box: IconBox,
 } as const
 
 export type IconName = keyof typeof Icons
