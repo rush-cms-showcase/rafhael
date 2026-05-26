@@ -6,6 +6,10 @@ import Section from '@/components/ui/section.astro'
 import Container from '@/components/ui/container.astro'
 import { tiptapToHtml } from '@/lib/blocks/tiptap-to-html'
 import { renderMarkdown } from '@/lib/markdown-renderer'
+import { unified } from 'unified'
+import rehypeParse from 'rehype-parse'
+import rehypeExpressiveCode from 'rehype-expressive-code'
+import rehypeStringify from 'rehype-stringify'
 import { rush, type BlogPost } from '@/lib/rush'
 import { homeContent } from '@/content/home'
 import { formatDate } from '@/lib/date-utils'
@@ -51,11 +55,6 @@ if (rawMarkdown && typeof rawMarkdown === 'string') {
         
     const rendered = tiptapToHtml(doc as any)
     if (rendered) {
-        import { unified } from 'unified'
-        import rehypeParse from 'rehype-parse'
-        import rehypeExpressiveCode from 'rehype-expressive-code'
-        import rehypeStringify from 'rehype-stringify'
-        
         try {
             const processed = await unified()
                 .use(rehypeParse, { fragment: true })

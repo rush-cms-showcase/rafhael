@@ -1,7 +1,7 @@
 import type { SearchIndexItem } from '@/lib/search-service'
 
 export interface SearchConfig {
-locale: 'en\' | \'pt_BR'
+	locale: 'en' | 'pt_BR'
     basePrefix: string
 }
 

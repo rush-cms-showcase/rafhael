@@ -1,10 +1,4 @@
 import type { APIRoute } from 'astro';
-import satori from 'satori';
-import { html } from 'satori-html';
-import { Resvg } from '@resvg/resvg-js';
-import sharp from 'sharp';
-import fs from 'node:fs/promises';
-import path from 'node:path';
 
 export async function getStaticPaths() {
 	const allProjects = import.meta.glob('@/content/open-source/*.ts', { eager: true });

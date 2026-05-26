@@ -23,7 +23,7 @@ const { content } = Astro.props
         </div>
 
         <div class='grid md:grid-cols-3 gap-6'>
-            {content.items.map((item, i) => {
+            {content.items.map((item) => {
                 const Icon = Icons[item.icon as IconName] || Icons.help
                 return (
                     <div class='group relative bg-bg-card border border-border rounded-2xl p-8 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1'>

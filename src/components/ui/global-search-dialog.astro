@@ -15,8 +15,7 @@ interface Props {
     };
 }
 
-const { locale = "en", labels } = Astro.props;
-const basePrefix = locale === "pt_BR" ? "/br" : "";
+const { labels } = Astro.props;
 ---
 
 <div 

@@ -44,7 +44,7 @@ interface Props {
 	}
 }
 
-const { page } = Astro.props
+const { page }: Props = Astro.props
 
 const title = `${page.title} - Rafhael Marsigli`
 const description = page.content?.substring(0, 160) || `${page.title} - Rafhael Marsigli`

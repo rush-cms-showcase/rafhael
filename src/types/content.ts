@@ -65,7 +65,7 @@ export interface ProjectsContent {
   items: ProjectItem[]
 }
 
-export interface StackCategory {
+export interface StackGroup {
   label: string
   tags: string[]
   highlight?: boolean
@@ -74,7 +74,52 @@ export interface StackCategory {
 export interface StackContent {
   label: string
   title: string
-  categories: StackCategory[]
+  groups: StackGroup[]
+}
+
+export interface CtaSectionContent {
+  title: string
+  button: string
+}
+
+export interface ProblemItem {
+  title: string
+  description: string
+  icon: string
+}
+
+export interface ProblemContent {
+  title: string
+  subtitle: string
+  items: ProblemItem[]
+}
+
+export interface PricingContent {
+  label: string
+  title: string
+  subtitle: string
+  currency: string
+  price: string
+  monthly: string
+  monthlyLabel: string
+  startingAt: string
+  cta: string
+  featuresCoreLabel: string
+  featuresCore: string[]
+  featuresAdvancedLabel: string
+  featuresAdvanced: string[]
+}
+
+export interface ProcessStep {
+  number: string
+  title: string
+  description: string
+}
+
+export interface ProcessContent {
+  label: string
+  title: string
+  steps: ProcessStep[]
 }
 
 export interface AboutHeroContent {
@@ -141,6 +186,11 @@ export interface TestimonialContent {
   role: string
 }
 
+export interface MetadataContent {
+  title: string
+  description: string
+}
+
 export interface HomeLocaleContent {
   global: GlobalContent
   hero: HeroContent
@@ -155,4 +205,9 @@ export interface HomeLocaleContent {
     tag: TaxonomyConfig
   }
   testimonial: TestimonialContent
+  metadata: MetadataContent
+  ctaSection: CtaSectionContent
+  problem: ProblemContent
+  pricing: PricingContent
+  process: ProcessContent
 }
