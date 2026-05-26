@@ -1,5 +1,6 @@
 export type BlockType =
 	| 'hero'
+	| 'hero-terminal'
 	| 'story'
 	| 'modules'
 	| 'architecture'
@@ -32,6 +33,16 @@ export interface HeroBlockData {
 	background?: string
 	logo?: string
 	ascii?: string
+}
+
+export interface HeroTerminalBlockData {
+	headline: string
+	tagline: string
+	actions?: CtaButton[]
+	command?: {
+		text: string
+		caption?: string
+	}
 }
 
 export interface StoryBlockData {
@@ -115,6 +126,7 @@ export interface CtaBlockData {
 
 export type AnyBlock =
 	| BaseBlock<'hero', HeroBlockData>
+	| BaseBlock<'hero-terminal', HeroTerminalBlockData>
 	| BaseBlock<'story', StoryBlockData>
 	| BaseBlock<'modules', ModulesBlockData>
 	| BaseBlock<'architecture', ArchitectureBlockData>
