@@ -8,6 +8,7 @@ interface Props {
 
 const { data } = Astro.props
 
+const animated = data.items.length >= 5
 const half = Math.ceil(data.items.length / 2)
 const row1 = data.items.slice(0, half)
 const row2 = data.items.slice(half)
@@ -23,20 +24,33 @@ const row2 = data.items.slice(half)
 		</div>
 	</Container>
 
-	<div class="relative w-full flex flex-col gap-6 lg:gap-8 pb-12 overflow-hidden flex-nowrap mask-edges">
-		{[row1, row2].map((row, index) => (
-			<div class={`flex w-max gap-6 lg:gap-8 ${index === 0 ? 'animate-marquee-left' : 'animate-marquee-right ml-[-20%]'}`}>
-				{Array(6).fill(row).flat().map(item => (
-					<div class="flex items-center gap-3 px-6 py-3 lg:px-8 lg:py-4 bg-black/10 border border-border/50 rounded-full hover:border-primary/50 hover:cursor-default transition-colors shadow-sm">
-						<img src={item.logo} alt={item.name} class="w-5 h-5 lg:w-6 lg:h-6 object-contain" />
-						<span class="font-medium whitespace-nowrap text-text-main">
-							{item.name}
-						</span>
-					</div>
-				))}
-			</div>
-		))}
-	</div>
+	{animated ? (
+		<div class="relative w-full flex flex-col gap-6 lg:gap-8 pb-12 overflow-hidden flex-nowrap mask-edges">
+			{[row1, row2].map((row, index) => (
+				<div class={`flex w-max gap-6 lg:gap-8 ${index === 0 ? 'animate-marquee-left' : 'animate-marquee-right ml-[-20%]'}`}>
+					{Array(6).fill(row).flat().map(item => (
+						<div class="flex items-center gap-3 px-6 py-3 lg:px-8 lg:py-4 bg-black/10 border border-border/50 rounded-full hover:border-primary/50 hover:cursor-default transition-colors shadow-sm">
+							<img src={item.logo} alt={item.name} class="w-5 h-5 lg:w-6 lg:h-6 object-contain" />
+							<span class="font-medium whitespace-nowrap text-text-main">
+								{item.name}
+							</span>
+						</div>
+					))}
+				</div>
+			))}
+		</div>
+	) : (
+		<div class="flex flex-wrap justify-center gap-4 lg:gap-6 pb-12">
+			{data.items.map(item => (
+				<div class="flex items-center gap-3 px-6 py-3 lg:px-8 lg:py-4 bg-black/10 border border-border/50 rounded-full hover:border-primary/50 hover:cursor-default transition-colors shadow-sm">
+					<img src={item.logo} alt={item.name} class="w-5 h-5 lg:w-6 lg:h-6 object-contain" />
+					<span class="font-medium whitespace-nowrap text-text-main">
+						{item.name}
+					</span>
+				</div>
+			))}
+		</div>
+	)}
 </section>
 
 <style>
