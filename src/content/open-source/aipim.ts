@@ -161,7 +161,6 @@ export const aipimContent: DynamicPageContent = {
 				data: {
 					title: 'Toda sessão de IA começa do zero',
 					hook: 'Toda vez que você abre uma nova sessão, seu agente de IA não sabe o que você construiu ontem. Você cola contexto, re-explica convenções, re-descreve a arquitetura. E se você depende de loops de agentes abertos, a conta de tokens cresce - o modelo fica relendo o que já fez três mensagens atrás.',
-					resolution: 'O AIPIM inverte esse modelo. Você decompõe o projeto em tasks que cabem dentro de uma janela de contexto - cada uma focada, delimitada e concluível em uma sessão. Uma task, um contexto, /clear, repete. O projeto fica no log de eventos do AIPIM. A IA fica afiada.',
 					callout: 'Em uma migração legada real: 29 tasks, cada uma com 30–100K tokens, cada uma começando com contexto limpo. Algumas em lote, outras isoladas. Mais eficiente que loops de agentes abertos - e o histórico é imutável.'
 				}
 			},
@@ -219,17 +218,6 @@ export const aipimContent: DynamicPageContent = {
 								'Active skills recarregam na próxima chamada tools/list'
 							]
 						}
-					]
-				}
-			},
-			{
-				_type: 'integrations',
-				data: {
-					heading: 'Funciona com o editor de IA que você já usa',
-					items: [
-						{ name: 'Claude Code', logo: '/connectors/claude-code.svg' },
-						{ name: 'Gemini CLI', logo: '/connectors/gemini.svg' },
-						{ name: 'Cursor', logo: '/connectors/cursor.svg' }
 					]
 				}
 			},
