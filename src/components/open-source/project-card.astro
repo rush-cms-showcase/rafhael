@@ -1,0 +1,40 @@
+---
+import type { ProjectMeta } from '@/lib/open-source'
+
+interface Props extends ProjectMeta {
+	locale: 'en' | 'pt_BR'
+}
+
+const { slug, title, logo, locale } = Astro.props
+
+const url = locale === 'pt_BR' ? `/br/open-source/${slug}` : `/open-source/${slug}`
+const label = locale === 'pt_BR' ? 'Ver projeto' : 'View project'
+---
+
+<a
+	href={url}
+	class="group relative flex max-lg:flex-col gap-4 lg:gap-6 p-4 lg:p-6 xl:p-8 rounded-2xl border border-primary/20 bg-bg-primary/10
+		hover:border-primary/50 hover:bg-bg-elevated hover:-translate-y-1 transition-all duration-300
+		hover:shadow-xl hover:shadow-primary/10"
+>
+	{logo ? (
+		<img
+			src={logo}
+			alt={title}
+			class="h-32 w-32 object-contain rounded-lg"
+			loading="lazy"
+		/>
+	) : (
+		<div class="h-32 w-32 rounded-xl bg-primary/10 border border-primary/20 flex items-center 
+			justify-center font-mono font-bold text-primary text-xl lg:text-3xl xl:text-65xl select-none">
+			{title.slice(0, 2).toUpperCase()}
+		</div>
+	)}
+
+	<div class="flex flex-col items-start justify-center gap-2 lg:gap-4">
+		<h2 class="font-serif text-xl lg:text-4xl xl:text-5xl font-bold text-text-main group-hover:text-primary transition-colors leading-tight">
+			{title}
+		</h2>
+		<span>{label}</span>
+	</div>
+</a>
