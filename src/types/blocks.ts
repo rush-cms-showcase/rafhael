@@ -29,8 +29,9 @@ export interface HeroBlockData {
 		text: string
 		caption?: string
 	}
-	background?: string // URL to background image
-	logo?: string // URL to logo image
+	background?: string
+	logo?: string
+	ascii?: string
 }
 
 export interface StoryBlockData {

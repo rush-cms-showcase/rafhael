@@ -25,10 +25,14 @@ const { data } = Astro.props
 
 	<Container className="relative z-10">
 		<div class="mx-auto max-w-4xl text-center flex flex-col items-center justify-center gap-2 lg:gap-4">
+			{data.ascii && (
+				<pre class="font-mono text-[0.45rem] sm:text-[0.55rem] md:text-xs leading-tight text-primary/60 select-none overflow-hidden max-w-full">{data.ascii}</pre>
+			)}
+
 			{data.logo && (
 				<img src={data.logo} alt="Logo" class="h-24 md:h-32 mx-auto drop-shadow-xl" />
 			)}
-			
+
 			<h1 class='m-0 font-serif text-4xl lg:text-6xl leading-[1.1] tracking-tighter text-text-main font-bold'>
 				{data.headline}
 			</h1>
