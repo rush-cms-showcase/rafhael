@@ -14,7 +14,7 @@ interface Props {
 const { locale } = Astro.props
 const globalContent = homeContent[locale]
 const content = notFoundContent[locale]
-const pageTitle = `404 - ${content.title} | Rafhael Marsigli`
+const pageTitle = `404 - ${content.title} - Rafhael Marsigli`
 ---
 
 <Layout title={pageTitle} description={content.metaDescription}>
