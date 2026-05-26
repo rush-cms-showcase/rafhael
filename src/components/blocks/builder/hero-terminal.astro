@@ -1,0 +1,162 @@
+---
+import type { HeroTerminalBlockData } from '@/types/blocks'
+import Container from '@/components/ui/container.astro'
+
+interface Props {
+	data: HeroTerminalBlockData
+}
+
+const { data } = Astro.props
+
+const ASCII_BANNER = `    ▄▄█▄▄      █████╗ ██╗██████╗ ██╗███╗   ███╗
+  ▀▀▀███▀▀▀   ██╔══██╗██║██╔══██╗██║████╗ ████║
+     ███      ███████║██║██████╔╝██║██╔████╔██║
+   ▄█████▄    ██╔══██║██║██╔═══╝ ██║██║╚██╔╝██║
+  ▐███████▌   ██║  ██║██║██║     ██║██║ ╚═╝ ██║
+   ▀█████▀    ╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚═╝     ╚═╝
+     ▀█▀      ═════════════════════════════════`
+
+const terminalLines = [
+	{ kind: 'cmd',     text: 'aipim install --ai claude-code', delay: 0.4 },
+	{ kind: 'success', text: '✓ .project/ scaffolded',          delay: 0.9 },
+	{ kind: 'success', text: '✓ CLAUDE.md generated',           delay: 1.2 },
+	{ kind: 'success', text: '✓ .gitattributes configured',     delay: 1.5 },
+	{ kind: 'blank',   text: '',                                 delay: 1.7 },
+	{ kind: 'cmd',     text: 'aipim mcp start',                  delay: 2.0 },
+	{ kind: 'muted',   text: '→ Rebuilding SQLite...',           delay: 2.4 },
+	{ kind: 'success', text: '✓ MCP server running at :3141',   delay: 2.7 },
+	{ kind: 'blank',   text: '',                                 delay: 2.9 },
+	{ kind: 'cmd',     text: 'aipim task next',                  delay: 3.2 },
+	{ kind: 'box',     text: 'TASK-007 [P1-M] · Refactor auth middleware · 4h', delay: 3.6 },
+	{ kind: 'cursor',  text: '',                                 delay: 4.0 },
+]
+---
+
+<section class="relative overflow-hidden pt-24 lg:pt-32 pb-12">
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 [background:radial-gradient(ellipse_at_center,var(--color-primary),transparent_70%)] opacity-10 z-0"
+	></div>
+
+	<div class="relative z-10 px-4 lg:px-16">
+		<div class="grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-24 items-center">
+			<div class="terminal-window rounded-xl border border-border/60 bg-black/70 backdrop-blur-sm shadow-2xl shadow-black/50 overflow-hidden order-2 lg:order-1">
+				<div class="flex items-center gap-2 px-4 py-3 border-b border-border/40 bg-black/40">
+					<span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+					<span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+					<span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+					<span class="ml-3 font-mono text-xs text-text-subtle tracking-wide">aipim — zsh</span>
+				</div>
+
+				<div class="p-4 lg:p-5 font-mono text-xs lg:text-sm leading-relaxed overflow-hidden">
+					<pre class="ascii-banner text-[0.42rem] sm:text-[0.5rem] leading-[1.15] text-primary/50 mb-4 overflow-hidden">{ASCII_BANNER}</pre>
+
+					{terminalLines.map((line) => (
+						<div
+							class:list={[
+								'terminal-line opacity-0',
+								line.kind === 'blank' ? 'h-3' : '',
+								line.kind === 'cursor' ? 'flex items-center gap-0.5' : ''
+							]}
+							style={`animation-delay: ${line.delay}s`}
+						>
+							{line.kind === 'cmd' && (
+								<span>
+									<span class="text-primary/60 mr-2">$</span>
+									<span class="text-text-main">{line.text}</span>
+								</span>
+							)}
+							{line.kind === 'success' && (
+								<span class="text-green-400/80">{line.text}</span>
+							)}
+							{line.kind === 'muted' && (
+								<span class="text-text-subtle">{line.text}</span>
+							)}
+							{line.kind === 'box' && (
+								<span class="block border border-primary/30 rounded px-3 py-2 text-text-muted bg-primary/5 text-[0.7rem]">
+									{line.text}
+								</span>
+							)}
+							{line.kind === 'cursor' && (
+								<>
+									<span class="text-primary/60 mr-2">$</span>
+									<span class="cursor-blink inline-block w-2 h-4 bg-primary/70 rounded-sm"></span>
+								</>
+							)}
+						</div>
+					))}
+				</div>
+			</div>
+
+			<div class="flex flex-col items-start justify-center gap-5 lg:gap-7 order-1 lg:order-2">
+				<h1 class="m-0 font-serif text-5xl lg:text-6xl xl:text-7xl leading-[1.0] tracking-tighter text-text-main font-bold">
+					{data.headline}
+				</h1>
+
+				<p class="text-lg lg:text-xl leading-relaxed text-text-muted max-w-lg">
+					{data.tagline}
+				</p>
+
+				{data.actions && data.actions.length > 0 && (
+					<div class="flex flex-wrap gap-4">
+						{data.actions.map((action) => (
+							<a
+								href={action.url}
+								class:list={[
+									'inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold transition-all active:scale-95',
+									action.variant === 'primary'
+										? 'bg-primary text-white hover:brightness-110 shadow-lg shadow-primary/20'
+										: 'border border-border bg-bg-card text-text-main hover:border-primary/40 hover:bg-bg-elevated'
+								]}
+							>
+								{action.label}
+							</a>
+						))}
+					</div>
+				)}
+
+				{data.command && (
+					<div class="w-full max-w-md">
+						<div class="bg-black/40 backdrop-blur-sm border border-border/50 rounded-lg p-4 font-mono text-sm text-primary flex items-center">
+							<span class="text-text-muted mr-2">$</span> {data.command.text}
+						</div>
+						{data.command.caption && (
+							<p class="text-xs text-text-subtle mt-2">{data.command.caption}</p>
+						)}
+					</div>
+				)}
+			</div>
+
+		</div>
+	</div>
+</section>
+
+<style>
+	.terminal-line {
+		animation: fadeInLine 0.35s ease forwards;
+	}
+
+	@keyframes fadeInLine {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.cursor-blink {
+		animation: blink 1s step-end infinite;
+	}
+
+	@keyframes blink {
+		0%, 100% { opacity: 1; }
+		50%       { opacity: 0; }
+	}
+
+	.ascii-banner {
+		animation: fadeInLine 0.5s ease forwards;
+	}
+</style>
