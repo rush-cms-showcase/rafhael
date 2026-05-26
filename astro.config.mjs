@@ -4,23 +4,16 @@ import tailwindcss from '@tailwindcss/vite'
 import Icons from 'unplugin-icons/vite'
 
 import sitemap from '@astrojs/sitemap'
-import vercel from '@astrojs/vercel'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://rafhael.pro',
-	
+
 	build: {
 		inlineStylesheets: 'always'
 	},
-
-	adapter: vercel({
-        webAnalytics: {
-            enabled: false
-        }
-    }),
 
 	vite: {
 		plugins: [
