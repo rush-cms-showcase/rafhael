@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
-    "@astrojs/vercel": "^9.0.4",
+    "@resvg/resvg-js": "^2.6.2",
     "@rushcms/client": "latest",
     "@rushcms/types": "latest",
     "@tailwindcss/vite": "^4.1.18",
@@ -23,6 +23,9 @@
     "rehype-stringify": "^10.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
+    "satori": "^0.26.0",
+    "satori-html": "^0.3.2",
+    "sharp": "^0.34.5",
     "shiki": "^3.20.0",
     "tailwindcss": "^4.1.18",
     "unified": "^11.0.5",
