@@ -9,7 +9,13 @@ export interface NavContent {
 }
 
 export interface FooterContent {
-  copyright: string
+  terms: string
+  termsLink: string
+  privacy: string
+  privacyLink: string
+  rights: string
+  created_by: string
+  powered_by: string
 }
 
 export interface GlobalContent {
