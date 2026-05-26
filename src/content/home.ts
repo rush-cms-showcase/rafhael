@@ -167,6 +167,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
         global: {
             nav: {
                 about: 'Sobre Mim',
+                openSource: 'Open Source',
                 cases: 'Cases',
                 blog: 'Blog',
                 login: 'Login',
@@ -464,6 +465,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
         global: {
             nav: {
                 about: 'About Me',
+                openSource: 'Open Source',
                 cases: 'Cases',
                 blog: 'Blog',
                 login: 'Login',

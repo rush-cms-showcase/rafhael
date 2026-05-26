@@ -2,6 +2,7 @@ import type { IconName } from '@/lib/icons'
 
 export interface NavContent {
   about: string
+  openSource: string
   cases: string
   blog: string
   login: string

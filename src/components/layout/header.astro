@@ -12,6 +12,7 @@ const SearchIcon = Icons.search
 
 export interface NavContent {
     about: string
+    openSource: string
     cases: string
     blog: string
     login: string
@@ -30,6 +31,7 @@ const homeUrl = locale === 'pt_BR' ? '/br' : '/'
 
 const navItems = content ? [
     { label: content.about, href: locale === 'pt_BR' ? '/br/sobre-mim' : '/about-me' },
+    { label: content.openSource, href: `${homeUrl === '/' ? '' : homeUrl}/open-source` },
     { label: content.cases, href: `${homeUrl === '/' ? '' : homeUrl}/cases` },
     { label: content.blog, href: `${homeUrl === '/' ? '' : homeUrl}/blog` },
 ] : []
