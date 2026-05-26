@@ -1,0 +1,40 @@
+---
+import type { AnyBlock } from '@/types/blocks'
+
+import HeroBlock from './hero.astro'
+import StoryBlock from './story.astro'
+import ModulesGridBlock from './modules-grid.astro'
+import ArchitectureBlock from './architecture.astro'
+import IntegrationsBlock from './integrations.astro'
+import StatsGridBlock from './stats-grid.astro'
+import RoadmapBlock from './roadmap.astro'
+import CtaSectionBlock from './cta-section.astro'
+
+interface Props {
+	blocks: AnyBlock[]
+}
+
+const { blocks } = Astro.props
+
+const blockMap: Record<string, any> = {
+	hero: HeroBlock,
+	story: StoryBlock,
+	modules: ModulesGridBlock,
+	architecture: ArchitectureBlock,
+	integrations: IntegrationsBlock,
+	stats: StatsGridBlock,
+	roadmap: RoadmapBlock,
+	cta: CtaSectionBlock
+}
+---
+
+{blocks.map((block) => {
+	const Component = blockMap[block._type]
+	
+	if (!Component) {
+		console.warn(`Block type "${block._type}" not found in block-renderer.astro`)
+		return null
+	}
+	
+	return <Component data={block.data} />
+})}

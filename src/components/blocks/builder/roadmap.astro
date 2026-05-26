@@ -1,0 +1,31 @@
+---
+import type { RoadmapBlockData } from '@/types/blocks'
+import Container from '@/components/ui/container.astro'
+import Section from '@/components/ui/section.astro'
+
+interface Props {
+	data: RoadmapBlockData
+}
+
+const { data } = Astro.props
+---
+
+<Section class='py-16 md:py-24 bg-bg-elevated relative'>
+	<Container className='max-w-4xl'>
+		<h2 class='text-3xl font-serif font-bold text-text-main mb-12 text-center'>{data.heading}</h2>
+
+		<div class='space-y-8'>
+			{data.items.map((item, i) => (
+				<div class='flex gap-6 items-start'>
+					<div class='flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold'>
+						{i + 1}
+					</div>
+					<div>
+						<h3 class='text-xl font-bold text-text-main mb-2'>{item.title}</h3>
+						<p class='text-text-muted leading-relaxed'>{item.description}</p>
+					</div>
+				</div>
+			))}
+		</div>
+	</Container>
+</Section>

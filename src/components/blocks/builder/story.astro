@@ -1,0 +1,43 @@
+---
+import type { StoryBlockData } from '@/types/blocks'
+import Container from '@/components/ui/container.astro'
+import { Icons } from '@/lib/icons'
+
+const QuoteIcon = Icons.quote
+
+interface Props {
+	data: StoryBlockData
+}
+
+const { data } = Astro.props
+---
+
+<section class="relative">
+	<Container>
+		<div class="grid lg:grid-cols-2 gap-4 lg:gap-6">
+			<div class="space-y-4 lg:spate-y-6">
+				{data.title && (
+					<h2 class="text-primary text-4xl lg:text-6xl font-serif font-bold">
+						{data.title}
+					</h2>
+				)}
+				<p class="text-text-muted text-xl lg:text-2xl leading-relaxed font-serif italic">
+					{data.hook}
+				</p>
+			</div>
+			<div class="text-text-main text-xl lg:text-3xl space-y-4 lg:space-y-6 lg:mt-32 xl:mt-48">
+				<p class="text-text-main leading-relaxed font-medium leading-tight">
+					{data.resolution}
+				</p>
+				{data.callout && (
+					<blockquote>
+						<p class="flex items-start justify-start lg:text-3xl xl:text-5xl leading-tight text-primary gap-2 lg:gap-8 italic font-serif">
+							<QuoteIcon class="w-8 h-8 lg:w-16 lg:h-16 shrink-0" />
+							{data.callout}
+						</p>
+					</blockquote>
+				)}
+			</div>
+		</div>
+	</Container>
+</section>

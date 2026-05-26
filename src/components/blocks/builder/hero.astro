@@ -1,0 +1,83 @@
+---
+import type { HeroBlockData } from '@/types/blocks'
+import Container from '@/components/ui/container.astro'
+import Section from '@/components/ui/section.astro'
+
+interface Props {
+	data: HeroBlockData
+}
+
+const { data } = Astro.props
+---
+
+<section class="relative overflow-hidden pt-36 flex items-center justify-center">
+	{data.background && (
+		<div class="absolute inset-0 z-0 opacity-20">
+			<img src={data.background} alt="" class="w-full h-full object-cover"/>
+			<div class="absolute inset-0 bg-gradient-to-b from-bg-main/50 to-bg-main"></div>
+		</div>
+	)}
+
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 [background:radial-gradient(ellipse_at_center,var(--color-primary),transparent_70%)] opacity-10 z-0"
+	></div>
+
+	<Container className="relative z-10">
+		<div class="mx-auto max-w-4xl text-center flex flex-col items-center justify-center gap-2 lg:gap-4">
+			{data.logo && (
+				<img src={data.logo} alt="Logo" class="h-24 md:h-32 mx-auto drop-shadow-xl" />
+			)}
+			
+			<h1 class='m-0 font-serif text-4xl lg:text-6xl leading-[1.1] tracking-tighter text-text-main font-bold'>
+				{data.headline}
+			</h1>
+			
+			<p class='mx-auto max-w-2xl text-lg md:text-xl leading-relaxed text-text-muted'>
+				{data.tagline}
+			</p>
+			
+			<div class='flex flex-wrap justify-center gap-4'>
+				{data.actions?.map((action) => (
+					<a
+						href={action.url}
+						class:list={[
+							'inline-flex items-center justify-center gap-2 rounded-md px-8 py-4 text-sm font-bold transition-all active:scale-95',
+							action.variant === 'primary'
+								? 'bg-primary text-white hover:brightness-110 shadow-lg shadow-primary/20'
+								: 'border border-border bg-bg-card text-text-main hover:border-primary/40 hover:bg-bg-elevated'
+						]}
+					>
+						{action.label}
+					</a>
+				))}
+			</div>
+
+			{data.command && (
+				<div class='max-w-lg mx-auto'>
+					<div class='bg-black/40 backdrop-blur-sm border border-border/50 rounded-lg p-4 font-mono text-sm text-primary flex items-center justify-center'>
+						<span class='text-text-muted mr-2'>$</span> {data.command.text}
+					</div>
+					{data.command.caption && (
+						<p class='text-xs text-text-subtle mt-3'>{data.command.caption}</p>
+					)}
+				</div>
+			)}
+
+			{data.badges && data.badges.length > 0 && (
+				<div class='flex flex-wrap justify-center gap-3'>
+					{data.badges.map((badge, i) => (
+						<span class:list={[
+							'inline-flex items-center gap-2 rounded-md border px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider',
+							i === 0
+								? 'border-primary/10 bg-primary/5 text-primary'
+								: 'border-border/50 bg-bg-elevated/50 text-text-subtle'
+						]}>
+							{badge}
+						</span>
+					))}
+				</div>
+			)}
+		</div>
+	</Container>
+</section>

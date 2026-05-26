@@ -1,0 +1,60 @@
+---
+import type { StatsBlockData } from '@/types/blocks'
+import Container from '@/components/ui/container.astro'
+import Section from '@/components/ui/section.astro'
+import { Icons } from '@/lib/icons'
+
+const ChevronDownIcon = Icons.chevron_down
+
+interface Props {
+	data: StatsBlockData
+}
+
+const { data } = Astro.props
+---
+
+<section class="relative">
+	<Container>
+		<div class="mb-12">
+			<h2 class="text-3xl lg:text-4xl xl:text-6xl font-serif font-bold mb-8 max-w-lg">
+				{data.heading}
+			</h2>
+		</div>
+
+		<div class="grid lg:grid-cols-3 gap-4 lg:gap-8 z-10">
+			<div class="flex flex-col items-start justify-start gap-4 lg:gap-8">
+				{data.stats.map((item) => (
+					<div class="flex flex-col items-start justify-start space-y-2 z-10">
+						<span class='text-3xl lg:text-5xl font-bold text-primary'>
+							{item.stat}
+						</span>
+						<span class='lg:text-lg text-text-muted leading-tight'>
+							{item.label}
+						</span>
+					</div>
+				))}
+			</div>
+			<div class="flex flex-col items-start justify-start col-span-2 w-full">
+				{data.faqs && data.faqs.length > 0 && (
+					<div class="w-full flex flex-col gap-4">
+						{data.faqs.map((faq) => (
+							<details class="group bg-black/5 border border-primary/20 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+								<summary class="flex justify-between items-center font-serif text-lg lg:text-2xl cursor-pointer list-none p-4 lg:p-6 text-text-main hover:text-primary transition-colors">
+									<span>{faq.question}</span>
+									<span class="transition group-open:rotate-180">
+										<ChevronDownIcon class="w-5 h-5 lg:w-6 lg:h-6" />
+									</span>
+								</summary>
+								<div class="text-text-muted p-4 lg:p-6 leading-relaxed text-sm lg:text-lg border-t border-primary/10 bg-black/10">
+									{faq.answer}
+								</div>
+							</details>
+						))}
+					</div>
+				)}
+			</div>
+		</div>
+
+		<div class="max-lg:hidden absolute -bottom-32 -right-32 w-240 h-240 bg-primary/5 opacity-20 blur-2xl rounded-full z-0"></div>
+	</Container>
+</section>

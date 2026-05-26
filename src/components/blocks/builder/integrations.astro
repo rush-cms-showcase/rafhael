@@ -1,0 +1,64 @@
+---
+import type { IntegrationsBlockData } from '@/types/blocks'
+import Container from '@/components/ui/container.astro'
+
+interface Props {
+	data: IntegrationsBlockData
+}
+
+const { data } = Astro.props
+
+const half = Math.ceil(data.items.length / 2)
+const row1 = data.items.slice(0, half)
+const row2 = data.items.slice(half)
+
+---
+
+<section class="relative overflow-hidden">
+	<Container className="relative z-10">
+		<div class="mb-12 md:mb-20 text-center max-w-2xl mx-auto">
+			<h2 class="text-3xl lg:text-5xl xl:text-6xl font-serif font-bold text-primary">
+				{data.heading}
+			</h2>
+		</div>
+	</Container>
+
+	<div class="relative w-full flex flex-col gap-6 lg:gap-8 pb-12 overflow-hidden flex-nowrap mask-edges">
+		{[row1, row2].map((row, index) => (
+			<div class={`flex w-max gap-6 lg:gap-8 ${index === 0 ? 'animate-marquee-left' : 'animate-marquee-right ml-[-20%]'}`}>
+				{Array(6).fill(row).flat().map(item => (
+					<div class="flex items-center gap-3 px-6 py-3 lg:px-8 lg:py-4 bg-black/10 border border-border/50 rounded-full hover:border-primary/50 hover:cursor-default transition-colors shadow-sm">
+						<img src={item.logo} alt={item.name} class="w-5 h-5 lg:w-6 lg:h-6 object-contain" />
+						<span class="font-medium whitespace-nowrap text-text-main">
+							{item.name}
+						</span>
+					</div>
+				))}
+			</div>
+		))}
+	</div>
+</section>
+
+<style>
+	@keyframes marquee-left {
+		from { transform: translateX(0); }
+		to { transform: translateX(-50%); }
+	}
+	@keyframes marquee-right {
+		from { transform: translateX(-50%); }
+		to { transform: translateX(0); }
+	}
+	.animate-marquee-left {
+		animation: marquee-left 40s linear infinite;
+	}
+	.animate-marquee-right {
+		animation: marquee-right 40s linear infinite;
+	}
+	.animate-marquee-left:hover, .animate-marquee-right:hover {
+		animation-play-state: paused;
+	}
+	.mask-edges {
+		mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+		-webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+	}
+</style>

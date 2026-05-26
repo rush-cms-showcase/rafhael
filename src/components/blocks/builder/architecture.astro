@@ -1,0 +1,28 @@
+---
+import type { ArchitectureBlockData } from '@/types/blocks'
+import Container from '@/components/ui/container.astro'
+import Section from '@/components/ui/section.astro'
+
+interface Props {
+	data: ArchitectureBlockData
+}
+
+const { data } = Astro.props
+---
+
+<Section class='py-16 md:py-24 bg-bg-main relative'>
+	<Container>
+		<div class='grid gap-12 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border/50'>
+			{data.items.map((item, i) => (
+				<div class={`pt-8 lg:pt-0 ${i !== 0 ? 'lg:pl-12' : ''}`}>
+					<h3 class='text-xl font-serif font-bold text-text-main mb-4'>
+						{item.title}
+					</h3>
+					<p class='text-text-muted leading-relaxed text-sm md:text-base'>
+						{item.body}
+					</p>
+				</div>
+			))}
+		</div>
+	</Container>
+</Section>
