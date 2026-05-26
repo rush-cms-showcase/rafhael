@@ -1,5 +1,6 @@
 # build output
 dist/
+
 # generated types
 .astro/
 
@@ -20,10 +21,11 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
-.idea/
+# Local project managment
+.claude/
+.project/
+.vscode/
+CLAUDE.md
 
-# Code reviewer, Sprint manager
-.ia/
-.ai/
-.vercel
+# Vercel CLI artifacts
+.vercel/
