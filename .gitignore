@@ -25,6 +25,7 @@ pnpm-debug.log*
 .claude/
 .project/
 .vscode/
+.ai/
 CLAUDE.md
 
 # Vercel CLI artifacts
