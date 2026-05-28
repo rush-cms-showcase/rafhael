@@ -28,6 +28,3 @@ pnpm-debug.log*
 .ai/
 docs/
 CLAUDE.md
-
-# Vercel CLI artifacts
-.vercel/
