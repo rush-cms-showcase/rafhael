@@ -34,7 +34,7 @@ const filteredPosts = allPosts.data.filter((post: BlogPost) =>
 const content = homeContent.pt_BR
 ---
 
-<Layout title={`${tag.name} - ${content.metadata.title}`} description={`Leia artigos com a tag ${tag.name}`}>
+<Layout title={`${tag.name} - ${content.metadata.title}`} description={`Leia artigos com a tag ${tag.name}`} noindex={filteredPosts.length <= 5}>
     <Header content={content.global.nav} locale='pt_BR' />
     <Container className='pt-32 md:pt-48 pb-20'>
         <div class='max-w-3xl mx-auto text-center mb-16 md:mb-24'>

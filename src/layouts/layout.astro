@@ -8,15 +8,16 @@ interface Props {
     image?: string
     lang?: string
     schema?: any
+    noindex?: boolean
 }
 
-const { title, description, image, lang = 'pt-BR', schema } = Astro.props
+const { title, description, image, lang = 'pt-BR', schema, noindex } = Astro.props
 ---
 
 <!doctype html>
 <html lang={lang} class='scroll-smooth'>
     <head>
-        <SeoHead title={title} description={description} image={image} schema={schema} />
+        <SeoHead title={title} description={description} image={image} schema={schema} noindex={noindex} />
         {
             import.meta.env.GTAG && (
                 <>

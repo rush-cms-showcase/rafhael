@@ -50,7 +50,7 @@ const title = `${categoryName} - Blog - Rafhael Marsigli`
 const description = `Articles about ${categoryName}`
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} noindex={page.total <= 5}>
     <Header content={content.global.nav} locale='en' />
     <main class='pt-16 md:pt-12'>
         <Section>
