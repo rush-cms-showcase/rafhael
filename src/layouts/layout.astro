@@ -17,6 +17,7 @@ const { title, description, image, lang = 'pt-BR', schema, noindex } = Astro.pro
 <!doctype html>
 <html lang={lang} class='scroll-smooth'>
     <head>
+        <slot name='head' />
         <SeoHead title={title} description={description} image={image} schema={schema} noindex={noindex} />
         {
             import.meta.env.GTAG && (

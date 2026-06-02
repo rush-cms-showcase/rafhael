@@ -20,6 +20,17 @@ const scheduleUrl = import.meta.env.PUBLIC_SCHEDULE_URL ?? 'https://cal.com/rafh
 ---
 
 <Layout title={title} description={description}>
+    <script is:inline slot='head'>
+        (function() {
+            try {
+                var saved = localStorage.getItem('rush_lang_pref')
+                var lang = navigator.language || navigator.userLanguage
+                if (saved === 'pt' || (!saved && lang && lang.startsWith('pt'))) {
+                    window.location.replace('/br')
+                }
+            } catch (e) {}
+        })()
+    </script>
     <Header content={content.global.nav} locale='en' />
 
     <main>
@@ -46,20 +57,4 @@ const scheduleUrl = import.meta.env.PUBLIC_SCHEDULE_URL ?? 'https://cal.com/rafh
     </main>
 
     <Footer content={content.global.footer} />
-    <script is:inline>
-        (function() {
-            try {
-                const savedLang = localStorage.getItem('rush_lang_pref');
-                const userLang = navigator.language || navigator.userLanguage;
-
-                if (savedLang === 'pt') {
-                    window.location.href = '/br';
-                } else if (!savedLang && userLang && userLang.startsWith('pt')) {
-                    window.location.href = '/br';
-                }
-            } catch (e) {
-                console.error('Language redirect error:', e);
-            }
-        })();
-    </script>
 </Layout>
