@@ -10,6 +10,14 @@ import { fileURLToPath } from 'url'
 export default defineConfig({
 	site: 'https://rafhael.pro',
 
+	server: {
+		port: 4321,
+		hmr: { port: 4321 },
+		headers: {
+			'Cache-Control': 'no-store'
+		}
+	},
+
 	build: {
 		inlineStylesheets: 'always'
 	},
