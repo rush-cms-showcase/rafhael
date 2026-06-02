@@ -3,7 +3,7 @@ import type { HomeLocaleContent } from '@/types/content'
 export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
     pt_BR: {
         hero: {
-            title: "Engenheiro Full-Stack Sênior <span class='text-primary italic'>&</span> Construtor de Plataformas",
+            title: "Engenheiro Full-Stack <span class='text-primary italic'>&</span> Construtor de Plataformas",
             subtitle:
                 '15+ anos construindo sistemas web escaláveis, arquiteturas resilientes e produtos de alto impacto. Especializado no ecossistema <b>PHP/Laravel</b>, <b>React</b> e gestão de infraestrutura de ponta a ponta.',
             ctaPrimary: 'Agendar uma Conversa',
@@ -11,7 +11,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             stats: [
                 { value: '15+', label: 'Anos entregando sistemas em produção' },
                 { value: '10+', label: 'Anos como engenheiro líder solo' },
-                { value: '100%', label: 'Remoto — desde 2015' },
+                { value: '100%', label: 'Remoto - desde 2015' },
             ],
         },
         philosophy: {
@@ -83,10 +83,10 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             items: [
                 {
                     name: 'Mega Model Sul',
-                    role: 'Engenheiro Full-Stack Sênior & Infraestrutura',
+                    role: 'Engenheiro Full-Stack & Infraestrutura',
                     period: '2013 – Presente',
                     description:
-                        'Engenheiro líder e responsável pela infraestrutura por mais de uma década. Escalei a plataforma, gerenciei migrações de legado para moderno, cuidei de infra, sistemas de backend, sites e landing pages — garantindo máximo uptime e resiliência técnica.',
+                        'Engenheiro líder e responsável pela infraestrutura por mais de uma década. Escalei a plataforma, gerenciei migrações de legado para moderno, cuidei de infra, sistemas de backend, sites e landing pages - garantindo máximo uptime e resiliência técnica.',
                     tags: [
                         'Laravel',
                         'PHP',
@@ -110,7 +110,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
                 },
                 {
                     name: 'AIPIM',
-                    role: 'Autor — Open Source',
+                    role: 'Autor - Open Source',
                     period: '2025',
                     description:
                         'Um gerenciador de instruções de projeto com IA de código aberto, construído para lidar com janelas de contexto complexas em fluxos de desenvolvimento assistido por IA. Atualmente na v2.0.0.',
@@ -124,13 +124,13 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             label: 'Além do Código',
             title: 'Quem sou eu',
             paragraphs: [
-                'Baseado em São Paulo, Brasil (UTC-3) — com disponibilidade flexível para sobreposição com o horário da Costa Leste dos EUA e manhãs europeias. Me comunico em inglês com proficiência profissional: fluente na escrita e leitura, e confiante na comunicação falada.',
+                'Baseado em São Paulo, Brasil (UTC-3) - com disponibilidade flexível para sobreposição com o horário da Costa Leste dos EUA e manhãs europeias. Me comunico em inglês com proficiência profissional: fluente na escrita e leitura, e confiante na comunicação falada.',
                 'Passei a última década aperfeiçoando a disciplina do trabalho remoto para permanecer perto da minha família. Tenho a capacidade de me aprofundar enormemente em problemas complexos, canalizando meu foco para aprendizado contínuo e para o meu blog técnico.',
                 'Uso IA extensivamente como copiloto diário para otimizar fluxos de trabalho e acelerar entregas. Me comunico de forma direta, valorizo candor radical com empatia e busco um time onde possa me dedicar integralmente a um único produto global.',
             ],
             location: 'São Paulo, Brasil (UTC-3)',
-            language: 'Inglês profissional — escrito e falado',
-            workStyle: 'Full remote — 10+ anos de experiência',
+            language: 'Inglês profissional - escrito e falado',
+            workStyle: 'Full remote - 10+ anos de experiência',
         },
         blog: {
             shareTitle: 'Compartilhe com quem você gosta',
@@ -156,9 +156,9 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             role: 'Pórtico',
         },
         metadata: {
-            title: 'Rafhael Marsigli — Engenheiro Full-Stack Sênior',
+            title: 'Rafhael Marsigli - Engenheiro Full-Stack',
             description:
-                'Engenheiro Full-Stack Sênior com 15+ anos construindo sistemas Laravel escaláveis, plataformas e infraestrutura. Buscando oportunidades remotas internacionais.',
+                'Engenheiro Full-Stack com 15+ anos construindo sistemas Laravel escaláveis, plataformas e infraestrutura. Buscando oportunidades remotas internacionais.',
         },
         ctaSection: {
             title: 'Vamos construir algo incrível juntos.',
@@ -284,7 +284,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
                 title: 'A Jornada',
                 subtitle: 'De Coder a Engenheiro de Produto',
                 text1: 'Minha evolução técnica não foi linear; foi cumulativa. Comecei curioso sobre colocar pixels na tela, mas rapidamente percebi que um layout bonito não sustenta um sistema instável. Ao longo dos anos, deixei de ser apenas um \"coder\" para me tornar um <strong>Engenheiro de Produto com visão de Arquiteto</strong>.',
-                text2: 'Atuei em todas as frentes: do ajuste fino de interfaces pixel-perfect à configuração de infraestrutura bruta em servidores <em>self-hosted</em>. Essa experiência \"Full Cycle\" removeu o glamour e o substituiu por pragmatismo. Hoje, quando desenho uma arquitetura, não penso apenas na teoria de livros — penso em como ela se comportará em produção, como será debugada e quanto custará escalar. Não vendo balas de prata; construo sistemas que param em pé.',
+                text2: 'Atuei em todas as frentes: do ajuste fino de interfaces pixel-perfect à configuração de infraestrutura bruta em servidores <em>self-hosted</em>. Essa experiência \"Full Cycle\" removeu o glamour e o substituiu por pragmatismo. Hoje, quando desenho uma arquitetura, não penso apenas na teoria de livros - penso em como ela se comportará em produção, como será debugada e quanto custará escalar. Não vendo balas de prata; construo sistemas que param em pé.',
             },
             philosophy: {
                 title: 'Filosofia & Abordagem',
@@ -301,7 +301,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
     },
     en: {
         hero: {
-            title: 'Senior Full-Stack Engineer <span class=\"text-primary italic\">&</span> Platform Builder',
+            title: 'Full-Stack Engineer <span class=\"text-primary italic\">&</span> Platform Builder',
             subtitle:
                 '15+ years building scalable web systems, resilient architectures, and high-impact products. Specializing in the <b>PHP/Laravel</b> ecosystem, <b>React</b>, and end-to-end infrastructure management.',
             ctaPrimary: 'Schedule a Call',
@@ -309,7 +309,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             stats: [
                 { value: '15+', label: 'Years shipping production systems' },
                 { value: '10+', label: 'Years as sole lead engineer' },
-                { value: '100%', label: 'Remote — since 2015' },
+                { value: '100%', label: 'Remote - since 2015' },
             ],
         },
         philosophy: {
@@ -381,10 +381,10 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             items: [
                 {
                     name: 'Mega Model Sul',
-                    role: 'Senior Full-Stack Engineer & Infrastructure',
+                    role: 'Full-Stack Engineer & Infrastructure',
                     period: '2013 – Present',
                     description:
-                        'Lead engineer and infrastructure owner for a decade+. Scaled the platform, managed legacy-to-modern migrations, handled infra, backend systems, websites, and landing pages — ensuring maximum uptime and technical resilience.',
+                        'Lead engineer and infrastructure owner for a decade+. Scaled the platform, managed legacy-to-modern migrations, handled infra, backend systems, websites, and landing pages - ensuring maximum uptime and technical resilience.',
                     tags: [
                         'Laravel',
                         'PHP',
@@ -408,7 +408,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
                 },
                 {
                     name: 'AIPIM',
-                    role: 'Author — Open Source',
+                    role: 'Author - Open Source',
                     period: '2025',
                     description:
                         'An open-source AI Project Instruction Manager built to handle complex context windows in AI-assisted development workflows. Currently at v2.0.0.',
@@ -422,13 +422,13 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             label: 'Beyond the Code',
             title: 'Who I am',
             paragraphs: [
-                'Based in São Paulo, Brazil (UTC-3) — with flexible availability for overlap with US East Coast and European morning hours. I communicate in English at professional proficiency: fluent in written and reading, and confident in spoken communication.',
+                'Based in São Paulo, Brazil (UTC-3) - with flexible availability for overlap with US East Coast and European morning hours. I communicate in English at professional proficiency: fluent in written and reading, and confident in spoken communication.',
                 'I have spent the last decade mastering remote work discipline to stay close to my family. I have the ability to go extremely deep on complex problems, channeling focus into continuous learning and writing for my technical blog.',
                 'I use AI extensively as a daily copilot to optimize workflows and accelerate delivery. I communicate directly, value radical candor with empathy, and am looking for a team where I can go all-in on a single, global product.',
             ],
             location: 'São Paulo, Brazil (UTC-3)',
-            language: 'Professional English — written & spoken',
-            workStyle: 'Full remote — 10+ years experience',
+            language: 'Professional English - written & spoken',
+            workStyle: 'Full remote - 10+ years experience',
         },
         blog: {
             shareTitle: 'Share with those you love',
@@ -454,9 +454,9 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
             role: 'Pórtico',
         },
         metadata: {
-            title: 'Rafhael Marsigli — Senior Full-Stack Engineer',
+            title: 'Rafhael Marsigli - Full-Stack Engineer',
             description:
-                'Senior Full-Stack Engineer with 15+ years building scalable Laravel systems, platforms, and infrastructure. Seeking international remote opportunities.',
+                'Full-Stack Engineer with 15+ years building scalable Laravel systems, platforms, and infrastructure. Seeking international remote opportunities.',
         },
         ctaSection: {
             title: "Let's build something great together.",
@@ -494,7 +494,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
                 title: 'The Journey',
                 subtitle: 'From Coder to Product Engineer',
                 text1: "My technical evolution wasn't linear; it was cumulative. I started out curious about putting pixels on a screen, but quickly realized that a beautiful layout cannot sustain an unstable system. Over the years, I moved from being just a 'coder' to becoming a <strong>Product Engineer with an Architect's vision</strong>.",
-                text2: "I have worked on every front: from fine-tuning pixel-perfect interfaces to configuring raw infrastructure on <em>self-hosted</em> servers. This 'Full Cycle' experience stripped away the glamour and replaced it with pragmatism. Today, when I design an architecture, I don't just think about textbook theory—I think about how it will behave in production, how it will be debugged, and what it will cost to scale. I don't sell silver bullets; I build systems that stand up.",
+                text2: "I have worked on every front: from fine-tuning pixel-perfect interfaces to configuring raw infrastructure on <em>self-hosted</em> servers. This 'Full Cycle' experience stripped away the glamour and replaced it with pragmatism. Today, when I design an architecture, I don't just think about textbook theory-I think about how it will behave in production, how it will be debugged, and what it will cost to scale. I don't sell silver bullets; I build systems that stand up.",
             },
             philosophy: {
                 title: 'Philosophy & Approach',
