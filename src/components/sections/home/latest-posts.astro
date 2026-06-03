@@ -1,0 +1,52 @@
+---
+import Container from '@/components/ui/container.astro'
+import Section from '@/components/ui/section.astro'
+import { rush, type BlogPost } from '@/lib/rush'
+import BlogCard from '@/components/blog/blog-card.astro'
+import { homeContent } from '@/content/home'
+
+interface Props {
+    locale: 'en' | 'pt_BR'
+}
+
+const { locale } = Astro.props
+
+// Fetch the 3 latest posts
+const response = await rush.getEntries('blog', { per_page: 3, locale })
+const posts = (response as any).data as BlogPost[]
+
+const content = homeContent[locale]
+const title = content.latestPosts.title
+const viewAll = content.latestPosts.viewAll
+const readMoreLabel = content.blog.readMore
+const basePrefix = locale === 'pt_BR' ? '/br' : ''
+const catSlug = content.taxonomies.category.slug
+const blogUrl = `${basePrefix}/blog`
+---
+
+{
+    posts.length > 0 && (
+        <Container>
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+                <h2 class="font-serif text-3xl md:text-5xl font-bold text-primary">{title}</h2>
+                <a
+                    href={blogUrl}
+                    class="text-text-muted hover:text-primary transition-colors text-sm font-semibold uppercase tracking-wider">
+                    {viewAll} &rarr;
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                {posts.map((post) => (
+                    <BlogCard
+                        post={post}
+                        locale={locale}
+                        basePrefix={basePrefix}
+                        catSlug={catSlug}
+                        readMoreLabel={readMoreLabel}
+                    />
+                ))}
+            </div>
+        </Container>
+    )
+}
