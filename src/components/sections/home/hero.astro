@@ -18,76 +18,99 @@ const hasArrayStats = Array.isArray(content.stats)
 const statsArray = hasArrayStats ? (content.stats as Array<{ value: string; label: string }>) : []
 ---
 
-<section
-    class='relative min-h-[90vh] flex items-center pt-32 pb-20 overflow-hidden'
->
+<section class="relative min-h-[90vh] lg:min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
     <Particles />
 
-    <div class='absolute inset-0 pointer-events-none'>
+    <div class="absolute inset-0 pointer-events-none">
         <div
-            class='absolute top-0 right-0 w-[60%] h-full bg-[radial-gradient(ellipse_at_70%_30%,var(--color-primary)_0%,transparent_60%)] opacity-10'
-        >
+            class="absolute top-0 right-0 w-[60%] h-full bg-[radial-gradient(ellipse_at_70%_30%,var(--color-primary)_0%,transparent_60%)] opacity-10">
         </div>
     </div>
 
     <Container>
-        <div class='grid lg:grid-cols-2 gap-16 items-center'>
-            <div class='relative z-10 max-lg:text-center'>
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="relative z-10 max-lg:text-center">
                 <h1
-                    class='font-serif text-5xl md:text-6xl font-bold leading-tight mb-6 animate-fade-in delay-100'
+                    class="font-serif text-5xl md:text-6xl font-bold leading-tight mb-6 animate-fade-in delay-100"
                     set:html={content.title}
                 />
 
                 <p
-                    class='text-text-muted text-lg md:text-xl mb-10 max-w-lg leading-relaxed animate-fade-in delay-200'
+                    class="text-text-muted text-lg md:text-xl mb-10 max-w-lg leading-relaxed animate-fade-in delay-200"
                     set:html={content.subtitle}
                 />
 
-                <div
-                    class='flex max-lg:justify-center flex-wrap gap-4 animate-fade-in-up delay-300'
-                >
+                <div class="flex max-lg:justify-center flex-wrap gap-4 animate-fade-in-up delay-300">
                     <Button
                         href={scheduleUrl}
-                        variant='primary'
-                        size='lg'
-                        className='shadow-[0_10px_40px_rgba(63,145,240,0.3)]'
-                    >
+                        variant="primary"
+                        size="lg"
+                        className="shadow-[0_10px_40px_rgba(63,145,240,0.3)]">
                         {content.ctaPrimary}
-                        <CalendarIcon class='w-[18px] h-[18px]' />
+                        <CalendarIcon class="w-[18px] h-[18px]" />
                     </Button>
                     <Button
-                        href='https://github.com/rmarsigli'
-                        variant='outline'
-                        size='lg'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <GithubIcon class='w-[18px] h-[18px]' />
+                        href="https://github.com/rmarsigli"
+                        variant="outline"
+                        size="lg"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        <GithubIcon class="w-[18px] h-[18px]" />
                         {content.ctaSecondary}
                     </Button>
                 </div>
             </div>
 
-            {hasArrayStats && (
-                <div class='relative z-10 animate-fade-in delay-500 hidden lg:flex flex-col gap-4'>
-                    <div class='grid grid-cols-3 gap-4'>
-                        {statsArray.map((stat) => (
-                            <div class='bg-bg-card border border-border rounded-xl p-6 flex flex-col gap-1 hover:border-primary/40 transition-colors duration-300'>
-                                <span class='text-3xl font-bold text-primary font-mono'>{stat.value}</span>
-                                <span class='text-text-muted text-sm leading-snug'>{stat.label}</span>
-                            </div>
-                        ))}
+            {
+                hasArrayStats && (
+                    <div class="relative z-10 animate-fade-in delay-500 hidden lg:flex flex-col gap-4">
+                        <div class="grid grid-cols-3 gap-4">
+                            {statsArray.map((stat) => (
+                                <div class="bg-black/40 border border-primary/30 rounded-xl p-6 flex flex-col gap-1">
+                                    <span class="text-3xl font-bold text-primary font-mono">{stat.value}</span>
+                                    <span class="text-text-muted text-sm leading-snug">{stat.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <div class="bg-black/50 border border-primary/20 rounded-xl p-5 font-mono text-sm leading-relaxed text-text-muted">
+                            <span class="text-primary">class</span>{' '}
+                            <span class="text-green-400">{content.codeSnippet.className}</span>{' '}
+                            <>
+                                <span class="text-text-muted">{`{`}</span>
+                                <br />
+                            </>
+                            &nbsp;&nbsp;<span class="text-blue-400">role</span> ={' '}
+                            <>
+                                <span class="text-amber-300">
+                                    '{content.codeSnippet.role}'{' '}
+                                    <span class="text-text-muted/40">{content.codeSnippet.roleComment}</span>
+                                </span>
+                                <br />
+                            </>
+                            &nbsp;&nbsp;<span class="text-blue-400">stack</span> = [
+                            {content.codeSnippet.stack.map((s, i) => (
+                                <>
+                                    <span class="text-amber-300">'{s}'</span>
+                                    {i < content.codeSnippet.stack.length - 1 ? ', ' : ''}
+                                </>
+                            ))}
+                            ]<br />
+                            &nbsp;&nbsp;<span class="text-blue-400">exp</span> ={' '}
+                            <>
+                                <span class="text-amber-300">'{content.codeSnippet.exp}'</span>
+                                <br />
+                            </>
+                            &nbsp;&nbsp;<span class="text-blue-400">open</span> ={' '}
+                            <span class="text-green-400">{content.codeSnippet.open ? 'true' : 'false'}</span>{' '}
+                            <>
+                                <span class="text-text-muted/40">{content.codeSnippet.openComment}</span>
+                                <br />
+                            </>
+                            <span class="text-text-muted">{`}`}</span>
+                        </div>
                     </div>
-                    <div class='bg-bg-card border border-border rounded-xl p-5 font-mono text-sm leading-relaxed text-text-muted'>
-                        <span class='text-primary'>class</span> <span class='text-green-400'>RafhaelMarsigli</span> <span class='text-text-muted'>{`{`}</span><br/>
-                        &nbsp;&nbsp;<span class='text-blue-400'>role</span> = <span class='text-amber-300'>'Full-Stack Engineer' <span class='text-text-muted/40'>// with hands-on infrastructure & architecture ownership</span></span><br/>
-                        &nbsp;&nbsp;<span class='text-blue-400'>stack</span> = [<span class='text-amber-300'>'PHP'</span>, <span class='text-amber-300'>'Laravel'</span>, <span class='text-amber-300'>'React'</span>, <span class='text-amber-300'>'Typescript'</span>]<br/>
-                        &nbsp;&nbsp;<span class='text-blue-400'>exp</span> = <span class='text-amber-300'>'15+ years'</span><br/>
-                        &nbsp;&nbsp;<span class='text-blue-400'>open</span> = <span class='text-green-400'>true</span> <span class='text-text-muted/40'>// remote</span><br/>
-                        <span class='text-text-muted'>{`}`}</span>
-                    </div>
-                </div>
-            )}
+                )
+            }
         </div>
     </Container>
 </section>

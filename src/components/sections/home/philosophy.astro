@@ -11,31 +11,33 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<Section>
-    <Container>
-        <div class='text-center mb-14'>
-            <h2 class='font-serif text-4xl md:text-5xl font-bold mb-5'>
+<Container>
+    <div class="grid lg:grid-cols-2 gap-6 lg:gap-12">
+        <div class="flex flex-col items-start justify-center gap-2">
+            <h2 class="font-serif text-primary text-4xl md:text-5xl font-bold max-w-xl mb-2">
                 {content.title}
             </h2>
-            <p class='text-text-muted text-lg max-w-2xl mx-auto leading-relaxed'>
+            <p class="text-text-muted text-lg leading-relaxed max-w-xl">
                 {content.intro}
             </p>
         </div>
-
-        <div class='grid md:grid-cols-3 gap-6'>
-            {content.items.map((item) => {
-                const Icon = Icons[item.icon as IconName] || Icons.help
-                return (
-                    <div class='group relative bg-bg-card border border-border rounded-2xl p-8 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1'>
-                        <div class='w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-6 group-hover:bg-primary/20 transition-colors duration-300'>
-                            <Icon class='w-6 h-6' />
+        <div class="grid gap-6">
+            {
+                content.items.map((item) => {
+                    const Icon = Icons[item.icon as IconName] || Icons.help
+                    return (
+                        <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 bg-black/5 border border-primary/10 rounded-2xl shadow-2xl shadow-primary/5 p-8">
+                            <div class="shrink-0 w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                                <Icon class="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-xl lg:text-2xl font-bold mb-1 text-primary">{item.title}</h3>
+                                <p class="text-text-muted leading-relaxed">{item.description}</p>
+                            </div>
                         </div>
-                        <h3 class='font-serif text-xl font-bold mb-3'>{item.title}</h3>
-                        <p class='text-text-muted text-sm leading-relaxed'>{item.description}</p>
-                        <div class='absolute bottom-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-                    </div>
-                )
-            })}
+                    )
+                })
+            }
         </div>
-    </Container>
-</Section>
+    </div>
+</Container>

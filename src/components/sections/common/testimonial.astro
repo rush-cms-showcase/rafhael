@@ -12,14 +12,18 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<div class="max-w-4xl mx-auto flex flex-col items-start justify-center gap-2 lg:gap-4">
-    <p class="font-serif text-2xl md:text-4xl italic leading-relaxed text-text-main">
-        {content.quote}
-    </p>
-    <span class="w-full h-[1px] bg-primary/5"></span>
-    <div class="flex flex-col items-start justify-start">
-        <span class="font-bold text-white text-xl font-serif">
-            - <span class="text-primary">{content.author}</span>, <span class="text-white/50">{content.role}</span>
-        </span>
+<div class="flex flex-col items-center justify-center">
+    <div
+        class="bg-black/5 border border-primary/5 rounded-2xl p-8 lg:py-12 flex flex-col items-start
+            justify-center gap-2 lg:gap-4 shadow-2xl shadow-primary/5">
+        <p class="font-serif text-2xl md:text-4xl italic leading-relaxed text-text-main">
+            {content.quote}
+        </p>
+        <div class="flex flex-col items-start justify-start">
+            <span class="font-bold text-white text-xl font-serif">
+                - <span class="text-primary">{content.author}</span>,
+                <span class="text-white/75">{content.role}</span>
+            </span>
+        </div>
     </div>
 </div>

@@ -4,9 +4,7 @@ import Section from '@/components/ui/section.astro'
 import { Icons } from '@/lib/icons'
 import type { HomeContent } from '@/content/home'
 
-const MapPinIcon = Icons.map_pin
-const GlobeIcon = Icons.globe
-const MonitorIcon = Icons.monitor
+const IconSquareCheck = Icons.square_check
 
 interface Props {
     content: HomeContent['beyond']
@@ -15,42 +13,27 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<Section>
-    <Container>
-        <div class='max-w-3xl mx-auto'>
-            <div class='text-center mb-12'>
-                <h2 class='font-serif text-4xl md:text-5xl font-bold'>
-                    {content.title}
-                </h2>
-            </div>
+<div class="flex flex-col items-start justify-center gap-4 lg:gap-6">
+    <h2 class="font-serif text-primary text-4xl md:text-5xl font-bold">
+        {content.title}
+    </h2>
 
-            <div class='space-y-6'>
-                {content.paragraphs.map((paragraph, i) => (
-                    <div class='flex gap-6 items-start group'>
-                        <div class='shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary text-sm font-bold mt-0.5 group-hover:bg-primary/20 transition-colors duration-300'>
-                            {i + 1}
-                        </div>
-                        <p class='text-text-muted text-lg leading-relaxed pt-0.5'>
-                            {paragraph}
-                        </p>
-                    </div>
-                ))}
-            </div>
+    <div class="space-y-6">
+        {
+            content.paragraphs.map((paragraph, i) => (
+                <p class="text-text-muted text-lg leading-relaxed pt-0.5">{paragraph}</p>
+            ))
+        }
+    </div>
 
-            <div class='mt-12 pt-8 border-t border-border flex flex-wrap gap-6 items-center'>
-                <div class='flex items-center gap-2 text-text-muted text-sm'>
-                    <MapPinIcon class='w-4 h-4' />
-                    {content.location}
+    <div class="flex flex-col gap-2 lg:gap-4 items-start gap-2 lg:gap-4">
+        {
+            ([content.location, content.language, content.workStyle] as const).map((item) => (
+                <div class="flex items-center gap-2 text-text-muted">
+                    <IconSquareCheck class="w-6 h-6 text-primary" />
+                    {item}
                 </div>
-                <div class='flex items-center gap-2 text-text-muted text-sm'>
-                    <GlobeIcon class='w-4 h-4' />
-                    {content.language}
-                </div>
-                <div class='flex items-center gap-2 text-text-muted text-sm'>
-                    <MonitorIcon class='w-4 h-4' />
-                    {content.workStyle}
-                </div>
-            </div>
-        </div>
-    </Container>
-</Section>
+            ))
+        }
+    </div>
+</div>

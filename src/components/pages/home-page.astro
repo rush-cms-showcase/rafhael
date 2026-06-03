@@ -1,28 +1,28 @@
 ---
-import Layout from "@/layouts/layout.astro";
-import Header from "@/components/layout/header.astro";
-import Hero from "@/components/sections/home/hero.astro";
-import Philosophy from "@/components/sections/home/philosophy.astro";
-import Stack from "@/components/sections/common/stack.astro";
-import Projects from "@/components/sections/home/projects.astro";
-import Beyond from "@/components/sections/home/beyond.astro";
-import Testimonial from "@/components/sections/common/testimonial.astro";
-import Footer from "@/components/layout/footer.astro";
-import Section from "@/components/ui/section.astro";
-import Button from "@/components/ui/button.astro";
-import { homeContent } from "@/content/home";
+import Layout from '@/layouts/layout.astro'
+import Header from '@/components/layout/header.astro'
+import Hero from '@/components/sections/home/hero.astro'
+import Philosophy from '@/components/sections/home/philosophy.astro'
+import Beyond from '@/components/sections/home/beyond.astro'
+import Testimonial from '@/components/sections/common/testimonial.astro'
+import LatestPosts from '@/components/sections/home/latest-posts.astro'
+import Footer from '@/components/layout/footer.astro'
+import Section from '@/components/ui/section.astro'
+import Button from '@/components/ui/button.astro'
+import { homeContent } from '@/content/home'
+import Container from '../ui/container.astro'
 
 interface Props {
-    locale?: 'en' | 'pt_BR';
+    locale?: 'en' | 'pt_BR'
 }
 
-const { locale = 'en' } = Astro.props;
-const content = homeContent[locale];
+const { locale = 'en' } = Astro.props
+const content = homeContent[locale]
 
-const title = content.metadata.title;
-const description = content.metadata.description;
+const title = content.metadata.title
+const description = content.metadata.description
 const scheduleUrl =
-    import.meta.env.PUBLIC_SCHEDULE_URL ?? "https://cal.com/rafhael";
+    import.meta.env.PUBLIC_SCHEDULE_URL ?? "https://cal.com/rafhael"
 ---
 
 <Layout title={title} description={description}>
@@ -30,16 +30,16 @@ const scheduleUrl =
         <script is:inline slot="head">
             (function () {
                 try {
-                    var saved = localStorage.getItem("rush_lang_pref");
-                    var lang = navigator.language || navigator.userLanguage;
+                    var saved = localStorage.getItem("rush_lang_pref")
+                    var lang = navigator.language || navigator.userLanguage
                     if (
                         saved === "pt" ||
                         (!saved && lang && lang.startsWith("pt"))
                     ) {
-                        window.location.replace("/br");
+                        window.location.replace("/br")
                     }
                 } catch (e) {}
-            })();
+            })()
         </script>
     )}
     <Header content={content.global.nav} locale={locale} />
@@ -47,10 +47,15 @@ const scheduleUrl =
     <main>
         <Hero content={content.hero} />
         <Philosophy content={content.philosophy} />
-        <Projects content={content.projects} />
-        <Beyond content={content.beyond} />
-        <Testimonial content={content.testimonial} />
-
+        <Section>
+            <Container>
+                <div class="grid lg:grid-cols-2 gap-6 lg:gap-12">
+                    <Testimonial content={content.testimonial} />
+                    <Beyond content={content.beyond} />
+                </div>
+            </Container>
+        </Section>
+        <LatestPosts locale={locale} />
         <Section class="text-center">
             <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8">
                 {content.ctaSection.title}
