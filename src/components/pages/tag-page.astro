@@ -22,7 +22,7 @@ const description = locale === 'en'
     : `Leia artigos com a tag ${tag.name}`
 ---
 
-<Layout title={title} description={description} noindex={filteredPosts.length <= 5}>
+<Layout title={title} description={description} noindex={true}>
     <Header content={content.global.nav} locale={locale} />
     <Container className='pt-32 md:pt-48 pb-20'>
         <div class='max-w-3xl mx-auto text-center mb-16 md:mb-24'>

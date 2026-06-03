@@ -59,6 +59,7 @@ export default defineConfig({
 		sitemap({
 			filter: (page) =>
 				!page.includes('/404') &&
+				!page.includes('/tag/') &&
 				!/\/blog\/\d+\/$/.test(page) &&
 				!/\/br\/blog\/\d+\/$/.test(page) &&
 				!/\/categoria\/[^/]+\/\d+\/$/.test(page) &&
