@@ -1,18 +1,9 @@
 ---
-import Layout from '@/layouts/layout.astro'
-import Header from '@/components/layout/header.astro'
-import Footer from '@/components/layout/footer.astro'
-import Section from '@/components/ui/section.astro'
-import Container from '@/components/ui/container.astro'
-import BlogList from '@/components/blog/blog-list.astro'
-import type { BlogPost } from '@/lib/rush'
+import CategoryPage from '@/components/pages/category-page.astro'
 import { fetchAllPosts } from '@/lib/blog-fetcher'
-import { homeContent } from '@/content/home'
 import { rushConfig } from '../../../../rush.config'
 import type { Page } from 'astro'
-
-// Use English content
-const content = homeContent.en
+import type { BlogPost } from '@/lib/rush'
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
     const posts = await fetchAllPosts({ locale: 'en' })
@@ -44,41 +35,6 @@ interface Props {
 }
 
 const { page, categoryName, allCategories } = Astro.props as Props
-const currentPosts = page.data
-
-const title = `${categoryName} - Blog - Rafhael Marsigli`
-const description = `Articles about ${categoryName}`
 ---
 
-<Layout title={title} description={description} noindex={page.total <= 5}>
-    <Header content={content.global.nav} locale='en' />
-    <main class='pt-16 md:pt-12'>
-        <Section>
-            <Container>
-                <div class='text-center mb-16 md:mb-24'>
-                     <h1 class='font-serif text-5xl md:text-7xl mb-8 text-primary'>
-                        {categoryName}
-                    </h1>
-                     <p class='text-xl text-text-muted'>
-                        {content.taxonomies.category.label}
-                    </p>
-                </div>
-                <BlogList 
-                    initialPosts={currentPosts} 
-                    categories={allCategories}
-                    labels={content.blog} 
-                    taxonomies={content.taxonomies}
-                    pagination={{
-                        currentPage: page.currentPage,
-                        lastPage: page.lastPage,
-                        url: {
-                            prev: page.url.prev,
-                            next: page.url.next
-                        }
-                    }}
-                />
-            </Container>
-        </Section>
-    </main>
-    <Footer content={content.global.footer} />
-</Layout>
+<CategoryPage page={page} categoryName={categoryName} allCategories={allCategories} locale="en" />

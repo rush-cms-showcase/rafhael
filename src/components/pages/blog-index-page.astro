@@ -1,0 +1,57 @@
+---
+import Layout from '@/layouts/layout.astro'
+import Header from '@/components/layout/header.astro'
+import Footer from '@/components/layout/footer.astro'
+import Section from '@/components/ui/section.astro'
+import Container from '@/components/ui/container.astro'
+import BlogList from '@/components/blog/blog-list.astro'
+import type { BlogPost } from '@/lib/rush'
+import { homeContent } from '@/content/home'
+import type { Page } from 'astro'
+
+interface Props {
+    page: Page<BlogPost>
+    categories: { name: string; slug: string }[]
+    locale: 'en' | 'pt_BR'
+}
+
+const { page, categories, locale } = Astro.props
+const currentPosts = page.data
+const content = homeContent[locale]
+
+const title = 'Blog - Rafhael Marsigli'
+const description = locale === 'en' 
+    ? 'Articles about software development, architecture and technology.'
+    : 'Artigos sobre desenvolvimento, arquitetura e tecnologia.'
+---
+
+<Layout title={title} description={description}>
+    <Header content={content.global.nav} locale={locale} />
+    <main class='pt-16 md:pt-12'>
+        <Section>
+            <Container>
+                <div class='text-center'>
+                    <h2 class='text-primary text-4xl lg:text-6xl font-bold mb-8'>
+                        Blog
+                    </h2>
+                </div>
+                <BlogList 
+                    initialPosts={currentPosts} 
+                    categories={categories}
+                    labels={content.blog} 
+                    locale={locale}
+                    taxonomies={content.taxonomies}
+                    pagination={{
+                        currentPage: page.currentPage,
+                        lastPage: page.lastPage,
+                        url: {
+                            prev: page.url.prev,
+                            next: page.url.next
+                        }
+                    }}
+                />
+            </Container>
+        </Section>
+    </main>
+    <Footer content={content.global.footer} />
+</Layout>

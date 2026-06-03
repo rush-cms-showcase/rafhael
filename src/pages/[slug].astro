@@ -1,15 +1,6 @@
 ---
-import Layout from '@/layouts/layout.astro'
-import Header from '@/components/layout/header.astro'
-import Footer from '@/components/layout/footer.astro'
-import Container from '@/components/ui/container.astro'
+import DynamicPage from '@/components/pages/dynamic-page.astro'
 import { rush } from '@/lib/rush'
-import { homeContent } from '@/content/home'
-
-import { tiptapToHtml } from '@/lib/blocks/tiptap-to-html'
-
-// Use English content
-const content = homeContent.en
 
 export async function getStaticPaths() {
 	try {
@@ -45,47 +36,6 @@ interface Props {
 }
 
 const { page }: Props = Astro.props
-
-const title = `${page.title} - Rafhael Marsigli`
-const description = page.content?.substring(0, 160) || `${page.title} - Rafhael Marsigli`
 ---
 
-<Layout title={title} description={description}>
-	<Header content={content.global.nav} locale='en' />
-	
-	<main class='pt-32 md:pt-40'>
-		<article>
-			<Container className='max-w-4xl mb-24'>
-				<h1
-					class='font-serif text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12'
-				>
-					{page.title}
-				</h1>
-
-
-				<div
-					class='prose prose-invert prose-lg lg:prose-xl xl:prose-2xl max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl'
-				>
-					{
-						(() => {
-                            if (page.data?.content) {
-                                let doc: any = page.data.content
-                                // If it's an array, wrap it to match TipTapDocument interface
-                                if (Array.isArray(doc)) {
-                                    doc = { content: doc }
-                                }
-                                // If it's an object but missing content (or has it), pass it.
-                                // tiptapToHtml expects { content: [...] }
-                                const html = tiptapToHtml(doc as any)
-                                return <div set:html={html} />
-                            }
-                            return <div set:html={page.content} />;
-                        })()
-					}
-				</div>
-			</Container>
-		</article>
-	</main>
-
-	<Footer content={content.global.footer} />
-</Layout>
+<DynamicPage page={page} locale='en' />

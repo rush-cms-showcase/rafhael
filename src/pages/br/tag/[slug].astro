@@ -1,11 +1,6 @@
 ---
-import Layout from '@/layouts/layout.astro'
-import Header from '@/components/layout/header.astro'
-import Footer from '@/components/layout/footer.astro'
-import Container from '@/components/ui/container.astro'
-import BlogList from '@/components/blog/blog-list.astro'
+import TagPage from '@/components/pages/tag-page.astro'
 import { rush, type BlogPost } from '@/lib/rush'
-import { homeContent } from '@/content/home'
 
 export async function getStaticPaths() {
     const posts = await rush.getEntries('blog', { per_page: 1000, locale: 'pt_BR' }) as { data: BlogPost[] }
@@ -30,28 +25,6 @@ const allPosts = await rush.getEntries('blog', { per_page: 1000, locale: 'pt_BR'
 const filteredPosts = allPosts.data.filter((post: BlogPost) =>
     post.tags?.some((t: { id: number; name: string; slug: string }) => t.slug === tag.slug)
 )
-
-const content = homeContent.pt_BR
 ---
 
-<Layout title={`${tag.name} - ${content.metadata.title}`} description={`Leia artigos com a tag ${tag.name}`} noindex={filteredPosts.length <= 5}>
-    <Header content={content.global.nav} locale='pt_BR' />
-    <Container className='pt-32 md:pt-48 pb-20'>
-        <div class='max-w-3xl mx-auto text-center mb-16 md:mb-24'>
-            <h1 class='font-serif text-5xl md:text-7xl mb-8 text-primary'>
-                {tag.name}
-            </h1>
-            <p class='text-xl text-text-muted'>
-                {content.taxonomies.tag.label}
-            </p>
-        </div>
-
-        <BlogList 
-            initialPosts={filteredPosts} 
-            labels={content.blog}
-            locale='pt_BR'
-            taxonomies={content.taxonomies}
-        />
-    </Container>
-    <Footer content={content.global.footer} />
-</Layout>
+<TagPage tag={tag} filteredPosts={filteredPosts} locale="pt_BR" />

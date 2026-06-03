@@ -1,10 +1,5 @@
 ---
-import Layout from '@/layouts/layout.astro'
-import Header from '@/components/layout/header.astro'
-import Footer from '@/components/layout/footer.astro'
-import BlockRenderer from '@/components/blocks/builder/block-renderer.astro'
-
-import { homeContent } from '@/content/home'
+import OpenSourcePage from '@/components/pages/open-source-page.astro'
 
 export async function getStaticPaths() {
 	const allProjects = (import.meta as any).glob('@/content/open-source/*.ts', { eager: true })
@@ -12,8 +7,6 @@ export async function getStaticPaths() {
 	return Object.entries(allProjects).map(([filepath, module]: [string, any]) => {
 		const slug = filepath.split('/').pop()?.replace('.ts', '')
 		
-		// Assuming the export matches the filename (e.g. meisterfyContent for meisterfy.ts)
-		// Or we can just find the first exported object that matches our structure
 		const contentKey = Object.keys(module).find(key => module[key]?.en && module[key]?.pt_BR)
 		const content = contentKey ? module[contentKey] : null
 
@@ -32,32 +25,11 @@ interface Props {
 }
 
 const { projectData } = Astro.props
-const locale = 'en'
 
 // If no data, render a simple 404-like state or redirect
-if (!projectData || !projectData[locale]) {
+if (!projectData || !projectData.en) {
 	return Astro.redirect('/404')
 }
-
-const data = projectData[locale]
-const siteContent = homeContent[locale]
-
-const title = `${data.page.title} - Rafhael Marsigli`
-const description = data.page.description
-const ogImage = `/open-source/${Astro.params.slug}/og.jpg`
 ---
 
-<Layout
-	title={title}
-	description={description}
-	lang="en"
-	image={ogImage}
->
-	<Header content={siteContent.global.nav} locale={locale} />
-	
-	<main class="flex flex-col items-center justify-top gap-8 lg:gap-16 xl:gap-32 [&>section]:w-full mb-32">
-		<BlockRenderer blocks={data.blocks} />
-	</main>
-
-	<Footer content={siteContent.global.footer as any} />
-</Layout>
+<OpenSourcePage projectData={projectData} locale="en" slug={Astro.params.slug as string} />

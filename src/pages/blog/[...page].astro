@@ -1,18 +1,9 @@
 ---
-import Layout from '@/layouts/layout.astro'
-import Header from '@/components/layout/header.astro'
-import Footer from '@/components/layout/footer.astro'
-import Section from '@/components/ui/section.astro'
-import Container from '@/components/ui/container.astro'
-import BlogList from '@/components/blog/blog-list.astro'
+import BlogIndexPage from '@/components/pages/blog-index-page.astro'
 import type { BlogPost } from '@/lib/rush'
 import { fetchAllPosts } from '@/lib/blog-fetcher'
-import { homeContent } from '@/content/home'
 import { rushConfig } from '../../../rush.config'
 import type { Page } from 'astro'
-
-// Use English content
-const content = homeContent.en
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
     const posts = await fetchAllPosts({ locale: 'en' })
@@ -36,37 +27,6 @@ interface Props {
 }
 
 const { page, categories } = Astro.props as Props
-const currentPosts = page.data
 ---
 
-<Layout title='Blog - Rafhael Marsigli' description='Articles about software development, architecture and technology.'>
-    <Header content={content.global.nav} locale='en' />
-    <main class='pt-16 md:pt-12'>
-        <Section>
-            <Container>
-                <div class='text-center'>
-                    <h2
-                        class='text-primary text-4xl lg:text-6xl font-bold mb-8'
-                    >
-                        Blog
-                    </h2>
-                </div>
-                <BlogList 
-                    initialPosts={currentPosts} 
-                    categories={categories}
-                    labels={content.blog} 
-                    taxonomies={content.taxonomies}
-                    pagination={{
-                        currentPage: page.currentPage,
-                        lastPage: page.lastPage,
-                        url: {
-                            prev: page.url.prev,
-                            next: page.url.next
-                        }
-                    }}
-                />
-            </Container>
-        </Section>
-    </main>
-    <Footer content={content.global.footer} />
-</Layout>
+<BlogIndexPage page={page} categories={categories} locale="en" />

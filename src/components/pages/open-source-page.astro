@@ -1,0 +1,39 @@
+---
+import Layout from '@/layouts/layout.astro'
+import Header from '@/components/layout/header.astro'
+import Footer from '@/components/layout/footer.astro'
+import BlockRenderer from '@/components/blocks/builder/block-renderer.astro'
+import { homeContent } from '@/content/home'
+
+interface Props {
+	projectData: any
+    locale: 'en' | 'pt_BR'
+    slug: string
+}
+
+const { projectData, locale, slug } = Astro.props
+
+const data = projectData[locale]
+const siteContent = homeContent[locale]
+
+const title = `${data.page.title} - Rafhael Marsigli`
+const description = data.page.description
+const ogImage = locale === 'pt_BR' 
+    ? `/br/open-source/${slug}/og.jpg` 
+    : `/open-source/${slug}/og.jpg`
+---
+
+<Layout
+	title={title}
+	description={description}
+	lang={locale === 'pt_BR' ? 'pt-BR' : 'en'}
+	image={ogImage}
+>
+	<Header content={siteContent.global.nav} locale={locale} />
+	
+	<main class="flex flex-col items-center justify-top gap-8 lg:gap-16 xl:gap-32 [&>section]:w-full mb-32">
+		<BlockRenderer blocks={data.blocks} />
+	</main>
+
+	<Footer content={siteContent.global.footer as any} />
+</Layout>
