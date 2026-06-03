@@ -36,6 +36,8 @@
     "@iconify-json/lucide": "^1.2.95",
     "@iconify-json/simple-icons": "^1.2.81",
     "@tailwindcss/typography": "^0.5.19",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1",
     "unplugin-icons": "^23.0.1"
   },
   "pnpm": {
