@@ -190,65 +190,7 @@ export const homeContent: Record<'en' | 'pt_BR', HomeLocaleContent> = {
                 },
             ],
         },
-        stack: {
-            label: 'Technical Arsenal',
-            title: 'The Stack',
-            groups: [
-                {
-                    label: 'Backend & Architecture',
-                    tags: ['Golang', 'PHP', 'Laravel', 'PostgreSQL', 'MySQL', 'Redis', 'REST APIs'],
-                },
-                {
-                    label: 'Frontend',
-                    tags: ['React', 'TypeScript', 'JavaScript', 'Astro'],
-                },
-                {
-                    label: 'Infrastructure & DevOps',
-                    tags: ['Docker', 'Nginx', 'Linux', 'CI/CD', 'Hetzner', 'Coolify', 'Portainer'],
-                },
-                {
-                    label: 'Currently Mastering',
-                    highlight: true,
-                    tags: ['Rust'],
-                },
-            ],
-        },
-        projects: {
-            label: 'Track Record',
-            title: 'Featured Projects',
-            items: [
-                {
-                    name: 'Mega Model Sul',
-                    role: 'Full-Stack Engineer & Infrastructure',
-                    period: '2013 – Present',
-                    description:
-                        'Lead engineer and infrastructure owner for a decade+. Scaled the platform, managed legacy-to-modern migrations, handled infra, backend systems, websites, and landing pages - ensuring maximum uptime and technical resilience.',
-                    tags: ['Laravel', 'PHP', 'React', 'Astro', 'Nginx', 'Infra'],
-                    link: null,
-                    type: 'client',
-                },
-                {
-                    name: 'Rush CMS',
-                    role: 'Creator & Lead Developer',
-                    period: '2025',
-                    description:
-                        'A proprietary headless CMS built to streamline multi-tenant content delivery. Complex multi-tenancy architecture, automated payment gateway integrations, and a custom Filament-powered admin.',
-                    tags: ['Laravel', 'Filament', 'PHP', 'Multi-tenancy'],
-                    link: 'https://rushcms.com',
-                    type: 'product',
-                },
-                {
-                    name: 'AIPIM',
-                    role: 'Author - Open Source',
-                    period: '2025',
-                    description:
-                        'An open-source AI Project Instruction Manager built to handle complex context windows in AI-assisted development workflows. Currently at v2.0.0.',
-                    tags: ['Open Source', 'AI', 'TypeScript', 'v2.0.0'],
-                    link: 'https://github.com/rmarsigli/aipim',
-                    type: 'opensource',
-                },
-            ],
-        },
+
         beyond: {
             label: 'Beyond the Code',
             title: 'Who I am',
