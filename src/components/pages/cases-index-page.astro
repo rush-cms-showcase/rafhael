@@ -1,0 +1,106 @@
+---
+import Layout from '@/layouts/layout.astro'
+import Header from '@/components/layout/header.astro'
+import Footer from '@/components/layout/footer.astro'
+import Section from '@/components/ui/section.astro'
+import Container from '@/components/ui/container.astro'
+import type { CasePost } from '@/lib/rush'
+import { homeContent } from '@/content/home'
+import type { Page } from 'astro'
+
+interface Props {
+    page: Page<CasePost>
+    locale: 'en' | 'pt_BR'
+}
+
+const { page, locale } = Astro.props
+const currentPosts = page.data
+const content = homeContent[locale]
+
+const title = locale === 'en' ? 'Cases - Rafhael Marsigli' : 'Cases - Rafhael Marsigli'
+const description =
+    locale === 'en' ? 'Explore my recent work and case studies.' : 'Explore meus trabalhos e cases recentes.'
+---
+
+<Layout title={title} description={description}>
+    <Header content={content.global.nav} locale={locale} />
+    <main class="pt-16 md:pt-12">
+        <Section>
+            <Container>
+                <div class="text-center">
+                    <h2 class="text-primary text-4xl lg:text-6xl font-bold mb-12">Cases</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    {
+                        currentPosts.map((post) => {
+                            const href = locale === 'pt_BR' ? `/br/cases/${post.slug}` : `/cases/${post.slug}`
+
+                            return (
+                                <a
+                                    href={href}
+                                    class="group flex flex-col bg-bg-elevated rounded-2xl border border-border/50 overflow-hidden hover:border-primary/30 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1">
+                                    {post.featured_image && (
+                                        <div class="aspect-[16/9] w-full overflow-hidden bg-bg-base">
+                                            <img
+                                                src={post.featured_image.preview || post.featured_image.url}
+                                                alt={post.title}
+                                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                    )}
+                                    <div class="p-6 flex flex-col flex-grow">
+                                        <h3 class="text-2xl font-serif font-bold text-text-strong mb-3 group-hover:text-primary transition-colors">
+                                            {post.title}
+                                        </h3>
+                                        <div class="flex items-center text-primary font-medium text-sm mt-auto">
+                                            <span>{locale === 'pt_BR' ? 'Ler case completo' : 'Read full case'}</span>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <line x1="5" y1="12" x2="19" y2="12" />
+                                                <polyline points="12 5 19 12 12 19" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </a>
+                            )
+                        })
+                    }
+                </div>
+
+                {
+                    page.lastPage > 1 && (
+                        <div class="flex justify-center gap-4 mt-12 border-t border-border/30 pt-8">
+                            {page.url.prev && (
+                                <a
+                                    href={page.url.prev}
+                                    class="px-6 py-2 rounded-full border border-border text-text-subtle hover:text-primary hover:border-primary transition-colors">
+                                    &larr; {locale === 'pt_BR' ? 'Anterior' : 'Previous'}
+                                </a>
+                            )}
+                            <span class="px-6 py-2 text-text-muted">
+                                {page.currentPage} / {page.lastPage}
+                            </span>
+                            {page.url.next && (
+                                <a
+                                    href={page.url.next}
+                                    class="px-6 py-2 rounded-full border border-border text-text-subtle hover:text-primary hover:border-primary transition-colors">
+                                    {locale === 'pt_BR' ? 'Próxima' : 'Next'} &rarr;
+                                </a>
+                            )}
+                        </div>
+                    )
+                }
+            </Container>
+        </Section>
+    </main>
+    <Footer content={content.global.footer} />
+</Layout>

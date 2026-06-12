@@ -1,0 +1,36 @@
+---
+import CasePostPage from '@/components/pages/case-post-page.astro'
+import { rush, type CasePost } from '@/lib/rush'
+
+export async function getStaticPaths() {
+    try {
+        const response = await rush.getEntries('cases', {
+            per_page: 100,
+            locale: 'en'
+        })
+        const listPosts = (response as any).data as CasePost[]
+
+        const posts = await Promise.all(listPosts.map(async (p) => {
+            try {
+                const fullPost = await rush.entries.getBySlug('cases', p.slug, { locale: 'en' })
+                return fullPost as CasePost
+            } catch (err) {
+                console.error(`Error fetching detail for ${p.slug}, using list data:`, err)
+                return p
+            }
+        }))
+
+        return posts.map((post) => ({
+            params: { slug: post.slug },
+            props: { post },
+        }))
+    } catch (error) {
+        console.error('Error fetching paths for cases:', error)
+        return []
+    }
+}
+
+const { post } = Astro.props as { post: CasePost }
+---
+
+<CasePostPage post={post} locale="en" />

@@ -1,0 +1,76 @@
+---
+import Layout from '@/layouts/layout.astro'
+import Header from '@/components/layout/header.astro'
+import Footer from '@/components/layout/footer.astro'
+import Section from '@/components/ui/section.astro'
+import Container from '@/components/ui/container.astro'
+import { tiptapToHtml } from '@/lib/blocks/tiptap-to-html'
+import { renderMarkdown } from '@/lib/markdown-renderer'
+import { unified } from 'unified'
+import rehypeParse from 'rehype-parse'
+import rehypeExpressiveCode from 'rehype-expressive-code'
+import rehypeStringify from 'rehype-stringify'
+import { type CasePost } from '@/lib/rush'
+import { homeContent } from '@/content/home'
+import Hero from './cases/hero.astro'
+
+interface Props {
+    post: CasePost
+    locale: 'en' | 'pt_BR'
+}
+
+const { post, locale } = Astro.props
+const content = homeContent[locale]
+
+const title = `${post.title} - Rafhael Marsigli`
+const description = post.excerpt || post.title
+const image = post.featured_image?.url || '/banner.webp'
+
+let rawMarkdown = post.data?.markdown || post.data?.content // Depending on API
+let htmlContent = ''
+
+if (rawMarkdown && typeof rawMarkdown === 'string') {
+    htmlContent = await renderMarkdown(rawMarkdown)
+} else if (post.data?.content || post.content) {
+    const doc = Array.isArray(post.data?.content) ? { content: post.data.content } : post.data?.content || post.content
+
+    const rendered = tiptapToHtml(doc as any)
+    if (rendered) {
+        try {
+            const processed = await unified()
+                .use(rehypeParse, { fragment: true })
+                .use(rehypeExpressiveCode, {
+                    themes: ['github-dark'],
+                    useThemedScrollbars: false,
+                    styleOverrides: { borderRadius: '0.75rem', uiFontFamily: 'inherit' },
+                })
+                .use(rehypeStringify)
+                .process(rendered)
+
+            htmlContent = String(processed)
+        } catch (e) {
+            console.error('Error processing tiptap with expressive-code:', e)
+            htmlContent = rendered
+        }
+    }
+}
+---
+
+<Layout title={title} description={description} image={image} lang={locale === 'pt_BR' ? 'pt-BR' : 'en'}>
+    <Header content={content.global.nav} locale={locale} />
+
+    <main class="pt-24">
+        <article>
+            <Hero post={post} />
+
+            <Container className="max-w-4xl mb-24">
+                <div
+                    class="prose prose-invert prose-lg lg:prose-xl max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl">
+                    <div set:html={htmlContent} />
+                </div>
+            </Container>
+        </article>
+    </main>
+
+    <Footer content={content.global.footer} />
+</Layout>

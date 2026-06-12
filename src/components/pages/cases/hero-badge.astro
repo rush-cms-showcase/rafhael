@@ -1,0 +1,18 @@
+---
+interface Props {
+    text: string
+}
+
+const { text } = Astro.props
+---
+
+<div class="flex items-center gap-4 text-xs lg:text-sm">
+    <div class="text-primary">
+        <slot />
+    </div>
+    <div>
+        <p class="font-medium text-text-strong">
+            {text}
+        </p>
+    </div>
+</div>

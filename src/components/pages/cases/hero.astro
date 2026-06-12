@@ -1,0 +1,99 @@
+---
+import HeroBadge from './hero-badge.astro'
+import { Icons, type IconName } from '@/lib/icons'
+import type { CasePost } from '@/lib/rush'
+
+interface Props {
+    post: CasePost
+}
+
+const { post } = Astro.props
+
+const resolveIcon = (name: string): IconName | null => {
+    const key = name.toLowerCase().replace(/[^a-z0-9]/g, '')
+    if (key === 'filamentphp') return 'filamentphp'
+    if (key in Icons) return key as IconName
+    return null
+}
+---
+
+<div class="p-3 lg:p-8">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-12 items-center">
+        <div class="flex flex-col gap-4 lg:gap-8">
+            <h1 class="font-serif text-primary text-2xl md:text-5xl font-bold leading-tight">
+                {post.title}
+            </h1>
+
+            {
+                post.data?.stack && post.data.stack.length > 0 && (
+                    <div class="flex items-start gap-4">
+                        <div>
+                            <div class="flex flex-wrap gap-3">
+                                {post.data.stack.map((tech) => {
+                                    const iconName = resolveIcon(tech)
+                                    const IconComponent = iconName ? Icons[iconName] : null
+                                    return (
+                                        <div class="flex items-center gap-2 bg-bg-elevated border border-border p-2 rounded-full text-primary">
+                                            {IconComponent ? (
+                                                <IconComponent class="w-5 h-5 lg:h-6 lg:w-6" />
+                                            ) : (
+                                                <span class="text-primary">{tech}</span>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
+            <div class="flex flex-col gap-2">
+                {
+                    post.data?.client && (
+                        <HeroBadge text={post.data.client}>
+                            <Icons.users class="w-3.5 h-3.5" />
+                        </HeroBadge>
+                    )
+                }
+
+                {
+                    post.data?.industry && (
+                        <HeroBadge text={post.data.industry}>
+                            <Icons.box class="w-3.5 h-3.5" />
+                        </HeroBadge>
+                    )
+                }
+
+                {
+                    post.data?.function && (
+                        <HeroBadge text={post.data.function}>
+                            <Icons.terminal class="w-3.5 h-3.5" />
+                        </HeroBadge>
+                    )
+                }
+
+                {
+                    post.data?.period && (
+                        <HeroBadge text={post.data.period}>
+                            <Icons.calendar class="w-3.5 h-3.5" />
+                        </HeroBadge>
+                    )
+                }
+            </div>
+        </div>
+        {
+            post.featured_image && (
+                <div class="w-full xl:mt-64">
+                    <img
+                        src={post.featured_image.preview || post.featured_image.url}
+                        alt={post.title}
+                        class="w-full h-auto rounded-xl"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+            )
+        }
+    </div>
+</div>

@@ -1,28 +1,29 @@
 import { rush } from '@/lib/rush'
-import type { BlogPost } from '@/lib/rush'
+import type { BlogPost, CasePost } from '@/lib/rush'
 
 interface FetchAllOptions {
     locale: string
     perPage?: number
+    collection?: string
 }
 
 /**
- * Fetches ALL blog posts by iterating through API pagination.
+ * Fetches ALL posts by iterating through API pagination.
  * This avoids caching issues with large per_page requests and handles any number of posts.
  */
-export async function fetchAllPosts({ locale, perPage = 100 }: FetchAllOptions): Promise<BlogPost[]> {
-    const allPosts: BlogPost[] = []
+export async function fetchAllPosts<T = BlogPost>({ locale, perPage = 100, collection = 'blog' }: FetchAllOptions): Promise<T[]> {
+    const allPosts: T[] = []
     
     try {
         // Fetch first page to get metadata
-        console.log(`[FetchAllPosts] Fetching page 1 for locale ${locale}...`)
-        const firstPageResponse = await rush.getEntries('blog', {
+        console.log(`[FetchAllPosts] Fetching page 1 for collection ${collection} and locale ${locale}...`)
+        const firstPageResponse = await rush.getEntries(collection, {
             per_page: perPage,
             locale: locale,
-include: 'featured_image'
+            include: 'featured_image'
         })
         
-        const firstPageData = (firstPageResponse as any).data as BlogPost[]
+        const firstPageData = (firstPageResponse as any).data as T[]
         allPosts.push(...firstPageData)
         
         const meta = (firstPageResponse as any).meta
@@ -40,12 +41,12 @@ include: 'featured_image'
             const promises = []
             for (let page = 2; page <= lastPage; page++) {
                 promises.push(
-                    rush.getEntries('blog', {
+                    rush.getEntries(collection, {
                         per_page: perPage,
                         page: page,
                         locale: locale,
-include: 'featured_image'
-                    }).then(response => (response as any).data as BlogPost[])
+                        include: 'featured_image'
+                    }).then(response => (response as any).data as T[])
                 )
             }
             
@@ -60,14 +61,14 @@ include: 'featured_image'
         }
         
     } catch (error) {
-        console.error(`[FetchAllPosts] Error fetching posts for locale ${locale}:`, error)
+        console.error(`[FetchAllPosts] Error fetching posts for collection ${collection} and locale ${locale}:`, error)
         // We throw so Astro build fails if we can't get data (safer than generating empty site)
         throw error
     }
 
     // Remove duplicates just in case (though API shouldn't return them if pages are stable)
-    const uniquePosts = Array.from(new Map(allPosts.map(p => [p.id, p])).values())
+    const uniquePosts = Array.from(new Map(allPosts.map((p: any) => [p.id, p])).values())
     console.log(`[FetchAllPosts] Completed. Fetched ${uniquePosts.length} unique posts.`)
     
-    return uniquePosts
+    return uniquePosts as T[]
 }

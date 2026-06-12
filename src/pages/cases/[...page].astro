@@ -1,0 +1,26 @@
+---
+import CasesIndexPage from '@/components/pages/cases-index-page.astro'
+import type { CasePost } from '@/lib/rush'
+import { fetchAllPosts } from '@/lib/blog-fetcher'
+import { rushConfig } from '../../../rush.config'
+import type { Page } from 'astro'
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+    const posts = await fetchAllPosts<CasePost>({ locale: 'en', collection: 'cases' })
+    
+    // Sort by date desc
+    posts.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
+
+    return paginate(posts, { 
+        pageSize: rushConfig.defaults?.perPage || 12
+    })
+}
+
+interface Props {
+    page: Page<CasePost>
+}
+
+const { page } = Astro.props as Props
+---
+
+<CasesIndexPage page={page} locale="en" />

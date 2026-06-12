@@ -56,6 +56,17 @@ import IconCloudflare from '~icons/simple-icons/cloudflare'
 import IconSentry from '~icons/simple-icons/sentry'
 import IconBot from '~icons/lucide/bot'
 import IconBox from '~icons/lucide/box'
+import IconLaravel from '~icons/simple-icons/laravel'
+import IconPhp from '~icons/simple-icons/php'
+import IconReact from '~icons/simple-icons/react'
+import IconSvelte from '~icons/simple-icons/svelte'
+import IconGo from '~icons/simple-icons/go'
+import IconRust from '~icons/simple-icons/rust'
+import IconMysql from '~icons/simple-icons/mysql'
+import IconPostgresql from '~icons/simple-icons/postgresql'
+import IconPython from '~icons/simple-icons/python'
+import IconAstro from '~icons/simple-icons/astro'
+import IconFilament from '~icons/simple-icons/filament'
 
 export const Icons = {
 	calendar: IconCalendar,
@@ -123,6 +134,17 @@ export const Icons = {
 	sentry: IconSentry,
 	bot: IconBot,
 	box: IconBox,
+	laravel: IconLaravel,
+	php: IconPhp,
+	react: IconReact,
+	svelte: IconSvelte,
+	golang: IconGo,
+	rust: IconRust,
+	mysql: IconMysql,
+	postgresql: IconPostgresql,
+	python: IconPython,
+	astro: IconAstro,
+	filamentphp: IconFilament,
 } as const
 
 export type IconName = keyof typeof Icons

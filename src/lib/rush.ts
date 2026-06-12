@@ -47,3 +47,18 @@ export interface BlogPost {
         }>
     }
 }
+
+export interface CasePost extends Omit<BlogPost, 'data'> {
+    data?: {
+        markdown?: string
+        content?: Array<{
+            type: string
+            data: Record<string, any>
+        }>
+        stack?: string[]
+        client?: string
+        period?: string
+        function?: string
+        industry?: string
+    }
+}
