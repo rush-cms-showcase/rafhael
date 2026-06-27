@@ -1,0 +1,111 @@
+---
+import { Icons } from '@/lib/icons'
+
+interface Props {
+    url: string
+    title: string
+    locale: 'en' | 'pt_BR'
+    class?: string
+    [key: string]: any
+}
+
+const { url, title, locale, class: className = '', ...rest } = Astro.props
+
+const labels = {
+    en: {
+        x: 'Share on X',
+        linkedin: 'Share on LinkedIn',
+        whatsapp: 'Share on WhatsApp',
+        copy: 'Copy Link'
+    },
+    pt_BR: {
+        x: 'Compartilhar no X',
+        linkedin: 'Compartilhar no LinkedIn',
+        whatsapp: 'Compartilhar no WhatsApp',
+        copy: 'Copiar link'
+    }
+}
+
+const t = labels[locale]
+
+type Platform = {
+    id: string;
+    icon: keyof typeof Icons;
+    label: string;
+    hasText?: boolean;
+    isCopy?: boolean;
+}
+
+const platforms: Platform[] = [
+    { id: 'x', icon: 'twitter_x', label: t.x, hasText: true },
+    { id: 'linkedin', icon: 'linkedin', label: t.linkedin },
+    { id: 'whatsapp', icon: 'whatsapp', label: t.whatsapp, hasText: true },
+    { id: 'copy', icon: 'copy', label: t.copy, isCopy: true }
+]
+---
+
+<div class:list={['flex items-center gap-2', className]} {...rest}>
+    {platforms.map((platform) => {
+        const IconComponent = Icons[platform.icon];
+        
+        return (
+            <button
+                type='button'
+                class={`${platform.isCopy ? 'copy-url-btn' : 'share-btn'} w-9 h-9 rounded-full bg-bg-elevated hover:bg-bg-elevated/80 border border-border flex items-center justify-center transition-colors`}
+                data-platform={platform.id}
+                data-url={url}
+                data-text={platform.hasText ? title : undefined}
+                aria-label={platform.label}
+            >
+                <IconComponent class={`${platform.isCopy ? 'copy-url-icon ' : ''}w-4 h-4`} />
+                {platform.isCopy && <Icons.check class='check-icon w-4 h-4 hidden' />}
+            </button>
+        )
+    })}
+</div>
+
+<script>
+    document.querySelectorAll(".share-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const platform = btn.getAttribute("data-platform");
+            const url = encodeURIComponent(btn.getAttribute("data-url") || "");
+            const text = encodeURIComponent(btn.getAttribute("data-text") || "");
+            let shareUrl = "";
+
+            if (platform === "x") {
+                shareUrl = `https://x.com/intent/post?url=${url}&text=${text}`;
+            } else if (platform === "linkedin") {
+                shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+            } else if (platform === "whatsapp") {
+                shareUrl = `https://api.whatsapp.com/send?text=${text} ${url}`;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, "_blank", "width=600,height=400");
+            }
+        });
+    });
+
+    document.querySelectorAll(".copy-url-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+            const url = btn.getAttribute("data-url") || "";
+            try {
+                await navigator.clipboard.writeText(url);
+                const copyIcon = btn.querySelector(".copy-url-icon");
+                const checkIcon = btn.querySelector(".check-icon");
+
+                if (copyIcon && checkIcon) {
+                    copyIcon.classList.add("hidden");
+                    checkIcon.classList.remove("hidden");
+
+                    setTimeout(() => {
+                        copyIcon.classList.remove("hidden");
+                        checkIcon.classList.add("hidden");
+                    }, 2000);
+                }
+            } catch (err) {
+                console.error("Failed to copy URL:", err);
+            }
+        });
+    });
+</script>
