@@ -67,6 +67,7 @@ import IconPostgresql from '~icons/simple-icons/postgresql'
 import IconPython from '~icons/simple-icons/python'
 import IconAstro from '~icons/simple-icons/astro'
 import IconFilament from '~icons/simple-icons/filament'
+import IconRedis from '@/components/shared/IconRedis.astro'
 
 export const Icons = {
 	calendar: IconCalendar,
@@ -145,6 +146,7 @@ export const Icons = {
 	python: IconPython,
 	astro: IconAstro,
 	filamentphp: IconFilament,
+	redis: IconRedis,
 } as const
 
 export type IconName = keyof typeof Icons
