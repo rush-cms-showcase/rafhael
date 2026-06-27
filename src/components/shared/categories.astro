@@ -1,0 +1,27 @@
+---
+interface Category {
+    name: string
+    slug: string
+}
+
+interface Props {
+    categories: Category[]
+    basePath: string
+    class?: string
+    [key: string]: any
+}
+
+const { categories, basePath, class: className = '', ...rest } = Astro.props
+
+if (!categories || categories.length === 0) {
+    return null;
+}
+---
+
+<div class:list={['flex flex-wrap gap-2', className]} {...rest}>
+    {categories.map((cat) => (
+        <a href={`${basePath}/${cat.slug}`} class='inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors'>
+            {cat.name}
+        </a>
+    ))}
+</div>

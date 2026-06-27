@@ -1,0 +1,32 @@
+---
+import { Icons } from '@/lib/icons'
+import { formatDate } from '@/lib/date-utils'
+
+interface Props {
+    readingTime?: string
+    publishedAt?: string | null
+    locale: 'en' | 'pt_BR'
+    class?: string
+    [key: string]: any
+}
+
+const { readingTime, publishedAt, locale, class: className = '', ...rest } = Astro.props
+---
+
+<div class:list={['flex flex-wrap items-center gap-4 text-text-muted text-sm font-medium', className]} {...rest}>
+    {readingTime && (
+        <div class='flex items-center gap-2'>
+            <Icons.clock class='w-4 h-4' />
+            <span>{readingTime}</span>
+        </div>
+    )}
+
+    {publishedAt && (
+        <div class='flex items-center gap-2'>
+            <Icons.calendar class='w-4 h-4' />
+            <time datetime={publishedAt}>
+                {formatDate(publishedAt, locale)}
+            </time>
+        </div>
+    )}
+</div>
