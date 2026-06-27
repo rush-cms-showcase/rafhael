@@ -5,6 +5,7 @@ import Footer from '@/components/layout/footer.astro'
 import Section from '@/components/ui/section.astro'
 import Container from '@/components/ui/container.astro'
 import { homeContent } from '@/content/home'
+import { Icons } from '@/lib/icons'
 
 interface Props {
 	locale: 'pt_BR' | 'en'
@@ -51,17 +52,7 @@ const content = localizedStrings[locale]
 						href={content.homeHref}
 						class='inline-flex items-center gap-2 text-primary hover:underline'
 					>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							class='w-5 h-5'
-							viewBox='0 0 24 24'
-							fill='none'
-							stroke='currentColor'
-							stroke-width='2'
-						>
-							<path d='M19 12H5'></path>
-							<path d='M12 19l-7-7 7-7'></path>
-						</svg>
+						<Icons.arrow_left class='w-5 h-5' />
 						{content.backHome}
 					</a>
 				</div>

@@ -7,6 +7,7 @@ import Container from '@/components/ui/container.astro'
 import type { CasePost } from '@/lib/rush'
 import { homeContent } from '@/content/home'
 import type { Page } from 'astro'
+import { Icons } from '@/lib/icons'
 
 interface Props {
     page: Page<CasePost>
@@ -46,18 +47,7 @@ const basePath = locale === 'pt_BR' ? '/br' : ''
                                         </h3>
                                         <div class="flex items-center text-primary font-medium text-sm mt-auto border-t border-primary/10 pt-4">
                                             <span>{readMore}</span>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <line x1="5" y1="12" x2="19" y2="12" />
-                                                <polyline points="12 5 19 12 12 19" />
-                                            </svg>
+                                            <Icons.arrow_right class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                                         </div>
                                     </div>
                                 </a>

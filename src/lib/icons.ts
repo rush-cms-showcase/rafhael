@@ -17,6 +17,7 @@ import IconGlobe from '~icons/lucide/globe'
 import IconMonitor from '~icons/lucide/monitor'
 import IconExternalLink from '~icons/lucide/external-link'
 import IconArrowRight from '~icons/lucide/arrow-right'
+import IconArrowLeft from '~icons/lucide/arrow-left'
 import IconTimer from '~icons/lucide/timer'
 import IconEyeOff from '~icons/lucide/eye-off'
 import IconPenTool from '~icons/lucide/pen-tool'
@@ -67,7 +68,7 @@ import IconPostgresql from '~icons/simple-icons/postgresql'
 import IconPython from '~icons/simple-icons/python'
 import IconAstro from '~icons/simple-icons/astro'
 import IconFilament from '~icons/simple-icons/filament'
-import IconRedis from '@/components/shared/IconRedis.astro'
+import IconRedis from '@/components/shared/icon-redis.astro'
 
 export const Icons = {
 	calendar: IconCalendar,
@@ -89,6 +90,7 @@ export const Icons = {
 	monitor: IconMonitor,
 	external_link: IconExternalLink,
 	arrow_right: IconArrowRight,
+	arrow_left: IconArrowLeft,
 	timer: IconTimer,
 	eye_off: IconEyeOff,
 	pen_tool: IconPenTool,
