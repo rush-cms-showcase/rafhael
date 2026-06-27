@@ -20,6 +20,8 @@ const content = homeContent[locale]
 const title = locale === 'en' ? 'Cases - Rafhael Marsigli' : 'Cases - Rafhael Marsigli'
 const description =
     locale === 'en' ? 'Explore my recent work and case studies.' : 'Explore meus trabalhos e cases recentes.'
+const readMore = locale === 'en' ? 'Read full case' : 'Ler case completo'
+const basePath = locale === 'pt_BR' ? '/br' : ''
 ---
 
 <Layout title={title} description={description}>
@@ -34,28 +36,16 @@ const description =
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                     {
                         currentPosts.map((post) => {
-                            const href = locale === 'pt_BR' ? `/br/cases/${post.slug}` : `/cases/${post.slug}`
-
                             return (
                                 <a
-                                    href={href}
-                                    class="group flex flex-col bg-bg-elevated rounded-2xl border border-border/50 overflow-hidden hover:border-primary/30 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1">
-                                    {post.featured_image && (
-                                        <div class="aspect-[16/9] w-full overflow-hidden bg-bg-base">
-                                            <img
-                                                src={post.featured_image.preview || post.featured_image.url}
-                                                alt={post.title}
-                                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                loading="lazy"
-                                            />
-                                        </div>
-                                    )}
-                                    <div class="p-6 flex flex-col flex-grow">
-                                        <h3 class="text-2xl font-serif font-bold text-text-strong mb-3 group-hover:text-primary transition-colors">
+                                    href={`${basePath}/cases/${post.slug}`}
+                                    class="group flex flex-col rounded-2xl transition-all duration-300">
+                                    <div class="flex flex-col flex-grow">
+                                        <h3 class="text-3xl lg:text-4xl xl:text-5xl leading-14 font-serif font-bold text-text-strong mb-8 group-hover:text-primary group-hover:underline transition-colors">
                                             {post.title}
                                         </h3>
-                                        <div class="flex items-center text-primary font-medium text-sm mt-auto">
-                                            <span>{locale === 'pt_BR' ? 'Ler case completo' : 'Read full case'}</span>
+                                        <div class="flex items-center text-primary font-medium text-sm mt-auto border-t border-primary/10 pt-4">
+                                            <span>{readMore}</span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
