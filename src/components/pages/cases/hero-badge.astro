@@ -6,12 +6,12 @@ interface Props {
 const { text } = Astro.props
 ---
 
-<div class="flex items-center gap-4 text-xs lg:text-sm">
+<div class="flex items-center gap-2 text-xs lg:text-sm px-3 py-1 rounded-full border border-primary/10">
     <div class="text-primary">
         <slot />
     </div>
     <div>
-        <p class="font-medium text-text-strong">
+        <p class="max-lg:text-[10px] font-medium text-text-strong">
             {text}
         </p>
     </div>
