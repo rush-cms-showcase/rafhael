@@ -10,7 +10,10 @@
 		"dev": "astro dev",
 		"build": "astro build",
 		"preview": "node --env-file-if-exists=.env ./dist/server/entry.mjs",
-		"check": "astro check"
+		"check": "astro check",
+		"test": "vitest run",
+		"format": "prettier --write .",
+		"format:check": "prettier --check ."
 	},
 	"dependencies": {
 		"@astrojs/node": "11.1.11",
@@ -23,6 +26,12 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.9.12",
-		"typescript": "npm:@typescript/typescript6@6.0.2"
+		"@iconify-json/lucide": "1.2.152",
+		"@iconify-json/simple-icons": "1.2.101",
+		"prettier": "3.9.10",
+		"prettier-plugin-astro": "1.1.2",
+		"typescript": "npm:@typescript/typescript6@6.0.2",
+		"unplugin-icons": "24.0.0",
+		"vitest": "5.1.0"
 	}
 }

@@ -40,7 +40,13 @@ const footer = (await optional(getNavigation(Astro, 'footer'))) ?? []
 			Skip to content
 		</a>
 		<PreviewBanner />
-		<SiteHeader name={site.name} home={home} links={main} locale={locale} translations={translations} />
+		<SiteHeader
+			name={site.name}
+			home={home}
+			links={main}
+			locale={locale}
+			translations={translations}
+		/>
 		<main id="content" tabindex="-1" class="flex-1 focus:outline-none">
 			<slot />
 		</main>
