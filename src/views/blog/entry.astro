@@ -48,12 +48,6 @@ const cover = entry.featured_image?.url === undefined ? undefined : entry.featur
 				<h1 class="font-serif text-primary text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
 					{entry.title}
 				</h1>
-				<CategoryPills
-					categories={entry.categories}
-					urls={urls}
-					locale={locale}
-					variant="post"
-				/>
 				<Share url={shareUrl} title={entry.title} locale={locale} class="lg:hidden" />
 			</Container>
 			<Container class="relative max-w-4xl">
@@ -77,6 +71,13 @@ const cover = entry.featured_image?.url === undefined ? undefined : entry.featur
 						/>
 					</div>
 				)}
+
+				<CategoryPills
+					categories={entry.categories}
+					urls={urls}
+					locale={locale}
+					variant="post"
+				/>
 
 				{html !== '' && <Prose html={html} />}
 
