@@ -38,6 +38,8 @@ export type Labels = {
 	whatsappChat: string
 	openProject: string
 	projects: string
+	blogDescription: string
+	projectsDescription: string
 	breadcrumb: string
 	home: string
 	thisCase: string
@@ -99,6 +101,8 @@ const english: Labels = {
 	whatsappChat: 'Chat on WhatsApp',
 	openProject: 'View project',
 	projects: 'Projects',
+	blogDescription: 'Articles about software development, architecture and technology.',
+	projectsDescription: 'Software projects and products.',
 	breadcrumb: 'Breadcrumb',
 	home: 'Home',
 	thisCase: 'This case',
@@ -160,6 +164,8 @@ const dictionary: Record<string, Labels> = {
 		whatsappChat: 'Conversar no WhatsApp',
 		openProject: 'Ver projeto',
 		projects: 'Projetos',
+		blogDescription: 'Artigos sobre desenvolvimento, arquitetura e tecnologia.',
+		projectsDescription: 'Projetos e produtos de software.',
 		breadcrumb: 'Trilha de navegação',
 		home: 'Início',
 		thisCase: 'Este case',
@@ -218,6 +224,8 @@ const dictionary: Record<string, Labels> = {
 		whatsappChat: 'Conversar por WhatsApp',
 		openProject: 'Ver proyecto',
 		projects: 'Proyectos',
+		blogDescription: 'Artículos sobre desarrollo, arquitectura y tecnología.',
+		projectsDescription: 'Proyectos y productos de software.',
 		breadcrumb: 'Ruta de navegación',
 		home: 'Inicio',
 		thisCase: 'Este caso',

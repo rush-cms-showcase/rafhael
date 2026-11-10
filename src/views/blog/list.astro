@@ -3,8 +3,8 @@ import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
 import BlogListing from '../../components/blog/blog-listing.astro'
 import ListLayout from '../../layouts/list-layout.astro'
 import { loadCategoryFilters } from '../../lib/category-filters'
+import { labelsFor } from '../../lib/labels'
 import { collectionPageUrl } from '../../lib/routing'
-import { loadSiteOptions } from '../../lib/site-options'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
@@ -14,7 +14,6 @@ const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
 const filters = await loadCategoryFilters(rush.tags, urls, locale, undefined)
-const options = await loadSiteOptions(rush.siteOptions)
 ---
 
 <ListLayout
@@ -25,7 +24,7 @@ const options = await loadSiteOptions(rush.siteOptions)
 	pageUrl={collectionPageUrl(urls, collection, locale)}
 	alternates={collectionAlternates(collection.id, urls)}
 	empty={entries.items.length === 0}
-	description={options.blogDescription}
+	description={labelsFor(locale).blogDescription}
 >
 	<BlogListing filters={filters} entries={entries.items} locale={locale} urls={urls} />
 </ListLayout>

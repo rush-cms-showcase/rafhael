@@ -19,14 +19,14 @@ type ListCase = {
 	page: (number: number) => Record<string, unknown>
 }
 
-function collectionPage(id: string, name: string) {
+function collectionPage(id: string, name: string, locale = 'pt_BR') {
 	return (number: number) => ({
 		kind: 'collection',
-		locale: 'pt_BR',
+		locale,
 		collection: { id, slug: id, name },
 		page: number,
 		lastPage: 3,
-		entries: { items: [makeEntry({ locale: 'pt_BR', slug: `${id}-one` })] }
+		entries: { items: [makeEntry({ locale, slug: `${id}-one` })] }
 	})
 }
 
@@ -111,5 +111,59 @@ describe('list layout', () => {
 		const taxonomy = await renderList(CASES[4] as ListCase, 1)
 		expect(taxonomy).toMatch(/<a href="\/br\/blog" class=/)
 		expect(taxonomy).toMatch(/<a href="\/br\/categoria\/engineering" aria-current="page"/)
+	})
+})
+
+type Locale = 'en' | 'pt_BR' | 'es'
+
+type DescriptionCase = {
+	name: string
+	view: Component
+	locale: Locale
+	text: string
+}
+
+const DESCRIPTIONS: DescriptionCase[] = [
+	{
+		name: 'blog',
+		view: BlogList,
+		locale: 'en',
+		text: 'Articles about software development, architecture and technology.'
+	},
+	{
+		name: 'blog',
+		view: BlogList,
+		locale: 'pt_BR',
+		text: 'Artigos sobre desenvolvimento, arquitetura e tecnologia.'
+	},
+	{
+		name: 'blog',
+		view: BlogList,
+		locale: 'es',
+		text: 'Artículos sobre desarrollo, arquitectura y tecnología.'
+	},
+	{ name: 'projects', view: ProjectList, locale: 'en', text: 'Software projects and products.' },
+	{
+		name: 'projects',
+		view: ProjectList,
+		locale: 'pt_BR',
+		text: 'Projetos e produtos de software.'
+	},
+	{
+		name: 'projects',
+		view: ProjectList,
+		locale: 'es',
+		text: 'Proyectos y productos de software.'
+	}
+]
+
+describe('list descriptions', () => {
+	it.each(DESCRIPTIONS)('$name renders its $locale description', async (item) => {
+		const html = await render(
+			item.view,
+			{ page: collectionPage(item.name, 'List', item.locale)(1) },
+			fakeLocals({ locale: item.locale, categories: [CATEGORY] })
+		)
+		expect(html).toContain(`<meta name="description" content="${item.text}">`)
 	})
 })

@@ -13,8 +13,6 @@ export type SiteOptions = {
 	whatsappText: string | undefined
 	logoUrl: string | undefined
 	bannerUrl: string | undefined
-	blogDescription: string | undefined
-	projectsDescription: string | undefined
 }
 
 export type ContactKind = 'github' | 'linkedin' | 'email' | 'phone'
@@ -47,9 +45,7 @@ export function siteOptionsFrom(group: SiteOptionGroup | undefined): SiteOptions
 		whatsappNumber: optionText(group, 'whatsapp_number'),
 		whatsappText: optionText(group, 'whatsapp_text'),
 		logoUrl: optionImage(group, 'site_logo'),
-		bannerUrl: optionImage(group, 'site_banner'),
-		blogDescription: optionText(group, 'blog_description'),
-		projectsDescription: optionText(group, 'projects_description')
+		bannerUrl: optionImage(group, 'site_banner')
 	}
 }
 

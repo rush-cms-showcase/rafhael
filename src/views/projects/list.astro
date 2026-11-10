@@ -1,9 +1,9 @@
 ---
-import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import { collectionAlternates, getUrls } from '@rushcms/astro'
 import EntryGrid from '../../components/entry-grid.astro'
 import ListLayout from '../../layouts/list-layout.astro'
+import { labelsFor } from '../../lib/labels'
 import { collectionPageUrl } from '../../lib/routing'
-import { loadSiteOptions } from '../../lib/site-options'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
@@ -11,7 +11,6 @@ type Props = ListViewProps
 const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
-const options = await loadSiteOptions(getRush(Astro).siteOptions)
 ---
 
 <ListLayout
@@ -22,7 +21,7 @@ const options = await loadSiteOptions(getRush(Astro).siteOptions)
 	pageUrl={collectionPageUrl(urls, collection, locale)}
 	alternates={collectionAlternates(collection.id, urls)}
 	empty={entries.items.length === 0}
-	description={options.projectsDescription}
+	description={labelsFor(locale).projectsDescription}
 >
 	<EntryGrid entries={entries.items} locale={locale} urls={urls} layout="projects" />
 </ListLayout>
