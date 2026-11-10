@@ -29,7 +29,7 @@ const links = section.links.map((link) => ({
 ---
 
 <Container class="pt-16 pb-4 lg:pt-28">
-	<h1 class="max-w-[62rem] font-serif text-3xl leading-[1.35] lg:text-6xl">
+	<h1 class="max-w-[62rem] font-serif text-3xl leading-[1.18] lg:text-6xl lg:leading-[1.12]">
 		<span class="font-bold text-text-main">{lead}</span>
 		{section.avatar !== undefined && (
 			<img
@@ -37,7 +37,7 @@ const links = section.links.map((link) => ({
 				alt=""
 				width="64"
 				height="64"
-				class="-mr-[0.15em] ml-[0.2em] inline-block size-[1.15em] rounded-full align-[-0.2em] object-cover"
+				class="mr-[0.08em] ml-[0.2em] inline-block size-[1.05em] rounded-full border-2 border-primary align-[-0.17em] object-cover lg:border-3"
 			/>
 		)}
 		{comma && <span class="font-bold text-text-main">,</span>}
