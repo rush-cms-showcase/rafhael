@@ -1,0 +1,55 @@
+---
+import type { LocaleCode, RushUrls } from '@rushcms/client'
+import { taxonomyHref } from '../../lib/taxonomy-href'
+import type { TaxonomyTerm } from '../../lib/taxonomy-href'
+
+type PillVariant = 'overlay' | 'card' | 'post'
+
+type PillStyle = {
+	list: string
+	pill: string
+}
+
+type Props = {
+	categories: TaxonomyTerm[]
+	urls: RushUrls
+	locale: LocaleCode
+	variant: PillVariant
+}
+
+const styles: Record<PillVariant, PillStyle> = {
+	overlay: {
+		list: 'absolute top-4 left-4 flex flex-wrap gap-2 z-10',
+		pill: 'inline-flex items-center rounded px-3 py-1 text-xs font-medium bg-black/75 border border-primary/50 text-white shadow-lg hover:bg-primary hover:shadow-lg transition-colors'
+	},
+	card: {
+		list: 'mb-4 flex flex-wrap gap-2',
+		pill: 'inline-flex items-center rounded px-3 py-1 text-xs font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors'
+	},
+	post: {
+		list: 'flex flex-wrap gap-2',
+		pill: 'inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors'
+	}
+}
+
+const { categories, urls, locale, variant } = Astro.props
+const style = styles[variant]
+const pills = categories.map((category) => ({
+	name: category.name,
+	href: taxonomyHref(urls, category, locale)
+}))
+---
+
+{pills.length > 0 && (
+	<div class={style.list}>
+		{pills.map((pill) =>
+			pill.href === undefined ? (
+				<span class={style.pill}>{pill.name}</span>
+			) : (
+				<a href={pill.href} class={style.pill}>
+					{pill.name}
+				</a>
+			)
+		)}
+	</div>
+)}

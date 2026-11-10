@@ -1,0 +1,38 @@
+---
+import type { LocaleCode, RushUrls } from '@rushcms/client'
+import { labelsFor } from '../../lib/labels'
+import { taxonomyHref } from '../../lib/taxonomy-href'
+import type { TaxonomyTerm } from '../../lib/taxonomy-href'
+
+type Props = {
+	tags: TaxonomyTerm[]
+	urls: RushUrls
+	locale: LocaleCode
+	class?: string | undefined
+}
+
+const { tags, urls, locale, class: className } = Astro.props
+const labels = labelsFor(locale)
+const chipClass =
+	'px-3 py-1 bg-bg-elevated border border-border rounded-lg text-sm text-text-subtle hover:text-primary hover:border-primary/30 transition-colors'
+const chips = tags.map((tag) => ({ name: tag.name, href: taxonomyHref(urls, tag, locale) }))
+---
+
+{chips.length > 0 && (
+	<div class:list={[className]}>
+		<h3 class="text-sm uppercase tracking-widest text-text-muted mb-4 font-bold">
+			{labels.tags}
+		</h3>
+		<div class="flex flex-wrap gap-2">
+			{chips.map((chip) =>
+				chip.href === undefined ? (
+					<span class={chipClass}>{chip.name}</span>
+				) : (
+					<a href={chip.href} class={`${chipClass} cursor-pointer`}>
+						{chip.name}
+					</a>
+				)
+			)}
+		</div>
+	</div>
+)}

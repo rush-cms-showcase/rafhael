@@ -1,6 +1,8 @@
 import type { CollectionPage, HomepagePage } from '@rushcms/astro'
 import type { CollectionRef, Entry, LocaleCode, RushUrls } from '@rushcms/client'
 import GenericList from './collection.astro'
+import BlogEntry from './blog/entry.astro'
+import BlogList from './blog/list.astro'
 import GenericEntry from './entry.astro'
 
 export type HomeViewProps = {
@@ -29,7 +31,9 @@ export type ViewMap = Record<string, Partial<CollectionViews>>
 
 const generic: CollectionViews = { list: GenericList, entry: GenericEntry }
 
-const views: ViewMap = {}
+const views: ViewMap = {
+	blog: { list: BlogList, entry: BlogEntry }
+}
 
 export function viewsFor(collection: CollectionRef | undefined, urls: RushUrls): CollectionViews {
 	const key =

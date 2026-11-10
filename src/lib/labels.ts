@@ -10,6 +10,18 @@ export type Labels = {
 	rights: string
 	createdBy: string
 	poweredBy: string
+	blog: string
+	blogDescription: string
+	allCategories: string
+	readArticle: string
+	minRead: string
+	previous: string
+	next: string
+	tags: string
+	shareOnX: string
+	shareOnLinkedin: string
+	shareOnWhatsapp: string
+	copyLink: string
 }
 
 const english: Labels = {
@@ -21,7 +33,19 @@ const english: Labels = {
 	selectLanguage: 'Select language',
 	rights: 'All rights reserved.',
 	createdBy: 'Created by',
-	poweredBy: 'Powered by'
+	poweredBy: 'Powered by',
+	blog: 'Blog',
+	blogDescription: 'Articles about software development, architecture and technology.',
+	allCategories: 'All',
+	readArticle: 'Read article',
+	minRead: 'min read',
+	previous: 'Previous',
+	next: 'Next',
+	tags: 'Tags',
+	shareOnX: 'Share on X',
+	shareOnLinkedin: 'Share on LinkedIn',
+	shareOnWhatsapp: 'Share on WhatsApp',
+	copyLink: 'Copy link'
 }
 
 const dictionary: Record<string, Labels> = {
@@ -35,7 +59,19 @@ const dictionary: Record<string, Labels> = {
 		selectLanguage: 'Selecionar idioma',
 		rights: 'Todos os direitos reservados.',
 		createdBy: 'Criado por',
-		poweredBy: 'Powered by'
+		poweredBy: 'Powered by',
+		blog: 'Blog',
+		blogDescription: 'Artigos sobre desenvolvimento, arquitetura e tecnologia.',
+		allCategories: 'Todos',
+		readArticle: 'Ler artigo',
+		minRead: 'min de leitura',
+		previous: 'Anterior',
+		next: 'Próxima',
+		tags: 'Tags',
+		shareOnX: 'Compartilhar no X',
+		shareOnLinkedin: 'Compartilhar no LinkedIn',
+		shareOnWhatsapp: 'Compartilhar no WhatsApp',
+		copyLink: 'Copiar link'
 	},
 	es: {
 		skipToContent: 'Saltar al contenido',
@@ -46,7 +82,19 @@ const dictionary: Record<string, Labels> = {
 		selectLanguage: 'Seleccionar idioma',
 		rights: 'Todos los derechos reservados.',
 		createdBy: 'Creado por',
-		poweredBy: 'Powered by'
+		poweredBy: 'Powered by',
+		blog: 'Blog',
+		blogDescription: 'Artículos sobre desarrollo, arquitectura y tecnología.',
+		allCategories: 'Todos',
+		readArticle: 'Leer artículo',
+		minRead: 'min de lectura',
+		previous: 'Anterior',
+		next: 'Siguiente',
+		tags: 'Etiquetas',
+		shareOnX: 'Compartir en X',
+		shareOnLinkedin: 'Compartir en LinkedIn',
+		shareOnWhatsapp: 'Compartir en WhatsApp',
+		copyLink: 'Copiar enlace'
 	}
 }
 

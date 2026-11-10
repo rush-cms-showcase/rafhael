@@ -1,0 +1,54 @@
+---
+import type { LocaleCode } from '@rushcms/client'
+import { formatDate } from '../../lib/format-date'
+import { Icons } from '../../lib/icons'
+import { labelsFor } from '../../lib/labels'
+
+type MetaSize = 'card' | 'post'
+
+type MetaStyle = {
+	list: string
+	item: string
+}
+
+type Props = {
+	minutes: number
+	publishedAt: string
+	locale: LocaleCode
+	size: MetaSize
+	class?: string | undefined
+}
+
+const styles: Record<MetaSize, MetaStyle> = {
+	card: {
+		list: 'flex items-center gap-4 text-xs font-medium text-text-muted',
+		item: 'flex items-center gap-1.5'
+	},
+	post: {
+		list: 'flex flex-wrap items-center gap-4 text-text-muted text-sm font-medium',
+		item: 'flex items-center gap-2'
+	}
+}
+
+const { minutes, publishedAt, locale, size, class: className } = Astro.props
+const style = styles[size]
+const date = formatDate(publishedAt, locale)
+const labels = labelsFor(locale)
+const ClockIcon = Icons.clock
+const CalendarIcon = Icons.calendar
+---
+
+<div class:list={[style.list, className]}>
+	<div class={style.item}>
+		<ClockIcon class="w-4 h-4" />
+		<span>
+			{minutes} {labels.minRead}
+		</span>
+	</div>
+	{date !== '' && (
+		<div class={style.item}>
+			<CalendarIcon class="w-4 h-4" />
+			<time datetime={publishedAt}>{date}</time>
+		</div>
+	)}
+</div>

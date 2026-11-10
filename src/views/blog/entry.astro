@@ -1,0 +1,86 @@
+---
+import { getUrls } from '@rushcms/astro'
+import RushImage from '@rushcms/astro/components/rush-image.astro'
+import Seo from '@rushcms/astro/components/seo.astro'
+import { alternates, toBcp47 } from '@rushcms/client'
+import CategoryPills from '../../components/blog/category-pills.astro'
+import PostMeta from '../../components/blog/post-meta.astro'
+import Share from '../../components/blog/share.astro'
+import TagList from '../../components/blog/tag-list.astro'
+import Container from '../../components/container.astro'
+import Base from '../../layouts/base.astro'
+import { markdownBody, renderMarkdown } from '../../lib/markdown'
+import { readingTime } from '../../lib/reading-time'
+import type { EntryViewProps } from '../index'
+
+type Props = EntryViewProps
+
+const { entry, locale } = Astro.props
+const urls = getUrls(Astro)
+const markdown = markdownBody(entry)
+const html = await renderMarkdown(markdown)
+const shareUrl = new URL(urls.entry(entry), Astro.site).href
+const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
+---
+
+<Base locale={locale} translations={alternates(entry, urls)}>
+	<Seo slot="head" entry={entry} />
+	<div class="py-24 mt-4 lg:mt-16">
+		<article lang={toBcp47(entry.locale)} class="space-y-4">
+			<Container class="relative max-w-4xl space-y-4 lg:space-y-6">
+				<PostMeta
+					minutes={readingTime(markdown)}
+					publishedAt={entry.published_at}
+					locale={locale}
+					size="post"
+					class="border-b border-white/2 pb-6 lg:pb-8"
+				/>
+				<h1 class="font-serif text-primary text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+					{entry.title}
+				</h1>
+				<CategoryPills
+					categories={entry.categories}
+					urls={urls}
+					locale={locale}
+					variant="post"
+				/>
+				<Share url={shareUrl} title={entry.title} locale={locale} class="lg:hidden" />
+			</Container>
+			<Container class="relative max-w-4xl">
+				<div class="hidden lg:block absolute top-0 bottom-0 -left-20 w-16">
+					<Share
+						url={shareUrl}
+						title={entry.title}
+						locale={locale}
+						class="sticky top-32 flex-col border border-primary/10 bg-black/5 gap-4 rounded-3xl p-4"
+					/>
+				</div>
+
+				{cover && (
+					<div class="rounded-3xl overflow-hidden shadow-2xl">
+						<RushImage
+							media={cover}
+							alt={cover.alt || entry.title}
+							class="w-full h-auto"
+							loading="eager"
+							fetchpriority="high"
+						/>
+					</div>
+				)}
+
+				{html !== '' && (
+					<div class="prose prose-invert prose-lg lg:prose-xl max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl">
+						<Fragment set:html={html} />
+					</div>
+				)}
+
+				<TagList
+					tags={entry.tags}
+					urls={urls}
+					locale={locale}
+					class="pt-6 border-t border-border/30"
+				/>
+			</Container>
+		</article>
+	</div>
+</Base>

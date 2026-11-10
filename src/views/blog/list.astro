@@ -1,0 +1,91 @@
+---
+import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import Container from '../../components/container.astro'
+import PostCard from '../../components/blog/post-card.astro'
+import Base from '../../layouts/base.astro'
+import { Icons } from '../../lib/icons'
+import { labelsFor } from '../../lib/labels'
+import { taxonomyHref } from '../../lib/taxonomy-href'
+import type { ListViewProps } from '../index'
+
+type Props = ListViewProps
+
+const { page } = Astro.props
+const { collection, locale, entries, lastPage } = page
+const urls = getUrls(Astro)
+const rush = getRush(Astro)
+const site = await rush.site.get()
+const labels = labelsFor(locale)
+const categories = await rush.tags.list({ type: 'category', locale })
+const filters = categories.map((category) => ({
+	name: category.name,
+	href: taxonomyHref(urls, category, locale)
+}))
+const previous = page.page > 1 ? urls.collection(collection, locale, page.page - 1) : undefined
+const next = page.page < lastPage ? urls.collection(collection, locale, page.page + 1) : undefined
+const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
+const translations = collectionAlternates(collection.id, urls)
+const pillBase = 'px-4 py-2 rounded-full text-sm font-medium transition-colors'
+const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevated/80 hover:text-primary border border-border`
+const stepLink =
+	'flex items-center gap-2 px-6 py-3 rounded-full bg-bg-elevated border border-border hover:border-primary hover:text-primary transition-all font-medium'
+const ChevronLeftIcon = Icons.chevron_left
+const ChevronRightIcon = Icons.chevron_right
+---
+
+<Base locale={locale} title={`${labels.blog} - ${site.name}`} translations={translations}>
+	<meta slot="head" name="description" content={labels.blogDescription} />
+	{canonical && <link slot="head" rel="canonical" href={canonical.href} />}
+	<section class="py-20 md:py-32 relative overflow-hidden">
+		<Container>
+			<div class="text-center">
+				<h1 class="text-primary text-4xl lg:text-6xl font-bold mb-8">{labels.blog}</h1>
+			</div>
+			<div class="w-full">
+				<div class="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in">
+					<a
+						href={urls.collection(collection, locale)}
+						class={`${pillBase} bg-primary text-white shadow-lg`}
+					>
+						{labels.allCategories}
+					</a>
+					{filters.map((filter) =>
+						filter.href === undefined ? (
+							<span class={pillIdle}>{filter.name}</span>
+						) : (
+							<a href={filter.href} class={pillIdle}>
+								{filter.name}
+							</a>
+						)
+					)}
+				</div>
+
+				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+					{entries.items.map((entry) => (
+						<PostCard entry={entry} locale={locale} urls={urls} />
+					))}
+				</div>
+
+				{lastPage > 1 && (
+					<div class="flex justify-center gap-4 mt-16 animate-fade-in-up">
+						{previous && (
+							<a href={previous} rel="prev" class={stepLink}>
+								<ChevronLeftIcon class="w-5 h-5" />
+								{labels.previous}
+							</a>
+						)}
+						<span class="flex items-center px-4 font-serif font-bold text-text-muted">
+							{page.page} / {lastPage}
+						</span>
+						{next && (
+							<a href={next} rel="next" class={stepLink}>
+								{labels.next}
+								<ChevronRightIcon class="w-5 h-5" />
+							</a>
+						)}
+					</div>
+				)}
+			</div>
+		</Container>
+	</section>
+</Base>
