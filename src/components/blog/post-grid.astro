@@ -1,0 +1,18 @@
+---
+import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
+import PostCard from './post-card.astro'
+
+type Props = {
+	entries: Entry[]
+	locale: LocaleCode
+	urls: RushUrls
+}
+
+const { entries, locale, urls } = Astro.props
+---
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+	{entries.map((entry) => (
+		<PostCard entry={entry} locale={locale} urls={urls} />
+	))}
+</div>

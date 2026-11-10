@@ -1,7 +1,8 @@
 ---
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
 import Container from '../../components/container.astro'
-import PostCard from '../../components/blog/post-card.astro'
+import FilterPills from '../../components/blog/filter-pills.astro'
+import PostGrid from '../../components/blog/post-grid.astro'
 import Pager from '../../components/pager.astro'
 import Base from '../../layouts/base.astro'
 import { labelsFor } from '../../lib/labels'
@@ -21,12 +22,11 @@ const labels = labelsFor(locale)
 const categories = await rush.tags.list({ type: 'category', locale })
 const filters = categories.map((category) => ({
 	name: category.name,
-	href: taxonomyHref(urls, category, locale)
+	href: taxonomyHref(urls, category, locale),
+	active: false
 }))
 const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
 const translations = collectionAlternates(collection.id, urls)
-const pillBase = 'px-4 py-2 rounded-full text-sm font-medium transition-colors'
-const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevated/80 hover:text-primary border border-border`
 ---
 
 <Base locale={locale} title={`${labels.blog} - ${site.name}`} translations={translations}>
@@ -38,29 +38,12 @@ const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevate
 				<h1 class="text-primary text-4xl lg:text-6xl font-bold mb-8">{labels.blog}</h1>
 			</div>
 			<div class="w-full">
-				<div class="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in">
-					<a
-						href={urls.collection(collection, locale)}
-						class={`${pillBase} bg-primary text-white shadow-lg`}
-					>
-						{labels.allCategories}
-					</a>
-					{filters.map((filter) =>
-						filter.href === undefined ? (
-							<span class={pillIdle}>{filter.name}</span>
-						) : (
-							<a href={filter.href} class={pillIdle}>
-								{filter.name}
-							</a>
-						)
-					)}
-				</div>
-
-				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
-					{entries.items.map((entry) => (
-						<PostCard entry={entry} locale={locale} urls={urls} />
-					))}
-				</div>
+				<FilterPills
+					allHref={urls.collection(collection, locale)}
+					allLabel={labels.allCategories}
+					filters={filters}
+				/>
+				<PostGrid entries={entries.items} locale={locale} urls={urls} />
 
 				<Pager
 					locale={locale}
