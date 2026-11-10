@@ -34,7 +34,7 @@ describe('case article', () => {
 
 	function render(entry: Entry) {
 		return container.renderToString(CaseArticle, {
-			props: { entry, html: '<p>Body text</p>', backHref: '/cases', labels }
+			props: { entry, html: '<p>Body text</p>', labels }
 		})
 	}
 
@@ -45,7 +45,14 @@ describe('case article', () => {
 			expect(html).toContain(value)
 		}
 		expect(html).toContain(labels.caseClient)
-		expect(html).toContain('href="/cases"')
+		expect(html).not.toContain('href="/cases"')
+	})
+
+	it('hides the role pair when the role is empty', async () => {
+		const html = await render(makeEntry({ data: { ...caseData, role: '' } }))
+		expect(html).toContain(labels.caseClient)
+		expect(html).toContain(labels.casePeriod)
+		expect(html).not.toContain(labels.caseRole)
 	})
 
 	it('renders no image and no time even with a featured image and a publication date', async () => {

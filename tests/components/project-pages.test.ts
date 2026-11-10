@@ -22,7 +22,7 @@ describe('projects', () => {
 	function article(data: Record<string, unknown>) {
 		const entry = makeEntry({ data, title: 'Engine' })
 		return container.renderToString(ProjectArticle, {
-			props: { entry, html: '<p>Body</p>', backHref: '/projects', labels: labelsFor('en') }
+			props: { entry, html: '<p>Body</p>', labels: labelsFor('en') }
 		})
 	}
 

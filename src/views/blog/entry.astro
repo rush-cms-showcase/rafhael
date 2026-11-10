@@ -3,6 +3,7 @@ import { getUrls } from '@rushcms/astro'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, toBcp47 } from '@rushcms/client'
+import Breadcrumb from '../../components/breadcrumb.astro'
 import CategoryPills from '../../components/blog/category-pills.astro'
 import PostMeta from '../../components/blog/post-meta.astro'
 import Share from '../../components/blog/share.astro'
@@ -10,6 +11,7 @@ import TagList from '../../components/blog/tag-list.astro'
 import Container from '../../components/container.astro'
 import Prose from '../../components/prose.astro'
 import Base from '../../layouts/base.astro'
+import { breadcrumbTrail } from '../../lib/breadcrumb'
 import { markdownBody, renderMarkdown } from '../../lib/markdown'
 import { readingTime } from '../../lib/reading-time'
 import type { EntryViewProps } from '../index'
@@ -20,7 +22,9 @@ const { entry, locale } = Astro.props
 const urls = getUrls(Astro)
 const markdown = markdownBody(entry)
 const html = await renderMarkdown(markdown)
-const shareUrl = new URL(urls.entry(entry), Astro.site).href
+const path = urls.entry(entry)
+const shareUrl = new URL(path, Astro.site).href
+const trail = breadcrumbTrail({ kind: 'post', locale, urls, title: entry.title, path })
 const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
 ---
 
@@ -30,7 +34,8 @@ const cover = entry.featured_image?.url === undefined ? undefined : entry.featur
 	translations={alternates(entry, urls)}
 >
 	<Seo slot="head" entry={entry} />
-	<div class="py-24 mt-4 lg:mt-16">
+	<Breadcrumb trail={trail} class="max-w-4xl" />
+	<div class="pt-10 pb-24 lg:pt-14">
 		<article lang={toBcp47(entry.locale)} class="space-y-4">
 			<Container class="relative max-w-4xl space-y-4 lg:space-y-6">
 				<PostMeta

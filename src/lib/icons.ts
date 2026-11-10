@@ -1,4 +1,3 @@
-import IconArrowLeft from '~icons/lucide/arrow-left'
 import IconArrowRight from '~icons/lucide/arrow-right'
 import IconCalendar from '~icons/lucide/calendar-days'
 import IconCheck from '~icons/lucide/check'
@@ -10,6 +9,7 @@ import IconCopy from '~icons/lucide/copy'
 import IconExternalLink from '~icons/lucide/external-link'
 import IconGithub from '~icons/lucide/github'
 import IconGlobe from '~icons/lucide/globe'
+import IconHouse from '~icons/lucide/house'
 import IconMail from '~icons/lucide/mail'
 import IconMapPin from '~icons/lucide/map-pin'
 import IconMenu from '~icons/lucide/menu'
@@ -23,7 +23,6 @@ import IconWhatsapp from '~icons/simple-icons/whatsapp'
 import IconTwitterX from '~icons/simple-icons/x'
 
 export const Icons = {
-	arrow_left: IconArrowLeft,
 	arrow_right: IconArrowRight,
 	calendar: IconCalendar,
 	check: IconCheck,
@@ -35,6 +34,7 @@ export const Icons = {
 	external_link: IconExternalLink,
 	github: IconGithub,
 	globe: IconGlobe,
+	house: IconHouse,
 	linkedin: IconLinkedin,
 	mail: IconMail,
 	map_pin: IconMapPin,

@@ -9,23 +9,15 @@ import Prose from './prose.astro'
 type Props = {
 	entry: Entry
 	html: string
-	backHref: string
 	labels: Labels
 }
 
-const { entry, html, backHref, labels } = Astro.props
+const { entry, html, labels } = Astro.props
 const { linkUrl, linkLabel } = projectMeta(entry)
 const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
 ---
 
-<article class="mx-auto flex max-w-4xl flex-col gap-10 px-3 py-16 lg:px-6 lg:py-24">
-	<a
-		href={backHref}
-		class="group inline-flex items-center gap-2 self-start text-sm font-medium text-text-muted transition-colors hover:text-primary"
-	>
-		<Icons.arrow_left class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-		{labels.allProjects}
-	</a>
+<article class="mx-auto flex max-w-4xl flex-col gap-10 px-3 pt-10 pb-16 lg:px-6 lg:pt-14 lg:pb-24">
 	<h1 class="font-serif text-4xl leading-tight font-bold text-primary text-balance lg:text-6xl">
 		{entry.title}
 	</h1>

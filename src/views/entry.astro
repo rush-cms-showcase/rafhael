@@ -4,7 +4,9 @@ import RichText from '@rushcms/astro/components/rich-text.astro'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, isRichText, toBcp47 } from '@rushcms/client'
+import Breadcrumb from '../components/breadcrumb.astro'
 import Base from '../layouts/base.astro'
+import { breadcrumbTrail } from '../lib/breadcrumb'
 import { formatDate } from '../lib/format-date'
 import { languageName } from '../lib/locale'
 import type { EntryViewProps } from './index'
@@ -13,7 +15,13 @@ type Props = EntryViewProps
 
 const { entry, locale } = Astro.props
 const urls = getUrls(Astro)
-const list = urls.collectionRef(entry.collection.id, locale)
+const trail = breadcrumbTrail({
+	kind: 'page',
+	locale,
+	urls,
+	title: entry.title,
+	path: urls.entry(entry)
+})
 const documents = Object.values(entry.data).filter(isRichText)
 ---
 
@@ -23,19 +31,10 @@ const documents = Object.values(entry.data).filter(isRichText)
 	translations={alternates(entry, urls)}
 >
 	<Seo slot="head" entry={entry} />
-	<article lang={toBcp47(entry.locale)} class="mx-auto max-w-3xl px-6 py-16">
+	<Breadcrumb trail={trail} class="max-w-3xl" />
+	<article lang={toBcp47(entry.locale)} class="mx-auto max-w-3xl px-6 pt-10 pb-16">
 		<header>
-			{list && (
-				<p class="text-sm">
-					<a
-						href={urls.collection(list, locale)}
-						class="text-text-muted hover:text-primary"
-					>
-						&larr; Back to the list
-					</a>
-				</p>
-			)}
-			<h1 class="mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+			<h1 class="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
 				{entry.title}
 			</h1>
 			<p class="mt-4 text-sm text-text-muted">

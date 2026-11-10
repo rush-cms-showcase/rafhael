@@ -2,22 +2,33 @@
 import { getUrls } from '@rushcms/astro'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, toBcp47 } from '@rushcms/client'
+import Breadcrumb from '../../components/breadcrumb.astro'
 import PageArticle from '../../components/page-article.astro'
 import Base from '../../layouts/base.astro'
+import { breadcrumbTrail } from '../../lib/breadcrumb'
 import { markdownBody, renderMarkdown } from '../../lib/markdown'
 import type { EntryViewProps } from '../index'
 
 type Props = EntryViewProps
 
 const { entry, locale } = Astro.props
+const urls = getUrls(Astro)
+const trail = breadcrumbTrail({
+	kind: 'page',
+	locale,
+	urls,
+	title: entry.title,
+	path: urls.entry(entry)
+})
 ---
 
 <Base
 	locale={locale}
 	socialImage={entry.featured_image?.url === undefined}
-	translations={alternates(entry, getUrls(Astro))}
+	translations={alternates(entry, urls)}
 >
 	<Seo slot="head" entry={entry} />
+	<Breadcrumb trail={trail} class="max-w-3xl" />
 	<div lang={toBcp47(entry.locale)}>
 		<PageArticle title={entry.title} html={await renderMarkdown(markdownBody(entry))} />
 	</div>

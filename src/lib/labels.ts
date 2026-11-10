@@ -24,15 +24,22 @@ export type Labels = {
 	caseRole: string
 	casePeriod: string
 	caseStack: string
-	allCases: string
+	cases: string
 	seeAll: string
 	email: string
 	phone: string
 	whatsappChat: string
 	openProject: string
-	allProjects: string
 	projects: string
 	projectsDescription: string
+	breadcrumb: string
+	home: string
+	thisCase: string
+	thisPost: string
+	thisProject: string
+	thisPage: string
+	thisCategory: string
+	thisTag: string
 }
 
 const english: Labels = {
@@ -59,15 +66,22 @@ const english: Labels = {
 	caseRole: 'Role',
 	casePeriod: 'Period',
 	caseStack: 'Stack',
-	allCases: 'All cases',
+	cases: 'Cases',
 	seeAll: 'See all',
 	email: 'E-mail',
 	phone: 'Phone',
 	whatsappChat: 'Chat on WhatsApp',
 	openProject: 'View project',
-	allProjects: 'All projects',
 	projects: 'Projects',
-	projectsDescription: 'Software projects and products.'
+	projectsDescription: 'Software projects and products.',
+	breadcrumb: 'Breadcrumb',
+	home: 'Home',
+	thisCase: 'This case',
+	thisPost: 'This post',
+	thisProject: 'This project',
+	thisPage: 'This page',
+	thisCategory: 'This category',
+	thisTag: 'This tag'
 }
 
 const dictionary: Record<string, Labels> = {
@@ -96,15 +110,22 @@ const dictionary: Record<string, Labels> = {
 		caseRole: 'Função',
 		casePeriod: 'Período',
 		caseStack: 'Stack',
-		allCases: 'Todos os cases',
+		cases: 'Cases',
 		seeAll: 'Ver todos',
 		email: 'E-mail',
 		phone: 'Telefone',
 		whatsappChat: 'Conversar no WhatsApp',
 		openProject: 'Ver projeto',
-		allProjects: 'Todos os projetos',
 		projects: 'Projetos',
-		projectsDescription: 'Projetos e produtos de software.'
+		projectsDescription: 'Projetos e produtos de software.',
+		breadcrumb: 'Trilha de navegação',
+		home: 'Início',
+		thisCase: 'Este case',
+		thisPost: 'Este artigo',
+		thisProject: 'Este projeto',
+		thisPage: 'Esta página',
+		thisCategory: 'Esta categoria',
+		thisTag: 'Esta tag'
 	},
 	es: {
 		skipToContent: 'Saltar al contenido',
@@ -130,15 +151,22 @@ const dictionary: Record<string, Labels> = {
 		caseRole: 'Rol',
 		casePeriod: 'Período',
 		caseStack: 'Stack',
-		allCases: 'Todos los casos',
+		cases: 'Casos',
 		seeAll: 'Ver todos',
 		email: 'Correo',
 		phone: 'Teléfono',
 		whatsappChat: 'Conversar por WhatsApp',
 		openProject: 'Ver proyecto',
-		allProjects: 'Todos los proyectos',
 		projects: 'Proyectos',
-		projectsDescription: 'Proyectos y productos de software.'
+		projectsDescription: 'Proyectos y productos de software.',
+		breadcrumb: 'Ruta de navegación',
+		home: 'Inicio',
+		thisCase: 'Este caso',
+		thisPost: 'Este artículo',
+		thisProject: 'Este proyecto',
+		thisPage: 'Esta página',
+		thisCategory: 'Esta categoría',
+		thisTag: 'Esta etiqueta'
 	}
 }
 

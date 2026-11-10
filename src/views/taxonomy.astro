@@ -1,11 +1,13 @@
 ---
 import { getRush, getUrls } from '@rushcms/astro'
 import Hreflang from '@rushcms/astro/components/hreflang.astro'
+import Breadcrumb from '../components/breadcrumb.astro'
 import FilterPills from '../components/blog/filter-pills.astro'
 import PostGrid from '../components/blog/post-grid.astro'
 import Container from '../components/container.astro'
 import Pager from '../components/pager.astro'
 import Base from '../layouts/base.astro'
+import { breadcrumbTrail } from '../lib/breadcrumb'
 import { labelsFor } from '../lib/labels'
 import { taxonomyHref } from '../lib/taxonomy-href'
 import type { TaxonomyViewProps } from './index'
@@ -30,13 +32,21 @@ const pageUrl = (number: number) => urls.taxonomy(tag, locale, number)
 const current = pageUrl(page.page)
 const canonical =
 	Astro.site && current !== undefined ? new URL(current, Astro.site).href : undefined
+const trail = breadcrumbTrail({
+	kind: tag.type,
+	locale,
+	urls,
+	title: tag.name,
+	path: current
+})
 const heading = page.page > 1 ? `${tag.name} (${page.page}/${lastPage})` : tag.name
 ---
 
 <Base locale={locale} title={`${heading} - ${site.name}`} translations={alternates}>
 	{canonical && <link slot="head" rel="canonical" href={canonical} />}
 	{page.page === 1 && <Hreflang slot="head" alternates={alternates} />}
-	<section class="py-20 md:py-32 relative overflow-hidden">
+	<Breadcrumb trail={trail} />
+	<section class="pt-10 pb-20 md:pt-14 md:pb-32 relative overflow-hidden">
 		<Container>
 			<div class="text-center">
 				<h1 class="text-primary text-4xl lg:text-6xl font-bold mb-8">{tag.name}</h1>

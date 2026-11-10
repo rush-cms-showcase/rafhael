@@ -1,6 +1,5 @@
 ---
 import type { Entry } from '@rushcms/client'
-import { Icons } from '../lib/icons'
 import type { Labels } from '../lib/labels'
 import CaseHeader from './case-header.astro'
 import Prose from './prose.astro'
@@ -8,21 +7,13 @@ import Prose from './prose.astro'
 type Props = {
 	entry: Entry
 	html: string
-	backHref: string
 	labels: Labels
 }
 
-const { entry, html, backHref, labels } = Astro.props
+const { entry, html, labels } = Astro.props
 ---
 
-<article class="mx-auto flex max-w-4xl flex-col gap-12 px-3 py-16 lg:px-6 lg:py-24">
-	<a
-		href={backHref}
-		class="group inline-flex items-center gap-2 self-start text-sm font-medium text-text-muted transition-colors hover:text-primary"
-	>
-		<Icons.arrow_left class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-		{labels.allCases}
-	</a>
+<article class="mx-auto flex max-w-4xl flex-col gap-12 px-3 pt-10 pb-16 lg:px-6 lg:pt-14 lg:pb-24">
 	<CaseHeader entry={entry} labels={labels} />
 	<Prose html={html} />
 </article>

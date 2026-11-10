@@ -2,8 +2,10 @@
 import { getUrls } from '@rushcms/astro'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, toBcp47 } from '@rushcms/client'
+import Breadcrumb from '../../components/breadcrumb.astro'
 import ProjectArticle from '../../components/project-article.astro'
 import Base from '../../layouts/base.astro'
+import { breadcrumbTrail } from '../../lib/breadcrumb'
 import { labelsFor } from '../../lib/labels'
 import { markdownBody, renderMarkdown } from '../../lib/markdown'
 import type { EntryViewProps } from '../index'
@@ -12,8 +14,13 @@ type Props = EntryViewProps
 
 const { entry, locale } = Astro.props
 const urls = getUrls(Astro)
-const list = urls.collectionRef(entry.collection.id, locale)
-const backHref = list === undefined ? urls.homepage(locale) : urls.collection(list, locale)
+const trail = breadcrumbTrail({
+	kind: 'project',
+	locale,
+	urls,
+	title: entry.title,
+	path: urls.entry(entry)
+})
 ---
 
 <Base
@@ -22,11 +29,11 @@ const backHref = list === undefined ? urls.homepage(locale) : urls.collection(li
 	translations={alternates(entry, urls)}
 >
 	<Seo slot="head" entry={entry} />
+	<Breadcrumb trail={trail} class="max-w-4xl" />
 	<div lang={toBcp47(entry.locale)}>
 		<ProjectArticle
 			entry={entry}
 			html={await renderMarkdown(markdownBody(entry))}
-			backHref={backHref}
 			labels={labelsFor(locale)}
 		/>
 	</div>
