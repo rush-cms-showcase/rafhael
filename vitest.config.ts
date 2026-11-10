@@ -1,10 +1,10 @@
 import { getViteConfig } from 'astro/config'
+import { defineConfig } from 'vitest/config'
 
-export default getViteConfig(
-	{
-		test: {
-			include: ['tests/**/*.test.ts']
-		}
-	},
-	{ configFile: false }
-)
+const testConfig = defineConfig({
+	test: {
+		include: ['tests/**/*.test.ts']
+	}
+})
+
+export default getViteConfig(testConfig, { configFile: false })

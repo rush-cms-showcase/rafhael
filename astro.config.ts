@@ -1,27 +1,36 @@
+import { existsSync } from 'node:fs'
 import node from '@astrojs/node'
 import rush from '@rushcms/astro'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
+import Icons from 'unplugin-icons/vite'
+import { allowedDomain, siteOrigin } from './src/lib/site-env'
+
+if (existsSync('.env')) {
+	process.loadEnvFile('.env')
+}
+
+const origin = siteOrigin(process.env)
 
 export default defineConfig({
-	// TODO: set your production URL; canonical links, hreflang links and the sitemap are built from it.
-	site: 'http://localhost:4321',
+	site: origin.origin,
 	output: 'static',
 	adapter: node({ mode: 'standalone' }),
 	security: {
-		// TODO: list every domain that serves this site, or form posts and preview links fail there.
-		allowedDomains: [{ protocol: 'https', hostname: 'www.example.com' }]
+		allowedDomains: [allowedDomain(origin)]
 	},
 	vite: {
-		plugins: [tailwindcss()]
+		plugins: [tailwindcss(), Icons({ compiler: 'astro' })]
 	},
 	integrations: [
 		rush({
-			// TODO: paste the localePaths line that the first `npm run dev` prints.
-			localePaths: {},
-			// TODO: replace '*' with one route per public collection, so data-only collections get no pages.
-			routes: { '*': '/{locale}/{collection}/{slug}' },
-			// TODO: set how many reverse proxies sit in front of the server (see "Deployment" in README.md).
+			localePaths: { en: '', pt_BR: 'br', es: 'es' },
+			routes: {
+				blog: '/{locale}/blog/{slug}',
+				cases: '/{locale}/cases/{slug}',
+				pages: '/{locale}/{slug}'
+			},
+			pageSegments: { en: 'page', pt_BR: 'pagina', es: 'pagina' },
 			trustedProxies: 1
 		})
 	]
