@@ -5,6 +5,7 @@ import Pager from '../components/pager.astro'
 import Base from '../layouts/base.astro'
 import { formatDate } from '../lib/format-date'
 import type { ListViewProps } from './index'
+import { collectionCanonical } from '../lib/collection-canonical'
 
 type Props = ListViewProps
 
@@ -12,13 +13,13 @@ const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 const site = await getRush(Astro).site.get()
-const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
+const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
 const heading = page.page > 1 ? `${collection.name} (${page.page}/${lastPage})` : collection.name
 const translations = collectionAlternates(collection.id, urls)
 ---
 
 <Base locale={locale} title={`${heading} | ${site.name}`} translations={translations}>
-	{canonical && <link slot="head" rel="canonical" href={canonical.href} />}
+	{canonical && <link slot="head" rel="canonical" href={canonical} />}
 	<div class="mx-auto max-w-6xl px-6 py-16">
 		<header class="max-w-3xl">
 			<h1 class="text-4xl font-semibold tracking-tight">{collection.name}</h1>

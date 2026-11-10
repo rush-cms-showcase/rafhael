@@ -7,6 +7,7 @@ import Base from '../../layouts/base.astro'
 import { labelsFor } from '../../lib/labels'
 import { taxonomyHref } from '../../lib/taxonomy-href'
 import type { ListViewProps } from '../index'
+import { collectionCanonical } from '../../lib/collection-canonical'
 
 type Props = ListViewProps
 
@@ -21,7 +22,7 @@ const filters = categories.map((category) => ({
 	name: category.name,
 	href: taxonomyHref(urls, category, locale)
 }))
-const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
+const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
 const translations = collectionAlternates(collection.id, urls)
 const pillBase = 'px-4 py-2 rounded-full text-sm font-medium transition-colors'
 const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevated/80 hover:text-primary border border-border`
@@ -29,7 +30,7 @@ const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevate
 
 <Base locale={locale} title={`${labels.blog} - ${site.name}`} translations={translations}>
 	<meta slot="head" name="description" content={labels.blogDescription} />
-	{canonical && <link slot="head" rel="canonical" href={canonical.href} />}
+	{canonical && <link slot="head" rel="canonical" href={canonical} />}
 	<section class="py-20 md:py-32 relative overflow-hidden">
 		<Container>
 			<div class="text-center">

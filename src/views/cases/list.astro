@@ -5,6 +5,7 @@ import Pager from '../../components/pager.astro'
 import Base from '../../layouts/base.astro'
 import type { CaseLink } from '../../lib/case-link'
 import type { ListViewProps } from '../index'
+import { collectionCanonical } from '../../lib/collection-canonical'
 
 type Props = ListViewProps
 
@@ -16,7 +17,7 @@ const items: CaseLink[] = entries.items.map((entry) => ({
 	entry,
 	href: urls.servedPath(entry, locale)
 }))
-const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
+const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
 ---
 
 <Base
@@ -24,7 +25,7 @@ const canonical = Astro.site && new URL(urls.collection(collection, locale, page
 	title={`${collection.name} | ${site.name}`}
 	translations={collectionAlternates(collection.id, urls)}
 >
-	{canonical && <link slot="head" rel="canonical" href={canonical.href} />}
+	{canonical && <link slot="head" rel="canonical" href={canonical} />}
 	<div class="mx-auto max-w-5xl px-3 py-16 lg:px-6 lg:py-24">
 		<h1 class="mb-12 font-serif text-5xl font-bold text-primary lg:mb-16 lg:text-7xl">
 			{collection.name}
