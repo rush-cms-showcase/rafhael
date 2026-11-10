@@ -1,0 +1,30 @@
+---
+import { getUrls } from '@rushcms/astro'
+import Seo from '@rushcms/astro/components/seo.astro'
+import { alternates, toBcp47 } from '@rushcms/client'
+import CaseArticle from '../../components/case-article.astro'
+import Base from '../../layouts/base.astro'
+import { bodyOf } from '../../lib/entry-data'
+import { labelsFor } from '../../lib/labels'
+import { renderMarkdown } from '../../lib/markdown'
+import type { EntryViewProps } from '../index'
+
+type Props = EntryViewProps
+
+const { entry, locale } = Astro.props
+const urls = getUrls(Astro)
+const list = urls.collectionRef(entry.collection.id, locale)
+const backHref = list === undefined ? urls.homepage(locale) : urls.collection(list, locale)
+---
+
+<Base locale={locale} translations={alternates(entry, urls)}>
+	<Seo slot="head" entry={entry} />
+	<div lang={toBcp47(entry.locale)}>
+		<CaseArticle
+			entry={entry}
+			html={await renderMarkdown(bodyOf(entry))}
+			backHref={backHref}
+			labels={labelsFor(locale)}
+		/>
+	</div>
+</Base>

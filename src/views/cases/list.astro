@@ -1,0 +1,46 @@
+---
+import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import CaseIndex from '../../components/case-index.astro'
+import Pager from '../../components/pager.astro'
+import Base from '../../layouts/base.astro'
+import type { CaseLink } from '../../lib/case-link'
+import { labelsFor } from '../../lib/labels'
+import type { ListViewProps } from '../index'
+
+type Props = ListViewProps
+
+const { page } = Astro.props
+const { collection, locale, entries, lastPage } = page
+const urls = getUrls(Astro)
+const labels = labelsFor(locale)
+const site = await getRush(Astro).site.get()
+const items: CaseLink[] = entries.items.map((entry) => ({
+	entry,
+	href: urls.servedPath(entry, locale)
+}))
+const previous = page.page > 1 ? urls.collection(collection, locale, page.page - 1) : undefined
+const next = page.page < lastPage ? urls.collection(collection, locale, page.page + 1) : undefined
+const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
+---
+
+<Base
+	locale={locale}
+	title={`${collection.name} | ${site.name}`}
+	translations={collectionAlternates(collection.id, urls)}
+>
+	{canonical && <link slot="head" rel="canonical" href={canonical.href} />}
+	<div class="mx-auto max-w-5xl px-3 py-16 lg:px-6 lg:py-24">
+		<h1 class="mb-12 font-serif text-5xl font-bold text-primary lg:mb-16 lg:text-7xl">
+			{collection.name}
+		</h1>
+		<CaseIndex items={items} />
+		<Pager
+			current={page.page}
+			last={lastPage}
+			previousHref={previous}
+			nextHref={next}
+			previousLabel={labels.previousPage}
+			nextLabel={labels.nextPage}
+		/>
+	</div>
+</Base>
