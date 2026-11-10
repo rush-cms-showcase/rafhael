@@ -1,0 +1,26 @@
+---
+import type { Entry } from '@rushcms/client'
+import { caseMeta } from '../lib/entry-data'
+import { Icons } from '../lib/icons'
+
+type Props = {
+	entry: Entry
+	href: string
+}
+
+const { entry, href } = Astro.props
+const { clientName } = caseMeta(entry)
+---
+
+<a
+	href={href}
+	class="group flex items-center justify-between gap-6 border-b border-border py-6 transition-colors hover:border-primary"
+>
+	<span class="min-w-0">
+		<span class="block font-serif text-2xl font-bold text-text-main transition-colors group-hover:text-primary lg:text-3xl">
+			{entry.title}
+		</span>
+		{clientName !== '' && <span class="mt-1 block text-text-muted">{clientName}</span>}
+	</span>
+	<Icons.arrow_right class="h-6 w-6 shrink-0 text-text-subtle transition group-hover:translate-x-1 group-hover:text-primary" />
+</a>

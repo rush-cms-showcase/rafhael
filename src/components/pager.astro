@@ -1,0 +1,46 @@
+---
+import { Icons } from '../lib/icons'
+
+type Props = {
+	current: number
+	last: number
+	previousHref?: string | undefined
+	nextHref?: string | undefined
+	previousLabel: string
+	nextLabel: string
+}
+
+const { current, last, previousHref, nextHref, previousLabel, nextLabel } = Astro.props
+---
+
+{last > 1 && (
+	<nav class="flex items-center justify-between gap-4 pt-10" aria-label="Pagination">
+		{previousHref ? (
+			<a
+				href={previousHref}
+				rel="prev"
+				class="inline-flex items-center gap-2 text-text-muted transition-colors hover:text-primary"
+			>
+				<Icons.arrow_left class="h-4 w-4" />
+				{previousLabel}
+			</a>
+		) : (
+			<span />
+		)}
+		<span class="text-sm text-text-subtle">
+			{current} / {last}
+		</span>
+		{nextHref ? (
+			<a
+				href={nextHref}
+				rel="next"
+				class="inline-flex items-center gap-2 text-text-muted transition-colors hover:text-primary"
+			>
+				{nextLabel}
+				<Icons.arrow_right class="h-4 w-4" />
+			</a>
+		) : (
+			<span />
+		)}
+	</nav>
+)}

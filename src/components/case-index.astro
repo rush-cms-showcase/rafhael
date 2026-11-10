@@ -1,0 +1,18 @@
+---
+import type { CaseLink } from '../lib/case-link'
+import CaseIndexItem from './case-index-item.astro'
+
+type Props = {
+	items: CaseLink[]
+}
+
+const { items } = Astro.props
+---
+
+<ol class="divide-y divide-border border-y border-border">
+	{items.map((item) => (
+		<li>
+			<CaseIndexItem {...item} />
+		</li>
+	))}
+</ol>
