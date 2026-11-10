@@ -1,0 +1,75 @@
+import { optional } from '@rushcms/client'
+import type { LocaleCode, SiteOptionGroup } from '@rushcms/client'
+
+export const SITE_OPTIONS_GROUP = 'opcoes-do-site'
+
+export type SiteOptions = {
+	contactEmail: string | undefined
+	contactGithub: string | undefined
+	contactLinkedin: string | undefined
+	contactPhone: string | undefined
+	whatsappNumber: string | undefined
+	whatsappText: string | undefined
+	creatorUrl: string | undefined
+	platformUrl: string | undefined
+}
+
+export type ContactKind = 'github' | 'linkedin' | 'email' | 'phone'
+
+export type ContactLink = {
+	kind: ContactKind
+	href: string
+}
+
+export type SiteOptionsSource = {
+	siteOptions: {
+		get(slug: string): Promise<SiteOptionGroup>
+	}
+}
+
+const cache = new Map<LocaleCode, Promise<SiteOptions>>()
+
+export function optionText(group: SiteOptionGroup | undefined, field: string): string | undefined {
+	const value = group?.values[field]
+	return typeof value === 'string' && value.trim() !== '' ? value.trim() : undefined
+}
+
+export function siteOptionsFrom(group: SiteOptionGroup | undefined): SiteOptions {
+	return {
+		contactEmail: optionText(group, 'contact_email'),
+		contactGithub: optionText(group, 'contact_github'),
+		contactLinkedin: optionText(group, 'contact_linkedin'),
+		contactPhone: optionText(group, 'contact_phone'),
+		whatsappNumber: optionText(group, 'whatsapp_number'),
+		whatsappText: optionText(group, 'whatsapp_text'),
+		creatorUrl: optionText(group, 'creator_url'),
+		platformUrl: optionText(group, 'platform_url')
+	}
+}
+
+export function contactLinks(options: SiteOptions): ContactLink[] {
+	const links: ContactLink[] = []
+	if (options.contactGithub !== undefined) {
+		links.push({ kind: 'github', href: options.contactGithub })
+	}
+	if (options.contactLinkedin !== undefined) {
+		links.push({ kind: 'linkedin', href: options.contactLinkedin })
+	}
+	if (options.contactEmail !== undefined) {
+		links.push({ kind: 'email', href: `mailto:${options.contactEmail}` })
+	}
+	if (options.contactPhone !== undefined) {
+		links.push({ kind: 'phone', href: `tel:${options.contactPhone.replace(/[^\d+]/g, '')}` })
+	}
+	return links
+}
+
+export function loadSiteOptions(rush: SiteOptionsSource, locale: LocaleCode): Promise<SiteOptions> {
+	const cached = cache.get(locale)
+	if (cached !== undefined) {
+		return cached
+	}
+	const loaded = optional(rush.siteOptions.get(SITE_OPTIONS_GROUP)).then(siteOptionsFrom)
+	cache.set(locale, loaded)
+	return loaded
+}

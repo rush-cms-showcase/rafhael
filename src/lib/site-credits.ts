@@ -1,18 +1,10 @@
-import type { SiteOptionGroup } from '@rushcms/client'
+import type { SiteOptions } from './site-options'
 
 export type Credits = {
 	creatorUrl?: string | undefined
 	platformUrl?: string | undefined
 }
 
-function optionUrl(group: SiteOptionGroup | undefined, field: string): string | undefined {
-	const value = group?.values[field]
-	return typeof value === 'string' && value !== '' ? value : undefined
-}
-
-export function creditsFrom(group: SiteOptionGroup | undefined): Credits {
-	return {
-		creatorUrl: optionUrl(group, 'creator_url'),
-		platformUrl: optionUrl(group, 'platform_url')
-	}
+export function creditsFrom(options: SiteOptions): Credits {
+	return { creatorUrl: options.creatorUrl, platformUrl: options.platformUrl }
 }

@@ -1,8 +1,10 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
 import { labelsFor } from '../lib/labels'
+import { Icons } from '../lib/icons'
 import type { LinkableNavigation } from '../lib/locale'
 import type { Credits } from '../lib/site-credits'
+import type { ContactKind, ContactLink } from '../lib/site-options'
 import BrandName from './brand-name.astro'
 import Container from './container.astro'
 
@@ -10,11 +12,24 @@ type Props = {
 	name: string
 	locale: LocaleCode
 	links: LinkableNavigation[]
+	contacts?: ContactLink[]
 	credits: Credits
 }
 
-const { name, locale, links, credits } = Astro.props
+const { name, locale, links, contacts = [], credits } = Astro.props
 const labels = labelsFor(locale)
+const contactIcons = {
+	github: Icons.github,
+	linkedin: Icons.linkedin,
+	email: Icons.mail,
+	phone: Icons.phone
+} satisfies Record<ContactKind, typeof Icons.mail>
+const contactNames: Record<ContactKind, string> = {
+	github: 'GitHub',
+	linkedin: 'LinkedIn',
+	email: labels.email,
+	phone: labels.phone
+}
 const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 ---
 
@@ -29,7 +44,19 @@ const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 				<img src="/favicon.svg" width="64" height="64" alt={name} />
 			</div>
 
-			<div class="flex gap-6">
+			<div class="flex flex-wrap justify-center gap-6">
+				{contacts.map(({ kind, href }) => {
+					const Icon = contactIcons[kind]
+					return (
+						<a
+							href={href}
+							aria-label={contactNames[kind]}
+							class="text-text-muted transition-colors hover:text-primary"
+						>
+							<Icon class="size-5" />
+						</a>
+					)
+				})}
 				{links.map((link) => (
 					<a
 						href={link.href}

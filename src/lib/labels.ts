@@ -27,6 +27,14 @@ export type Labels = {
 	casePeriod: string
 	caseStack: string
 	allCases: string
+	seeAll: string
+	email: string
+	phone: string
+	whatsappChat: string
+	openProject: string
+	allProjects: string
+	projects: string
+	projectsDescription: string
 }
 
 const english: Labels = {
@@ -55,7 +63,15 @@ const english: Labels = {
 	caseRole: 'Role',
 	casePeriod: 'Period',
 	caseStack: 'Stack',
-	allCases: 'All cases'
+	allCases: 'All cases',
+	seeAll: 'See all',
+	email: 'E-mail',
+	phone: 'Phone',
+	whatsappChat: 'Chat on WhatsApp',
+	openProject: 'View project',
+	allProjects: 'All projects',
+	projects: 'Projects',
+	projectsDescription: 'Software projects and products.'
 }
 
 const dictionary: Record<string, Labels> = {
@@ -86,7 +102,15 @@ const dictionary: Record<string, Labels> = {
 		caseRole: 'Função',
 		casePeriod: 'Período',
 		caseStack: 'Stack',
-		allCases: 'Todos os cases'
+		allCases: 'Todos os cases',
+		seeAll: 'Ver todos',
+		email: 'E-mail',
+		phone: 'Telefone',
+		whatsappChat: 'Conversar no WhatsApp',
+		openProject: 'Ver projeto',
+		allProjects: 'Todos os projetos',
+		projects: 'Projetos',
+		projectsDescription: 'Projetos e produtos de software.'
 	},
 	es: {
 		skipToContent: 'Saltar al contenido',
@@ -114,7 +138,15 @@ const dictionary: Record<string, Labels> = {
 		caseRole: 'Rol',
 		casePeriod: 'Período',
 		caseStack: 'Stack',
-		allCases: 'Todos los casos'
+		allCases: 'Todos los casos',
+		seeAll: 'Ver todos',
+		email: 'Correo',
+		phone: 'Teléfono',
+		whatsappChat: 'Conversar por WhatsApp',
+		openProject: 'Ver proyecto',
+		allProjects: 'Todos los proyectos',
+		projects: 'Proyectos',
+		projectsDescription: 'Proyectos y productos de software.'
 	}
 }
 

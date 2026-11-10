@@ -1,14 +1,17 @@
 ---
 import { getRush, getUrls, homepageAlternates } from '@rushcms/astro'
 import PreviewBanner from '@rushcms/astro/components/preview-banner.astro'
-import { optional, toBcp47 } from '@rushcms/client'
+import { toBcp47 } from '@rushcms/client'
 import type { Alternate, LocaleCode } from '@rushcms/client'
 import Analytics from '../components/analytics.astro'
 import Footer from '../components/footer.astro'
 import Header from '../components/header.astro'
+import WhatsappFloat from '../components/whatsapp-float.astro'
 import { labelsFor } from '../lib/labels'
 import { languageLinks } from '../lib/locale'
 import { creditsFrom } from '../lib/site-credits'
+import { contactLinks, loadSiteOptions } from '../lib/site-options'
+import { whatsappUrl } from '../lib/whatsapp'
 import { LEGAL_NAVIGATION, MAIN_NAVIGATION, siteNavigation } from '../lib/site-navigation'
 import '../styles/global.css'
 
@@ -22,7 +25,9 @@ const { locale, title, translations = [] } = Astro.props
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
 const site = await rush.site.get()
-const credits = creditsFrom(await optional(rush.siteOptions.get('contact')))
+const options = await loadSiteOptions(rush, locale)
+const credits = creditsFrom(options)
+const whatsapp = whatsappUrl(options.whatsappNumber, options.whatsappText)
 const labels = labelsFor(locale)
 const languages = languageLinks(homepageAlternates(urls), translations)
 const mainLinks = await siteNavigation(Astro, MAIN_NAVIGATION)
@@ -59,6 +64,13 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 		<main id="content" tabindex="-1" class="flex-1 focus:outline-none">
 			<slot />
 		</main>
-		<Footer name={site.name} locale={locale} links={legalLinks} credits={credits} />
+		<Footer
+			name={site.name}
+			locale={locale}
+			links={legalLinks}
+			contacts={contactLinks(options)}
+			credits={credits}
+		/>
+		{whatsapp !== undefined && <WhatsappFloat href={whatsapp} label={labels.whatsappChat} />}
 	</body>
 </html>

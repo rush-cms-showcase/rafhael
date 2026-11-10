@@ -2,6 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { beforeAll, describe, expect, it } from 'vitest'
 import Footer from '../../src/components/footer.astro'
 import { creditsFrom } from '../../src/lib/site-credits'
+import { siteOptionsFrom } from '../../src/lib/site-options'
 
 const CREATOR = 'https://creator.example.test'
 const PLATFORM = 'https://platform.example.test'
@@ -51,14 +52,41 @@ describe('footer copyright', () => {
 describe('creditsFrom', () => {
 	it('reads non-empty string values and ignores the rest', () => {
 		const group = {
-			slug: 'contact',
+			slug: 'opcoes-do-site',
 			name: 'Contact',
 			description: '',
 			values: { creator_url: CREATOR, platform_url: '' },
 			media: {},
 			updated_at: ''
 		}
-		expect(creditsFrom(group)).toEqual({ creatorUrl: CREATOR, platformUrl: undefined })
-		expect(creditsFrom(undefined)).toEqual({ creatorUrl: undefined, platformUrl: undefined })
+		expect(creditsFrom(siteOptionsFrom(group))).toEqual({
+			creatorUrl: CREATOR,
+			platformUrl: undefined
+		})
+		expect(creditsFrom(siteOptionsFrom(undefined))).toEqual({
+			creatorUrl: undefined,
+			platformUrl: undefined
+		})
+	})
+})
+
+describe('footer contacts', () => {
+	it('renders one labelled link per contact and none when empty', async () => {
+		const container = await AstroContainer.create()
+		const contacts = [
+			{ kind: 'github', href: 'https://github.example.test/ada' },
+			{ kind: 'email', href: 'mailto:ada@example.test' }
+		]
+		const html = await container.renderToString(Footer, {
+			props: { name: 'Ada Lovelace', locale: 'en', links: [], contacts, credits: {} }
+		})
+		expect(html).toContain('href="https://github.example.test/ada"')
+		expect(html).toContain('aria-label="GitHub"')
+		expect(html).toContain('href="mailto:ada@example.test"')
+		expect(html).toContain('aria-label="E-mail"')
+		const empty = await container.renderToString(Footer, {
+			props: { name: 'Ada Lovelace', locale: 'en', links: [], credits: {} }
+		})
+		expect(empty).not.toContain('aria-label')
 	})
 })

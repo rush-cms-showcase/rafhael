@@ -11,8 +11,10 @@ import IconExternalLink from '~icons/lucide/external-link'
 import IconGithub from '~icons/lucide/github'
 import IconGlobe from '~icons/lucide/globe'
 import IconMail from '~icons/lucide/mail'
+import IconMapPin from '~icons/lucide/map-pin'
 import IconMenu from '~icons/lucide/menu'
 import IconMessageCircle from '~icons/lucide/message-circle'
+import IconPhone from '~icons/lucide/phone'
 import IconSearch from '~icons/lucide/search'
 import IconX from '~icons/lucide/x'
 import IconLinkedin from '~icons/simple-icons/linkedin'
@@ -35,8 +37,10 @@ export const Icons = {
 	globe: IconGlobe,
 	linkedin: IconLinkedin,
 	mail: IconMail,
+	map_pin: IconMapPin,
 	menu: IconMenu,
 	message_circle: IconMessageCircle,
+	phone: IconPhone,
 	search: IconSearch,
 	telegram: IconTelegram,
 	twitter_x: IconTwitterX,
