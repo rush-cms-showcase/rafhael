@@ -22,12 +22,19 @@
 		"@tailwindcss/typography": "0.5.20",
 		"@tailwindcss/vite": "4.3.5",
 		"astro": "7.4.7",
-		"tailwindcss": "4.3.5"
+		"rehype-expressive-code": "0.44.3",
+		"rehype-stringify": "10.0.1",
+		"remark-parse": "11.0.0",
+		"remark-rehype": "11.1.2",
+		"tailwindcss": "4.3.5",
+		"unified": "11.0.5",
+		"unist-util-visit": "5.2.0"
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.9.12",
 		"@iconify-json/lucide": "1.2.152",
 		"@iconify-json/simple-icons": "1.2.101",
+		"@types/hast": "3.0.5",
 		"@types/node": "24.19.2",
 		"prettier": "3.9.10",
 		"prettier-plugin-astro": "1.1.2",
