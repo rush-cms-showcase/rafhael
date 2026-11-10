@@ -1,6 +1,5 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
-
-export const SITE = new URL('https://site.example.test')
+import { SITE } from './fixtures'
 
 export type Component = Parameters<AstroContainer['renderToString']>[0]
 

@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import type { Tag } from '@rushcms/client'
 import BlogList from '../../src/views/blog/list.astro'
 import CaseList from '../../src/views/cases/list.astro'
 import GenericList from '../../src/views/collection.astro'
@@ -7,6 +6,7 @@ import ProjectList from '../../src/views/projects/list.astro'
 import Taxonomy from '../../src/views/taxonomy.astro'
 import { render } from '../helpers/container'
 import type { Component } from '../helpers/container'
+import { CATEGORY, SITE_ORIGIN } from '../helpers/fixtures'
 import { makeEntry } from '../helpers/make-entry'
 import { fakeLocals, SITE_NAME } from '../helpers/runtime'
 
@@ -17,15 +17,6 @@ type ListCase = {
 	first: string
 	second: string
 	page: (number: number) => Record<string, unknown>
-}
-
-const SITE = 'https://site.example.test'
-const CATEGORY: Tag = {
-	id: 'c1',
-	type: 'category',
-	name: 'Engineering',
-	slug: 'engineering',
-	entry_count: 1
 }
 
 function collectionPage(id: string, name: string) {
@@ -100,8 +91,8 @@ describe('list layout', () => {
 	it.each(CASES)('$name titles, canonicalizes and links languages on page one', async (item) => {
 		const html = await renderList(item, 1)
 		expect(html).toContain(`<title>${item.heading} | ${SITE_NAME}</title>`)
-		expect(html).toContain(`<link rel="canonical" href="${SITE}${item.first}">`)
-		expect(html).toContain(`hreflang="pt-BR" href="${SITE}${item.first}"`)
+		expect(html).toContain(`<link rel="canonical" href="${SITE_ORIGIN}${item.first}">`)
+		expect(html).toContain(`hreflang="pt-BR" href="${SITE_ORIGIN}${item.first}"`)
 		expect(html.match(/<h1[^>]*>/g)).toHaveLength(1)
 		expect(html).toContain(`>${item.heading}</h1>`)
 	})
@@ -109,7 +100,7 @@ describe('list layout', () => {
 	it.each(CASES)('$name suffixes the page and drops hreflang after page one', async (item) => {
 		const html = await renderList(item, 2)
 		expect(html).toContain(`<title>${item.heading} (2/3) | ${SITE_NAME}</title>`)
-		expect(html).toContain(`<link rel="canonical" href="${SITE}${item.second}">`)
+		expect(html).toContain(`<link rel="canonical" href="${SITE_ORIGIN}${item.second}">`)
 		expect(html).not.toContain('hreflang="pt-BR" href=')
 	})
 

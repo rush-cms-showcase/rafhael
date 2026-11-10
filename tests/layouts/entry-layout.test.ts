@@ -7,6 +7,7 @@ import PageEntry from '../../src/views/pages/entry.astro'
 import ProjectEntry from '../../src/views/projects/entry.astro'
 import { render } from '../helpers/container'
 import type { Component } from '../helpers/container'
+import { SITE_ORIGIN } from '../helpers/fixtures'
 import { makeEntry } from '../helpers/make-entry'
 import { fakeLocals } from '../helpers/runtime'
 
@@ -17,8 +18,6 @@ type EntryCase = {
 	path: string
 	section: string | undefined
 }
-
-const SITE = 'https://site.example.test'
 
 const POST = makeEntry({
 	slug: 'hello',
@@ -65,8 +64,10 @@ function renderEntry(view: Component, entry: Entry, locale: string): Promise<str
 describe('entry layout', () => {
 	it.each(CASES)('$name renders seo, breadcrumb and the entry language', async (item) => {
 		const html = await renderEntry(item.view, item.entry, 'en')
-		expect(html).toContain(`<link rel="canonical" href="${SITE}${item.path}">`)
-		expect(html).toContain(`<link rel="alternate" hreflang="en" href="${SITE}${item.path}">`)
+		expect(html).toContain(`<link rel="canonical" href="${SITE_ORIGIN}${item.path}">`)
+		expect(html).toContain(
+			`<link rel="alternate" hreflang="en" href="${SITE_ORIGIN}${item.path}">`
+		)
 		expect(html.match(/<title>/g)).toHaveLength(1)
 		expect(html).toMatch(/<nav aria-label="Breadcrumb">/)
 		if (item.section !== undefined) {
@@ -78,7 +79,7 @@ describe('entry layout', () => {
 
 	it('links the translations of an entry with hreflang', async () => {
 		const html = await renderEntry(BlogEntry, POST, 'en')
-		expect(html).toContain(`hreflang="pt-BR" href="${SITE}/br/blog/ola"`)
+		expect(html).toContain(`hreflang="pt-BR" href="${SITE_ORIGIN}/br/blog/ola"`)
 	})
 
 	it('shows the fallback notice in the page locale for an untranslated entry', async () => {

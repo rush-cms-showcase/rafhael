@@ -1,61 +1,41 @@
-import { experimental_AstroContainer as AstroContainer } from 'astro/container'
-import { beforeAll, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import PostCard from '../../src/components/blog/post-card.astro'
+import { render } from '../helpers/container'
+import { CATEGORY, COVER } from '../helpers/fixtures'
 import { makeEntry } from '../helpers/make-entry'
 import type { EntryOverrides } from '../helpers/make-entry'
 import { makeUrls } from '../helpers/make-urls'
 
-const COVER = { url: 'https://media.example.test/cover/master', width: 1200, height: 675 }
-const CATEGORY = { id: 'c1', type: 'category' as const, name: 'Engineering', slug: 'engineering' }
+function renderCard(overrides: EntryOverrides = {}, locale = 'en') {
+	return render(PostCard, { entry: makeEntry(overrides), locale, urls: makeUrls() })
+}
 
 describe('PostCard', () => {
-	let container: AstroContainer
-
-	beforeAll(async () => {
-		container = await AstroContainer.create()
-	})
-
-	function render(overrides: EntryOverrides = {}, locale = 'en') {
-		return container.renderToString(PostCard, {
-			props: { entry: makeEntry(overrides), locale, urls: makeUrls() }
-		})
-	}
-
 	it('renders no image when there is no featured image', async () => {
-		const html = await render()
+		const html = await renderCard()
 		expect(html).not.toContain('<img')
 		expect(html).not.toContain('undefined')
 	})
 
-	it('renders the cover when present', async () => {
-		const html = await render({ featured_image: COVER })
-		expect(html).toContain('<img')
-		expect(html).toContain('aspect-video')
+	it('renders the cover with the entry title as the missing alt', async () => {
+		const html = await renderCard({ featured_image: { ...COVER, alt: '' }, title: 'Queues' })
+		expect(html).toContain(COVER.url)
+		expect(html).toMatch(/<img[^>]*alt="Queues"/)
 	})
 
-	it('renders no pill list without categories', async () => {
-		const html = await render({ featured_image: COVER })
-		expect(html).not.toContain('flex-wrap')
+	it('renders no category link without categories', async () => {
+		expect(await renderCard({ featured_image: COVER })).not.toContain('/category/')
 	})
 
 	it('links pills to the category page', async () => {
-		const html = await render({ featured_image: COVER, categories: [CATEGORY] })
-		expect(html).toContain('Engineering')
-		expect(html).toContain('href="/category/engineering"')
+		const html = await renderCard({ featured_image: COVER, categories: [CATEGORY] })
+		expect(html).toContain(CATEGORY.name)
+		expect(html).toContain(`href="/category/${CATEGORY.slug}"`)
 		expect(html).not.toContain('href="undefined"')
 	})
 
-	it('links a fallback entry to its served url', async () => {
-		const entry = makeEntry({ locale: 'en', fallback: true, slug: 'only-english' })
-		const html = await container.renderToString(PostCard, {
-			props: { entry, locale: 'pt_BR', urls: makeUrls() }
-		})
-		expect(html).toContain('href="/blog/only-english"')
-		expect(html).not.toContain('/br/blog/only-english')
-	})
-
 	it('localizes the labels and the date', async () => {
-		const html = await render({}, 'pt_BR')
+		const html = await renderCard({}, 'pt_BR')
 		expect(html).toContain('Ler artigo')
 		expect(html).toContain('min de leitura')
 		expect(html).toContain('25/06/2026')

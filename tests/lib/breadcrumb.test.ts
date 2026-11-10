@@ -2,9 +2,9 @@ import type { LocaleCode, RushCollections } from '@rushcms/client'
 import { describe, expect, it } from 'vitest'
 import { breadcrumbJsonLd, breadcrumbTrail, jsonLdScript } from '../../src/lib/breadcrumb'
 import type { BreadcrumbKind } from '../../src/lib/breadcrumb'
+import { SITE } from '../helpers/fixtures'
 import { COLLECTIONS, makeUrls } from '../helpers/make-urls'
 
-const SITE = new URL('https://site.example.test')
 const TITLE = 'A very specific page title'
 
 type Expectation = {

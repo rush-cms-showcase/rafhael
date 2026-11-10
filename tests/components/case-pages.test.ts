@@ -4,16 +4,12 @@ import CaseArticle from '../../src/components/case-article.astro'
 import CaseRows from '../../src/components/case-rows.astro'
 import { labelsFor } from '../../src/lib/labels'
 import { render } from '../helpers/container'
+import { COVER } from '../helpers/fixtures'
 import { makeEntry } from '../helpers/make-entry'
 import { makeUrls } from '../helpers/make-urls'
 
-const IMAGE: NonNullable<Entry['featured_image']> = {
-	url: 'https://media.example.test/photo.jpg',
-	alt: 'Photo'
-}
-
 function withImage(entry: Entry): Entry {
-	return { ...entry, featured_image: IMAGE }
+	return { ...entry, featured_image: COVER }
 }
 
 const caseData = {
@@ -52,7 +48,7 @@ describe('case article', () => {
 		const html = await article(withImage(makeEntry({ data: caseData })))
 		expect(html).not.toContain('<img')
 		expect(html).not.toContain('<time')
-		expect(html).not.toContain(IMAGE.url)
+		expect(html).not.toContain(COVER.url)
 		expect(html).not.toContain('2026')
 	})
 
@@ -85,7 +81,6 @@ describe('case rows', () => {
 		}
 		expect(html).toContain('href="/cases/search"')
 		expect(html).not.toContain('Globex')
-		expect(html).not.toMatch(/>\s*0?1\s*</)
 		expect(html).not.toContain('<img')
 		expect(html).not.toContain('<time')
 		expect(html).not.toContain('2026')

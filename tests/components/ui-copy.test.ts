@@ -4,6 +4,7 @@ import { collectionPageUrl } from '../../src/lib/routing'
 import CollectionView from '../../src/views/collection.astro'
 import NotFound from '../../src/views/not-found.astro'
 import { render } from '../helpers/container'
+import { BLOG } from '../helpers/fixtures'
 import { makeUrls } from '../helpers/make-urls'
 import { fakeLocals } from '../helpers/runtime'
 
@@ -23,8 +24,6 @@ function expectNoEnglish(html: string): void {
 		expect(html).not.toContain(phrase)
 	}
 }
-
-const BLOG = { id: 'blog', slug: 'blog', name: 'Blog' }
 
 describe('ui copy in pt_BR', () => {
 	const locals = fakeLocals({ locale: 'pt_BR' })

@@ -7,12 +7,8 @@ import {
 	taxonomyPageUrl,
 	URL_CONFIG
 } from '../../src/lib/routing'
+import { BLOG, CATEGORY, SITE, TAG } from '../helpers/fixtures'
 import { COLLECTIONS, makeUrls } from '../helpers/make-urls'
-
-const SITE = new URL('https://site.example.test')
-const CATEGORY = { id: 'a', type: 'category' as const, name: 'Go', slug: 'go' }
-const TAG = { id: 'b', type: 'tag' as const, name: 'Go', slug: 'go' }
-const BLOG = { id: 'blog', slug: 'blog', name: 'Blog' }
 
 describe('LOCALES', () => {
 	it('lists every locale of the url config', () => {
@@ -41,10 +37,10 @@ describe('page urls', () => {
 		const urls = makeUrls()
 		expect(collectionPageUrl(urls, BLOG, 'en')(2)).toBe('/blog/page/2')
 		expect(collectionPageUrl(urls, BLOG, 'pt_BR')(1)).toBe('/br/blog')
-		expect(taxonomyPageUrl(urls, CATEGORY, 'en')(1)).toBe('/category/go')
-		expect(taxonomyPageUrl(urls, CATEGORY, 'pt_BR')(1)).toBe('/br/categoria/go')
-		expect(taxonomyPageUrl(urls, CATEGORY, 'es')(2)).toBe('/es/categoria/go/pagina/2')
-		expect(taxonomyPageUrl(urls, TAG, 'es')(1)).toBe('/es/etiqueta/go')
-		expect(taxonomyPageUrl(urls, TAG, 'en')(1)).toBe('/tag/go')
+		expect(taxonomyPageUrl(urls, CATEGORY, 'en')(1)).toBe('/category/engineering')
+		expect(taxonomyPageUrl(urls, CATEGORY, 'pt_BR')(1)).toBe('/br/categoria/engineering')
+		expect(taxonomyPageUrl(urls, CATEGORY, 'es')(2)).toBe('/es/categoria/engineering/pagina/2')
+		expect(taxonomyPageUrl(urls, TAG, 'es')(1)).toBe('/es/etiqueta/engineering')
+		expect(taxonomyPageUrl(urls, TAG, 'en')(1)).toBe('/tag/engineering')
 	})
 })
