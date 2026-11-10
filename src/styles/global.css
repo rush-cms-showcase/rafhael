@@ -48,6 +48,10 @@
 		color-scheme: dark;
 	}
 
+	html:has(#search-dialog[open]) {
+		overflow: hidden;
+	}
+
 	body {
 		background-color: var(--color-bg);
 		color: var(--color-text-main);

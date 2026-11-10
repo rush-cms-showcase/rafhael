@@ -4,6 +4,7 @@ import rush from '@rushcms/astro'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import Icons from 'unplugin-icons/vite'
+import { LOCALE_PATHS } from './src/lib/locale'
 import { allowedDomain, siteOrigin } from './src/lib/site-env'
 
 if (existsSync('.env')) {
@@ -24,7 +25,7 @@ export default defineConfig({
 	},
 	integrations: [
 		rush({
-			localePaths: { en: '', pt_BR: 'br', es: 'es' },
+			localePaths: LOCALE_PATHS,
 			routes: {
 				blog: '/{locale}/blog/{slug}',
 				cases: '/{locale}/cases/{slug}',

@@ -6,6 +6,7 @@ import type { Alternate, LocaleCode } from '@rushcms/client'
 import Analytics from '../components/analytics.astro'
 import Footer from '../components/footer.astro'
 import Header from '../components/header.astro'
+import SearchDialog from '../components/search-dialog.astro'
 import WhatsappFloat from '../components/whatsapp-float.astro'
 import { labelsFor } from '../lib/labels'
 import { languageLinks } from '../lib/locale'
@@ -75,6 +76,7 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 			homeUrl={urls.homepage(locale)}
 			floatingAction={whatsapp !== undefined}
 		/>
+		<SearchDialog locale={locale} labels={labels} />
 		{whatsapp !== undefined && <WhatsappFloat href={whatsapp} label={labels.whatsappChat} />}
 	</body>
 </html>

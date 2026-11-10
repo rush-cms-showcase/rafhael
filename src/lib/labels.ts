@@ -3,6 +3,15 @@ import type { LocaleCode } from '@rushcms/client'
 export type Labels = {
 	skipToContent: string
 	search: string
+	searchPlaceholder: string
+	searchHint: string
+	searchEmpty: string
+	searchNoResults: string
+	searchLoading: string
+	searchError: string
+	searchResults: string
+	searchClose: string
+	pages: string
 	openMenu: string
 	closeMenu: string
 	menu: string
@@ -45,6 +54,15 @@ export type Labels = {
 const english: Labels = {
 	skipToContent: 'Skip to content',
 	search: 'Search',
+	searchPlaceholder: 'Search posts, cases and projects',
+	searchHint: 'Type to search',
+	searchEmpty: 'Start typing to find something.',
+	searchNoResults: 'No results for',
+	searchLoading: 'Loading…',
+	searchError: 'Search is unavailable right now.',
+	searchResults: 'Search results',
+	searchClose: 'Close search',
+	pages: 'Pages',
 	openMenu: 'Open menu',
 	closeMenu: 'Close menu',
 	menu: 'Menu',
@@ -89,6 +107,15 @@ const dictionary: Record<string, Labels> = {
 	pt_BR: {
 		skipToContent: 'Pular para o conteúdo',
 		search: 'Buscar',
+		searchPlaceholder: 'Buscar artigos, cases e projetos',
+		searchHint: 'Digite para buscar',
+		searchEmpty: 'Comece a digitar para encontrar algo.',
+		searchNoResults: 'Nenhum resultado para',
+		searchLoading: 'Carregando…',
+		searchError: 'A busca está indisponível no momento.',
+		searchResults: 'Resultados da busca',
+		searchClose: 'Fechar busca',
+		pages: 'Páginas',
 		openMenu: 'Abrir menu',
 		closeMenu: 'Fechar menu',
 		menu: 'Menu',
@@ -130,6 +157,15 @@ const dictionary: Record<string, Labels> = {
 	es: {
 		skipToContent: 'Saltar al contenido',
 		search: 'Buscar',
+		searchPlaceholder: 'Buscar artículos, casos y proyectos',
+		searchHint: 'Escribe para buscar',
+		searchEmpty: 'Empieza a escribir para encontrar algo.',
+		searchNoResults: 'Sin resultados para',
+		searchLoading: 'Cargando…',
+		searchError: 'La búsqueda no está disponible ahora.',
+		searchResults: 'Resultados de búsqueda',
+		searchClose: 'Cerrar búsqueda',
+		pages: 'Páginas',
 		openMenu: 'Abrir menú',
 		closeMenu: 'Cerrar menú',
 		menu: 'Menú',
@@ -167,6 +203,15 @@ const dictionary: Record<string, Labels> = {
 		thisPage: 'Esta página',
 		thisCategory: 'Esta categoría',
 		thisTag: 'Esta etiqueta'
+	}
+}
+
+export function kindLabels(labels: Labels): Record<string, string> {
+	return {
+		blog: labels.blog,
+		cases: labels.cases,
+		projects: labels.projects,
+		pages: labels.pages
 	}
 }
 
