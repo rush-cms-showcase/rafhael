@@ -21,7 +21,14 @@ export type Labels = {
 	shareOnX: string
 	shareOnLinkedin: string
 	shareOnWhatsapp: string
-	copyLink: string
+	copyLink: string,
+	caseClient: string
+	caseRole: string
+	casePeriod: string
+	caseStack: string
+	allCases: string
+	previousPage: string
+	nextPage: string
 }
 
 const english: Labels = {
@@ -45,7 +52,14 @@ const english: Labels = {
 	shareOnX: 'Share on X',
 	shareOnLinkedin: 'Share on LinkedIn',
 	shareOnWhatsapp: 'Share on WhatsApp',
-	copyLink: 'Copy link'
+	copyLink: 'Copy link',
+	caseClient: 'Client',
+	caseRole: 'Role',
+	casePeriod: 'Period',
+	caseStack: 'Stack',
+	allCases: 'All cases',
+	previousPage: 'Previous',
+	nextPage: 'Next'
 }
 
 const dictionary: Record<string, Labels> = {
@@ -71,7 +85,14 @@ const dictionary: Record<string, Labels> = {
 		shareOnX: 'Compartilhar no X',
 		shareOnLinkedin: 'Compartilhar no LinkedIn',
 		shareOnWhatsapp: 'Compartilhar no WhatsApp',
-		copyLink: 'Copiar link'
+		copyLink: 'Copiar link',
+		caseClient: 'Cliente',
+		caseRole: 'Função',
+		casePeriod: 'Período',
+		caseStack: 'Stack',
+		allCases: 'Todos os cases',
+		previousPage: 'Anterior',
+		nextPage: 'Próxima'
 	},
 	es: {
 		skipToContent: 'Saltar al contenido',
@@ -94,7 +115,14 @@ const dictionary: Record<string, Labels> = {
 		shareOnX: 'Compartir en X',
 		shareOnLinkedin: 'Compartir en LinkedIn',
 		shareOnWhatsapp: 'Compartir en WhatsApp',
-		copyLink: 'Copiar enlace'
+		copyLink: 'Copiar enlace',
+		caseClient: 'Cliente',
+		caseRole: 'Rol',
+		casePeriod: 'Período',
+		caseStack: 'Stack',
+		allCases: 'Todos los casos',
+		previousPage: 'Anterior',
+		nextPage: 'Siguiente'
 	}
 }
 
