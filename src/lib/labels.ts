@@ -18,7 +18,6 @@ export type Labels = {
 	selectLanguage: string
 	rights: string
 	blog: string
-	blogDescription: string
 	allCategories: string
 	readArticle: string
 	minRead: string
@@ -40,7 +39,6 @@ export type Labels = {
 	whatsappChat: string
 	openProject: string
 	projects: string
-	projectsDescription: string
 	breadcrumb: string
 	home: string
 	thisCase: string
@@ -82,7 +80,6 @@ const english: Labels = {
 	selectLanguage: 'Select language',
 	rights: 'All rights reserved.',
 	blog: 'Blog',
-	blogDescription: 'Articles about software development, architecture and technology.',
 	allCategories: 'All',
 	readArticle: 'Read article',
 	minRead: 'min read',
@@ -104,7 +101,6 @@ const english: Labels = {
 	whatsappChat: 'Chat on WhatsApp',
 	openProject: 'View project',
 	projects: 'Projects',
-	projectsDescription: 'Software projects and products.',
 	breadcrumb: 'Breadcrumb',
 	home: 'Home',
 	thisCase: 'This case',
@@ -146,7 +142,6 @@ const dictionary: Record<string, Labels> = {
 		selectLanguage: 'Selecionar idioma',
 		rights: 'Todos os direitos reservados.',
 		blog: 'Blog',
-		blogDescription: 'Artigos sobre desenvolvimento, arquitetura e tecnologia.',
 		allCategories: 'Todos',
 		readArticle: 'Ler artigo',
 		minRead: 'min de leitura',
@@ -168,7 +163,6 @@ const dictionary: Record<string, Labels> = {
 		whatsappChat: 'Conversar no WhatsApp',
 		openProject: 'Ver projeto',
 		projects: 'Projetos',
-		projectsDescription: 'Projetos e produtos de software.',
 		breadcrumb: 'Trilha de navegação',
 		home: 'Início',
 		thisCase: 'Este case',
@@ -207,7 +201,6 @@ const dictionary: Record<string, Labels> = {
 		selectLanguage: 'Seleccionar idioma',
 		rights: 'Todos los derechos reservados.',
 		blog: 'Blog',
-		blogDescription: 'Artículos sobre desarrollo, arquitectura y tecnología.',
 		allCategories: 'Todos',
 		readArticle: 'Leer artículo',
 		minRead: 'min de lectura',
@@ -229,7 +222,6 @@ const dictionary: Record<string, Labels> = {
 		whatsappChat: 'Conversar por WhatsApp',
 		openProject: 'Ver proyecto',
 		projects: 'Proyectos',
-		projectsDescription: 'Proyectos y productos de software.',
 		breadcrumb: 'Ruta de navegación',
 		home: 'Inicio',
 		thisCase: 'Este caso',

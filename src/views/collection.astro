@@ -1,12 +1,8 @@
 ---
 import { collectionAlternates, getUrls } from '@rushcms/astro'
-import { requireSite } from '@rushcms/astro/components-runtime'
-import RushImage from '@rushcms/astro/components/rush-image.astro'
-import Pager from '../components/pager.astro'
-import Base from '../layouts/base.astro'
-import { absoluteUrl, collectionPageUrl } from '../lib/routing'
-import { formatDate } from '../lib/format-date'
-import { labelsFor } from '../lib/labels'
+import EntryGrid from '../components/entry-grid.astro'
+import ListLayout from '../layouts/list-layout.astro'
+import { collectionPageUrl } from '../lib/routing'
 import type { ListViewProps } from './index'
 
 type Props = ListViewProps
@@ -14,52 +10,16 @@ type Props = ListViewProps
 const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
-const pageUrl = collectionPageUrl(urls, collection, locale)
-const canonical = absoluteUrl(
-	urls.collection(collection, locale, page.page),
-	requireSite(Astro.site, 'list view')
-)
-const heading = page.page > 1 ? `${collection.name} (${page.page}/${lastPage})` : collection.name
-const translations = collectionAlternates(collection.id, urls)
 ---
 
-<Base locale={locale} title={{ from: 'page', page: heading }} translations={translations}>
-	{canonical && <link slot="head" rel="canonical" href={canonical} />}
-	<div class="mx-auto max-w-6xl px-6 py-16">
-		<header class="max-w-3xl">
-			<h1 class="text-4xl font-semibold tracking-tight">{collection.name}</h1>
-		</header>
-		{entries.items.length > 0 ? (
-			<ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{entries.items.map((entry) => (
-					<li>
-						<article class="card group relative flex h-full flex-col">
-							{entry.featured_image?.url && (
-								<RushImage
-									media={entry.featured_image}
-									class="mb-4 aspect-video w-full rounded-lg object-cover"
-								/>
-							)}
-							<h2 class="text-lg font-medium group-hover:text-primary">
-								<a href={urls.entry(entry)} class="after:absolute after:inset-0">
-									{entry.title}
-								</a>
-							</h2>
-							{entry.excerpt && (
-								<p class="mt-2 line-clamp-3 text-text-muted">{entry.excerpt}</p>
-							)}
-							<p class="mt-auto pt-4 text-sm text-text-muted">
-								<time datetime={entry.published_at}>
-									{formatDate(entry.published_at, locale)}
-								</time>
-							</p>
-						</article>
-					</li>
-				))}
-			</ul>
-		) : (
-			<p class="mt-12 text-text-muted">{labelsFor(locale).emptyCollection}</p>
-		)}
-		<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
-	</div>
-</Base>
+<ListLayout
+	locale={locale}
+	name={collection.name}
+	page={page.page}
+	lastPage={lastPage}
+	pageUrl={collectionPageUrl(urls, collection, locale)}
+	alternates={collectionAlternates(collection.id, urls)}
+	empty={entries.items.length === 0}
+>
+	<EntryGrid entries={entries.items} locale={locale} urls={urls} layout="posts" />
+</ListLayout>

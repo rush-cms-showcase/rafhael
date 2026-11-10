@@ -1,15 +1,10 @@
 ---
 import { getRush, getUrls } from '@rushcms/astro'
-import { requireSite } from '@rushcms/astro/components-runtime'
-import Hreflang from '@rushcms/astro/components/hreflang.astro'
-import Breadcrumb from '../components/breadcrumb.astro'
-import FilterPills from '../components/blog/filter-pills.astro'
-import PostGrid from '../components/blog/post-grid.astro'
-import Container from '../components/container.astro'
-import Pager from '../components/pager.astro'
-import Base from '../layouts/base.astro'
+import BlogListing from '../components/blog/blog-listing.astro'
+import ListLayout from '../layouts/list-layout.astro'
 import { breadcrumbTrail } from '../lib/breadcrumb'
-import { absoluteUrl, collectionHref, taxonomyPageUrl } from '../lib/routing'
+import { loadCategoryFilters } from '../lib/category-filters'
+import { taxonomyPageUrl } from '../lib/routing'
 import type { TaxonomyViewProps } from './index'
 
 type Props = TaxonomyViewProps
@@ -17,46 +12,29 @@ type Props = TaxonomyViewProps
 const { page } = Astro.props
 const { tag, locale, entries, lastPage, alternates } = page
 const urls = getUrls(Astro)
-const rush = getRush(Astro)
-const categories = tag.type === 'category' ? await rush.tags.list({ type: 'category', locale }) : []
-const allHref = collectionHref(urls, 'blog', locale)
-const filters = categories.map((category) => ({
-	name: category.name,
-	href: urls.taxonomy(category, locale),
-	active: category.id === tag.id
-}))
 const pageUrl = taxonomyPageUrl(urls, tag, locale)
-const current = pageUrl(page.page)
-const canonical =
-	current === undefined
-		? undefined
-		: absoluteUrl(current, requireSite(Astro.site, 'taxonomy view'))
-const trail = breadcrumbTrail({
+const filters =
+	tag.type === 'category'
+		? await loadCategoryFilters(getRush(Astro).tags, urls, locale, tag.id)
+		: undefined
+const breadcrumb = breadcrumbTrail({
 	kind: tag.type,
 	locale,
 	urls,
 	title: tag.name,
-	path: current
+	path: pageUrl(page.page)
 })
-const heading = page.page > 1 ? `${tag.name} (${page.page}/${lastPage})` : tag.name
 ---
 
-<Base locale={locale} title={{ from: 'page', page: heading }} translations={alternates}>
-	{canonical && <link slot="head" rel="canonical" href={canonical} />}
-	{page.page === 1 && <Hreflang slot="head" alternates={alternates} />}
-	<Breadcrumb trail={trail} />
-	<section class="pt-10 pb-20 md:pt-14 md:pb-32 relative overflow-hidden">
-		<Container>
-			<div class="text-center">
-				<h1 class="text-primary text-4xl lg:text-6xl font-bold mb-8">{tag.name}</h1>
-			</div>
-			<div class="w-full">
-				{filters.length > 0 && (
-					<FilterPills allHref={allHref} locale={locale} filters={filters} />
-				)}
-				<PostGrid entries={entries.items} locale={locale} urls={urls} />
-				<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
-			</div>
-		</Container>
-	</section>
-</Base>
+<ListLayout
+	locale={locale}
+	name={tag.name}
+	page={page.page}
+	lastPage={lastPage}
+	pageUrl={pageUrl}
+	alternates={alternates}
+	empty={entries.items.length === 0}
+	breadcrumb={breadcrumb}
+>
+	<BlogListing filters={filters} entries={entries.items} locale={locale} urls={urls} />
+</ListLayout>

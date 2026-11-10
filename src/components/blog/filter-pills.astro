@@ -1,35 +1,37 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
+import type { CategoryFilters } from '../../lib/category-filters'
 import { labelsFor } from '../../lib/labels'
 
-type PillFilter = {
-	name: string
-	href: string | undefined
-	active: boolean
-}
-
 type Props = {
-	allHref: string | undefined
+	filters: CategoryFilters
 	locale: LocaleCode
-	filters: PillFilter[]
 }
 
-const { allHref, locale, filters } = Astro.props
+const { filters, locale } = Astro.props
 const pillBase = 'px-4 py-2 rounded-full text-sm font-medium transition-colors'
 const pillActive = `${pillBase} bg-primary text-white shadow-lg`
 const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevated/80 hover:text-primary border border-border`
-const allActive = !filters.some((filter) => filter.active)
+const allActive = !filters.filters.some((filter) => filter.active)
 ---
 
 <div class="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in">
-	<a href={allHref} class={allActive ? pillActive : pillIdle}>
+	<a
+		href={filters.allHref}
+		aria-current={allActive ? 'page' : undefined}
+		class={allActive ? pillActive : pillIdle}
+	>
 		{labelsFor(locale).allCategories}
 	</a>
-	{filters.map((filter) =>
+	{filters.filters.map((filter) =>
 		filter.href === undefined ? (
 			<span class={pillIdle}>{filter.name}</span>
 		) : (
-			<a href={filter.href} class={filter.active ? pillActive : pillIdle}>
+			<a
+				href={filter.href}
+				aria-current={filter.active ? 'page' : undefined}
+				class={filter.active ? pillActive : pillIdle}
+			>
 				{filter.name}
 			</a>
 		)

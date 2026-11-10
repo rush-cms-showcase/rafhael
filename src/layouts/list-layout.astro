@@ -1,0 +1,57 @@
+---
+import { requireSite } from '@rushcms/astro/components-runtime'
+import Hreflang from '@rushcms/astro/components/hreflang.astro'
+import type { Alternate, LocaleCode } from '@rushcms/client'
+import Breadcrumb from '../components/breadcrumb.astro'
+import Container from '../components/container.astro'
+import Pager from '../components/pager.astro'
+import type { Breadcrumb as BreadcrumbTrail } from '../lib/breadcrumb'
+import { labelsFor } from '../lib/labels'
+import { listPageHead } from '../lib/list-page'
+import type { PageUrl } from '../lib/routing'
+import Base from './base.astro'
+
+type Props = {
+	locale: LocaleCode
+	name: string
+	page: number
+	lastPage: number
+	pageUrl: PageUrl
+	alternates: Alternate[]
+	empty: boolean
+	description?: string | undefined
+	breadcrumb?: BreadcrumbTrail | undefined
+}
+
+const { locale, name, page, lastPage, pageUrl, alternates, empty, description, breadcrumb } =
+	Astro.props
+const head = listPageHead({
+	name,
+	page,
+	lastPage,
+	pageUrl,
+	site: requireSite(Astro.site, '<ListLayout>')
+})
+---
+
+<Base locale={locale} title={{ from: 'page', page: head.title }} translations={alternates}>
+	{description && <meta slot="head" name="description" content={description} />}
+	{head.canonical && <link slot="head" rel="canonical" href={head.canonical} />}
+	{head.hreflang && <Hreflang slot="head" alternates={alternates} />}
+	{breadcrumb && <Breadcrumb trail={breadcrumb} />}
+	<section
+		class:list={[
+			'relative overflow-hidden',
+			breadcrumb ? 'pt-10 pb-20 md:pt-14 md:pb-32' : 'py-20 md:py-32'
+		]}
+	>
+		<Container>
+			<h1 class="mb-8 text-center text-4xl font-bold text-primary lg:text-6xl">{name}</h1>
+			<slot />
+			{empty && (
+				<p class="text-center text-text-muted">{labelsFor(locale).emptyCollection}</p>
+			)}
+			<Pager locale={locale} current={page} last={lastPage} pageUrl={pageUrl} />
+		</Container>
+	</section>
+</Base>

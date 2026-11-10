@@ -1,12 +1,9 @@
 ---
-import { collectionAlternates, getUrls } from '@rushcms/astro'
-import { requireSite } from '@rushcms/astro/components-runtime'
-import Container from '../../components/container.astro'
-import Pager from '../../components/pager.astro'
-import ProjectGrid from '../../components/project-grid.astro'
-import Base from '../../layouts/base.astro'
-import { absoluteUrl, collectionPageUrl } from '../../lib/routing'
-import { labelsFor } from '../../lib/labels'
+import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import EntryGrid from '../../components/entry-grid.astro'
+import ListLayout from '../../layouts/list-layout.astro'
+import { collectionPageUrl } from '../../lib/routing'
+import { loadSiteOptions } from '../../lib/site-options'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
@@ -14,26 +11,18 @@ type Props = ListViewProps
 const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
-const labels = labelsFor(locale)
-const pageUrl = collectionPageUrl(urls, collection, locale)
-const canonical = absoluteUrl(
-	urls.collection(collection, locale, page.page),
-	requireSite(Astro.site, 'list view')
-)
+const options = await loadSiteOptions(getRush(Astro).siteOptions)
 ---
 
-<Base
+<ListLayout
 	locale={locale}
-	title={{ from: 'page', page: collection.name }}
-	translations={collectionAlternates(collection.id, urls)}
+	name={collection.name}
+	page={page.page}
+	lastPage={lastPage}
+	pageUrl={collectionPageUrl(urls, collection, locale)}
+	alternates={collectionAlternates(collection.id, urls)}
+	empty={entries.items.length === 0}
+	description={options.projectsDescription}
 >
-	<meta slot="head" name="description" content={labels.projectsDescription} />
-	{canonical && <link slot="head" rel="canonical" href={canonical} />}
-	<Container class="py-20 md:py-32">
-		<h1 class="mb-12 text-center text-4xl font-bold text-primary lg:text-6xl">
-			{collection.name}
-		</h1>
-		<ProjectGrid entries={entries.items} locale={locale} urls={urls} />
-		<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
-	</Container>
-</Base>
+	<EntryGrid entries={entries.items} locale={locale} urls={urls} layout="projects" />
+</ListLayout>

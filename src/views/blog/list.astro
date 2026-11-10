@@ -1,13 +1,10 @@
 ---
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
-import { requireSite } from '@rushcms/astro/components-runtime'
-import Container from '../../components/container.astro'
-import FilterPills from '../../components/blog/filter-pills.astro'
-import PostGrid from '../../components/blog/post-grid.astro'
-import Pager from '../../components/pager.astro'
-import Base from '../../layouts/base.astro'
-import { absoluteUrl, collectionPageUrl } from '../../lib/routing'
-import { labelsFor } from '../../lib/labels'
+import BlogListing from '../../components/blog/blog-listing.astro'
+import ListLayout from '../../layouts/list-layout.astro'
+import { loadCategoryFilters } from '../../lib/category-filters'
+import { collectionPageUrl } from '../../lib/routing'
+import { loadSiteOptions } from '../../lib/site-options'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
@@ -16,39 +13,19 @@ const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
-const labels = labelsFor(locale)
-const categories = await rush.tags.list({ type: 'category', locale })
-const filters = categories.map((category) => ({
-	name: category.name,
-	href: urls.taxonomy(category, locale),
-	active: false
-}))
-const pageUrl = collectionPageUrl(urls, collection, locale)
-const canonical = absoluteUrl(
-	urls.collection(collection, locale, page.page),
-	requireSite(Astro.site, 'list view')
-)
-const translations = collectionAlternates(collection.id, urls)
+const filters = await loadCategoryFilters(rush.tags, urls, locale, undefined)
+const options = await loadSiteOptions(rush.siteOptions)
 ---
 
-<Base locale={locale} title={{ from: 'page', page: labels.blog }} translations={translations}>
-	<meta slot="head" name="description" content={labels.blogDescription} />
-	{canonical && <link slot="head" rel="canonical" href={canonical} />}
-	<section class="py-20 md:py-32 relative overflow-hidden">
-		<Container>
-			<div class="text-center">
-				<h1 class="text-primary text-4xl lg:text-6xl font-bold mb-8">{labels.blog}</h1>
-			</div>
-			<div class="w-full">
-				<FilterPills
-					allHref={urls.collection(collection, locale)}
-					locale={locale}
-					filters={filters}
-				/>
-				<PostGrid entries={entries.items} locale={locale} urls={urls} />
-
-				<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
-			</div>
-		</Container>
-	</section>
-</Base>
+<ListLayout
+	locale={locale}
+	name={collection.name}
+	page={page.page}
+	lastPage={lastPage}
+	pageUrl={collectionPageUrl(urls, collection, locale)}
+	alternates={collectionAlternates(collection.id, urls)}
+	empty={entries.items.length === 0}
+	description={options.blogDescription}
+>
+	<BlogListing filters={filters} entries={entries.items} locale={locale} urls={urls} />
+</ListLayout>

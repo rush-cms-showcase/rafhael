@@ -18,7 +18,8 @@ export const HERO_ICONS = [
 export type LoopType = (typeof LOOP_TYPES)[number]
 export type Disposition = (typeof DISPOSITIONS)[number]
 export type HeroIcon = (typeof HERO_ICONS)[number]
-export type LoopLayout = 'posts' | 'projects' | 'rows'
+export type GridLayout = 'posts' | 'projects'
+export type LoopLayout = GridLayout | 'rows'
 
 export type HeroLink = {
 	name: string

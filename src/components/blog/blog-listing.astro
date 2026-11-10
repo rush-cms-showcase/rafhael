@@ -1,0 +1,18 @@
+---
+import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
+import type { CategoryFilters } from '../../lib/category-filters'
+import EntryGrid from '../entry-grid.astro'
+import FilterPills from './filter-pills.astro'
+
+type Props = {
+	filters: CategoryFilters | undefined
+	entries: Entry[]
+	locale: LocaleCode
+	urls: RushUrls
+}
+
+const { filters, entries, locale, urls } = Astro.props
+---
+
+{filters && <FilterPills filters={filters} locale={locale} />}
+<EntryGrid entries={entries} locale={locale} urls={urls} layout="posts" />

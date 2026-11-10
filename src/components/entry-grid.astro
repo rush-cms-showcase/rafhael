@@ -1,0 +1,32 @@
+---
+import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
+import type { GridLayout } from '../lib/home-sections'
+import PostCard from './blog/post-card.astro'
+import ProjectCard from './project-card.astro'
+
+type GridStyle = {
+	columns: string
+	card: typeof PostCard
+}
+
+type Props = {
+	entries: Entry[]
+	locale: LocaleCode
+	urls: RushUrls
+	layout: GridLayout
+}
+
+const styles: Record<GridLayout, GridStyle> = {
+	posts: { columns: 'md:grid-cols-2 lg:grid-cols-3', card: PostCard },
+	projects: { columns: 'md:grid-cols-2', card: ProjectCard }
+}
+
+const { entries, locale, urls, layout } = Astro.props
+const { columns, card: Card } = styles[layout]
+---
+
+<div class:list={['grid animate-fade-in gap-8', columns]}>
+	{entries.map((entry) => (
+		<Card entry={entry} locale={locale} urls={urls} />
+	))}
+</div>
