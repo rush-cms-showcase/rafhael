@@ -4,7 +4,6 @@ export type Labels = {
 	skipToContent: string
 	search: string
 	searchPlaceholder: string
-	searchHint: string
 	searchEmpty: string
 	searchNoResults: string
 	searchLoading: string
@@ -66,7 +65,6 @@ const english: Labels = {
 	skipToContent: 'Skip to content',
 	search: 'Search',
 	searchPlaceholder: 'Search posts, cases and projects',
-	searchHint: 'Type to search',
 	searchEmpty: 'Start typing to find something.',
 	searchNoResults: 'No results for',
 	searchLoading: 'Loading…',
@@ -128,7 +126,6 @@ const dictionary: Record<string, Labels> = {
 		skipToContent: 'Pular para o conteúdo',
 		search: 'Buscar',
 		searchPlaceholder: 'Buscar artigos, cases e projetos',
-		searchHint: 'Digite para buscar',
 		searchEmpty: 'Comece a digitar para encontrar algo.',
 		searchNoResults: 'Nenhum resultado para',
 		searchLoading: 'Carregando…',
@@ -187,7 +184,6 @@ const dictionary: Record<string, Labels> = {
 		skipToContent: 'Saltar al contenido',
 		search: 'Buscar',
 		searchPlaceholder: 'Buscar artículos, casos y proyectos',
-		searchHint: 'Escribe para buscar',
 		searchEmpty: 'Empieza a escribir para encontrar algo.',
 		searchNoResults: 'Sin resultados para',
 		searchLoading: 'Cargando…',

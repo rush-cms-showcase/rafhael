@@ -33,7 +33,7 @@ Requires Node 24 or later.
 3. Paste that line over `localePaths: {}` in `astro.config.ts` and run `npm run dev` again. The default locale has
    no URL prefix; every other locale gets its own. Change the prefixes now if you like: they are part of your URLs.
 
-4. Open <http://localhost:4321>, then work through the `TODO` comments (your editor's TODO list finds them all).
+4. Open <http://localhost:4321>.
 
 | Command           | What it does                                                          |
 | ----------------- | --------------------------------------------------------------------- |
@@ -52,13 +52,12 @@ no navigation links. See [Routes](https://github.com/rush-cms/js/tree/main/packa
 
 No page file encodes a URL shape:
 
-| File                                  | Answers                                                                       |
-| ------------------------------------- | ----------------------------------------------------------------------------- |
-| `src/pages/[...path].astro`           | Every homepage, collection list page and entry, prerendered at build time     |
-| `src/pages/404.astro`                 | Every other path, on demand: redirects retired slugs, else the not-found page |
-| `src/pages/[...locale]/contact.astro` | The contact form of each locale, on demand                                    |
-| `src/pages/sitemap.xml.ts`            | The sitemap, from the same routes                                             |
-| `src/pages/robots.txt.ts`             | `robots.txt` (everything disallowed in a preview deployment)                  |
+| File                        | Answers                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| `src/pages/[...path].astro` | Every homepage, collection list page and entry, prerendered at build time     |
+| `src/pages/404.astro`       | Every other path, on demand: redirects retired slugs, else the not-found page |
+| `src/pages/sitemap.xml.ts`  | The sitemap, from the same routes                                             |
+| `src/pages/robots.txt.ts`   | `robots.txt` (everything disallowed in a preview deployment)                  |
 
 The dispatcher hands each page to a view:
 
@@ -79,18 +78,17 @@ const views: ViewMap = { posts: { entry: PostEntry } }
 A view receives the same props as the generic one (`EntryViewProps` or `ListViewProps`), and `npm run check` fails
 when it does not. `src/astro-modules.d.ts` lets plain TypeScript read the `.astro` imports of that file.
 
-## Navigation and forms
+## Navigation and site options
 
 Site content is fetched by stable keys that you create in Rush CMS:
 
-| Key       | Kind       | Used by                                                |
-| --------- | ---------- | ------------------------------------------------------ |
-| `main`    | Navigation | The header menu (nested items open on hover and focus) |
-| `footer`  | Navigation | The footer menu                                        |
-| `contact` | Form       | `/contact` (and `/<locale>/contact`)                   |
+| Key              | Kind              | Used by                                                     |
+| ---------------- | ----------------- | ----------------------------------------------------------- |
+| `main-nav`       | Navigation        | The header menu                                             |
+| `legal-nav`      | Navigation        | The footer menu                                             |
+| `opcoes-do-site` | Site option group | Logo, banner, contacts, WhatsApp and list page descriptions |
 
-Missing content renders nothing: no menu without the navigation, and `/contact` answers 404 without the form (in
-`npm run dev` it shows a reminder instead). Change a key where the `TODO` points to it.
+Missing content renders nothing. The keys live in `src/lib/site-navigation.ts` and `src/lib/site-options.ts`.
 
 ## Preview deployment
 
@@ -124,4 +122,4 @@ with a link to leave the preview. See
 [Tailwind CSS 4](https://tailwindcss.com) through `@tailwindcss/vite`. The design tokens (colors and fonts) live in
 `@theme` in `src/styles/global.css`, with their dark values under `prefers-color-scheme: dark`, so changing a token
 restyles both themes. Rich text is styled by `@tailwindcss/typography` (`prose`), mapped to the same tokens. The UI
-texts of the views are in English; translate them where they appear.
+texts live in `src/lib/labels.ts`, one dictionary per locale (en, pt_BR, es).
