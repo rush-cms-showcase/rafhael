@@ -5,7 +5,8 @@ import RushImage from '@rushcms/astro/components/rush-image.astro'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, isRichText, toBcp47 } from '@rushcms/client'
 import Base from '../layouts/base.astro'
-import { formatDate, languageName } from '../lib/locale'
+import { formatDate } from '../lib/format-date'
+import { languageName } from '../lib/locale'
 import type { EntryViewProps } from './index'
 
 type Props = EntryViewProps

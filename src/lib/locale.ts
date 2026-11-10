@@ -18,10 +18,6 @@ export function languageName(locale: LocaleCode): string {
 	return name.charAt(0).toLocaleUpperCase(tag) + name.slice(1)
 }
 
-export function formatDate(value: string, locale: LocaleCode): string {
-	return new Intl.DateTimeFormat(toBcp47(locale), { dateStyle: 'long' }).format(new Date(value))
-}
-
 export function languageCode(locale: LocaleCode): string {
 	return languageCodes[locale] ?? locale.toUpperCase()
 }
