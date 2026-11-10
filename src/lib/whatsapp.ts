@@ -1,3 +1,5 @@
+import { withQuery } from './query'
+
 export function whatsappUrl(
 	number: string | undefined,
 	text: string | undefined
@@ -8,7 +10,5 @@ export function whatsappUrl(
 	}
 	const message = (text ?? '').trim()
 	const base = `https://wa.me/${digits}`
-	return message === ''
-		? base
-		: `${base}?text=${encodeURIComponent(message).replaceAll('%20', '+')}`
+	return message === '' ? base : withQuery(base, { text: message })
 }

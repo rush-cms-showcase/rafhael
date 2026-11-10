@@ -3,14 +3,13 @@ import type { LocaleCode } from '@rushcms/client'
 import { Icons } from '../../lib/icons'
 import type { IconName } from '../../lib/icons'
 import { labelsFor } from '../../lib/labels'
-
-type SharePlatform = 'x' | 'linkedin' | 'whatsapp' | 'copy'
+import { shareUrl } from '../../lib/share'
+import type { SharePlatform } from '../../lib/share'
 
 type ShareButton = {
 	platform: SharePlatform
 	icon: IconName
 	label: string
-	withText: boolean
 }
 
 type Props = {
@@ -23,65 +22,47 @@ type Props = {
 const { url, title, locale, class: className } = Astro.props
 const labels = labelsFor(locale)
 const buttons: ShareButton[] = [
-	{ platform: 'x', icon: 'twitter_x', label: labels.shareOnX, withText: true },
-	{ platform: 'linkedin', icon: 'linkedin', label: labels.shareOnLinkedin, withText: false },
-	{ platform: 'whatsapp', icon: 'whatsapp', label: labels.shareOnWhatsapp, withText: true },
-	{ platform: 'copy', icon: 'copy', label: labels.copyLink, withText: false }
+	{ platform: 'x', icon: 'twitter_x', label: labels.shareOnX },
+	{ platform: 'linkedin', icon: 'linkedin', label: labels.shareOnLinkedin },
+	{ platform: 'whatsapp', icon: 'whatsapp', label: labels.shareOnWhatsapp }
 ]
+const buttonClass =
+	'size-9 rounded-full bg-bg-elevated hover:bg-bg-elevated/80 border border-border flex items-center justify-center transition-colors'
+const CopyIcon = Icons.copy
 const CheckIcon = Icons.check
 ---
 
 <div class:list={['flex items-center gap-2', className]}>
 	{buttons.map((button) => {
 		const Icon = Icons[button.icon]
-		const isCopy = button.platform === 'copy'
 		return (
 			<button
 				type="button"
-				class:list={[
-					isCopy ? 'copy-url-btn' : 'share-btn',
-					'w-9 h-9 rounded-full bg-bg-elevated hover:bg-bg-elevated/80 border border-border flex items-center justify-center transition-colors'
-				]}
-				data-platform={button.platform}
-				data-url={url}
-				data-text={button.withText ? title : undefined}
+				class:list={['share-btn', buttonClass]}
+				data-share-url={shareUrl(button.platform, { url, title })}
 				aria-label={button.label}
 			>
-				<Icon class:list={[{ 'copy-url-icon': isCopy }, 'w-4 h-4']} />
-				{isCopy && <CheckIcon class="check-icon w-4 h-4 hidden" />}
+				<Icon class="size-4" />
 			</button>
 		)
 	})}
+	<button
+		type="button"
+		class:list={['copy-url-btn', buttonClass]}
+		data-url={url}
+		aria-label={labels.copyLink}
+	>
+		<CopyIcon class="copy-url-icon size-4" />
+		<CheckIcon class="check-icon size-4 hidden" />
+	</button>
 </div>
 
 <script>
 	const COPIED_MS = 2000
 
-	function shareUrl(platform: string, url: string, text: string): string | undefined {
-		const encodedUrl = encodeURIComponent(url)
-		const encodedText = encodeURIComponent(text)
-		if (platform === 'x') {
-			return `https://x.com/intent/post?url=${encodedUrl}&text=${encodedText}`
-		}
-		if (platform === 'linkedin') {
-			return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
-		}
-		if (platform === 'whatsapp') {
-			return `https://api.whatsapp.com/send?text=${encodedText} ${encodedUrl}`
-		}
-		return undefined
-	}
-
 	document.querySelectorAll<HTMLButtonElement>('.share-btn').forEach((button) => {
 		button.addEventListener('click', () => {
-			const target = shareUrl(
-				button.dataset.platform ?? '',
-				button.dataset.url ?? '',
-				button.dataset.text ?? ''
-			)
-			if (target !== undefined) {
-				window.open(target, '_blank', 'width=600,height=400')
-			}
+			window.open(button.dataset.shareUrl, '_blank', 'width=600,height=400')
 		})
 	})
 
