@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import CaseArticle from '../../src/components/case-article.astro'
 import CaseIndex from '../../src/components/case-index.astro'
 import { labelsFor } from '../../src/lib/labels'
-import { entryFixture } from '../helpers/entry'
+import { makeEntry } from '../helpers/make-entry'
 
 const IMAGE: NonNullable<Entry['featured_image']> = {
 	url: 'https://media.example.test/photo.jpg',
@@ -38,7 +38,7 @@ describe('case article', () => {
 	}
 
 	it('renders the structured header and the body', async () => {
-		const html = await render(entryFixture(caseData, { title: 'Billing platform' }))
+		const html = await render(makeEntry({ data: caseData, title: 'Billing platform' }))
 		expect(html).toContain('Billing platform')
 		for (const value of ['Acme', 'Lead engineer', '2023 - 2024', 'Go', 'Astro', 'Body text']) {
 			expect(html).toContain(value)
@@ -48,7 +48,7 @@ describe('case article', () => {
 	})
 
 	it('renders no image and no time even with a featured image and a publication date', async () => {
-		const html = await render(withImage(entryFixture(caseData)))
+		const html = await render(withImage(makeEntry({ data: caseData })))
 		expect(html).not.toContain('<img')
 		expect(html).not.toContain('<time')
 		expect(html).not.toContain(IMAGE.url)
@@ -56,7 +56,7 @@ describe('case article', () => {
 	})
 
 	it('omits the metadata labels that have no value', async () => {
-		const html = await render(entryFixture({}))
+		const html = await render(makeEntry({ data: {} }))
 		expect(html).not.toContain(labels.caseClient)
 		expect(html).not.toContain(labels.caseStack)
 		expect(html).not.toContain('undefined')
@@ -72,9 +72,9 @@ describe('case index', () => {
 
 	it('renders one item per case with excerpt and stack, and no image or time', async () => {
 		const first = withImage(
-			entryFixture(caseData, { title: 'Billing platform', excerpt: 'Short summary' })
+			makeEntry({ data: caseData, title: 'Billing platform', excerpt: 'Short summary' })
 		)
-		const second = entryFixture({ client_name: 'Globex' }, { title: 'Search rewrite' })
+		const second = makeEntry({ data: { client_name: 'Globex' }, title: 'Search rewrite' })
 		const html = await container.renderToString(CaseIndex, {
 			props: {
 				items: [

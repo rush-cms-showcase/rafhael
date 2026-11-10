@@ -1,7 +1,7 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { beforeAll, describe, expect, it } from 'vitest'
 import CaseRow from '../../src/components/case-row.astro'
-import { entryFixture } from '../helpers/entry'
+import { makeEntry } from '../helpers/make-entry'
 
 describe('CaseRow', () => {
 	let container: AstroContainer
@@ -11,7 +11,7 @@ describe('CaseRow', () => {
 	})
 
 	function render(data: Record<string, unknown>) {
-		const entry = entryFixture(data, { title: 'Billing platform' })
+		const entry = makeEntry({ data, title: 'Billing platform' })
 		return container.renderToString(CaseRow, { props: { entry, href: '/cases/billing' } })
 	}
 
