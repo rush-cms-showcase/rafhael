@@ -29,7 +29,6 @@ export type ViewMap = Record<string, Partial<CollectionViews>>
 
 const generic: CollectionViews = { list: GenericList, entry: GenericEntry }
 
-// TODO: map a collection id or slug (any locale) to its own views, e.g. `posts: { entry: PostView }`.
 const views: ViewMap = {}
 
 export function viewsFor(collection: CollectionRef | undefined, urls: RushUrls): CollectionViews {
