@@ -27,7 +27,7 @@ const { locale, title, translations = [], socialImage = true } = Astro.props
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
 const site = await rush.site.get()
-const options = await loadSiteOptions(rush, locale)
+const options = await loadSiteOptions(rush.siteOptions)
 const whatsapp = whatsappUrl(options.whatsappNumber, options.whatsappText)
 const banner = socialImageTag(options.bannerUrl, socialImage)
 const labels = labelsFor(locale)

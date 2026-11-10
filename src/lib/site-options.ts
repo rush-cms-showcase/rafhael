@@ -1,5 +1,5 @@
 import { optional } from '@rushcms/client'
-import type { LocaleCode, SiteOptionGroup } from '@rushcms/client'
+import type { SiteOptionGroup } from '@rushcms/client'
 
 export const SITE_OPTIONS_GROUP = 'opcoes-do-site'
 
@@ -21,13 +21,9 @@ export type ContactLink = {
 	href: string
 }
 
-export type SiteOptionsSource = {
-	siteOptions: {
-		get(slug: string): Promise<SiteOptionGroup>
-	}
+export type SiteOptionsReader = {
+	get(slug: string): Promise<SiteOptionGroup>
 }
-
-const cache = new Map<LocaleCode, Promise<SiteOptions>>()
 
 export function optionText(group: SiteOptionGroup | undefined, field: string): string | undefined {
 	const value = group?.values[field]
@@ -70,12 +66,6 @@ export function contactLinks(options: SiteOptions): ContactLink[] {
 	return links
 }
 
-export function loadSiteOptions(rush: SiteOptionsSource, locale: LocaleCode): Promise<SiteOptions> {
-	const cached = cache.get(locale)
-	if (cached !== undefined) {
-		return cached
-	}
-	const loaded = optional(rush.siteOptions.get(SITE_OPTIONS_GROUP)).then(siteOptionsFrom)
-	cache.set(locale, loaded)
-	return loaded
+export async function loadSiteOptions(reader: SiteOptionsReader): Promise<SiteOptions> {
+	return siteOptionsFrom(await optional(reader.get(SITE_OPTIONS_GROUP)))
 }

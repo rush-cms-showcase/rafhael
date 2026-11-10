@@ -90,33 +90,26 @@ describe('contactLinks', () => {
 })
 
 describe('loadSiteOptions', () => {
-	it('reads the group once per locale', async () => {
-		let reads = 0
-		const rush = {
-			siteOptions: {
-				get: async (slug: string) => {
-					reads += 1
-					expect(slug).toBe(SITE_OPTIONS_GROUP)
-					return group({ contact_email: 'ada@example.test' })
-				}
+	it('reads the group on every call so CMS edits show without a restart', async () => {
+		const emails = ['first@example.test', 'second@example.test']
+		const slugs: string[] = []
+		const reader = {
+			get: async (slug: string) => {
+				slugs.push(slug)
+				return group({ contact_email: emails[slugs.length - 1] })
 			}
 		}
-		const first = await loadSiteOptions(rush, 'en')
-		const second = await loadSiteOptions(rush, 'en')
-		expect(first).toBe(second)
-		expect(reads).toBe(1)
-		await loadSiteOptions(rush, 'es')
-		expect(reads).toBe(2)
+		expect((await loadSiteOptions(reader)).contactEmail).toBe('first@example.test')
+		expect((await loadSiteOptions(reader)).contactEmail).toBe('second@example.test')
+		expect(slugs).toEqual([SITE_OPTIONS_GROUP, SITE_OPTIONS_GROUP])
 	})
 
 	it('treats a missing group as empty options', async () => {
-		const rush = {
-			siteOptions: {
-				get: async () => {
-					throw notFound()
-				}
+		const reader = {
+			get: async () => {
+				throw notFound()
 			}
 		}
-		expect((await loadSiteOptions(rush, 'fr')).contactEmail).toBeUndefined()
+		expect((await loadSiteOptions(reader)).contactEmail).toBeUndefined()
 	})
 })
