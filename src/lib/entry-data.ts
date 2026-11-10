@@ -1,6 +1,7 @@
 import type { Entry } from '@rushcms/client'
 import type { Labels } from './labels'
 import { safeHref } from './safe-href'
+import { optionalText, text, textList } from './values'
 
 export type CaseMeta = {
 	clientName: string
@@ -9,20 +10,12 @@ export type CaseMeta = {
 	stack: string[]
 }
 
-function textOf(value: unknown): string {
-	return typeof value === 'string' ? value.trim() : ''
-}
-
-function listOf(value: unknown): string[] {
-	return Array.isArray(value) ? value.map(textOf).filter((item) => item !== '') : []
-}
-
 export function caseMeta(entry: Entry): CaseMeta {
 	return {
-		clientName: textOf(entry.data.client_name),
-		role: textOf(entry.data.role),
-		period: textOf(entry.data.period),
-		stack: listOf(entry.data.stack)
+		clientName: text(entry.data.client_name),
+		role: text(entry.data.role),
+		period: text(entry.data.period),
+		stack: textList(entry.data.stack)
 	}
 }
 
@@ -46,9 +39,8 @@ export type ProjectMeta = {
 }
 
 export function projectMeta(entry: Entry): ProjectMeta {
-	const label = textOf(entry.data.link_label)
 	return {
-		linkUrl: safeHref(textOf(entry.data.link_url)),
-		linkLabel: label === '' ? undefined : label
+		linkUrl: safeHref(text(entry.data.link_url)),
+		linkLabel: optionalText(entry.data.link_label)
 	}
 }

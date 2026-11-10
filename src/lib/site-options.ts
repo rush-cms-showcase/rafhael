@@ -1,5 +1,6 @@
 import { optional } from '@rushcms/client'
 import type { SiteOptionGroup } from '@rushcms/client'
+import { isRecord, optionalText } from './values'
 
 export const SITE_OPTIONS_GROUP = 'opcoes-do-site'
 
@@ -25,15 +26,14 @@ export type SiteOptionsReader = {
 	get(slug: string): Promise<SiteOptionGroup>
 }
 
-export function optionText(group: SiteOptionGroup | undefined, field: string): string | undefined {
-	const value = group?.values[field]
-	return typeof value === 'string' && value.trim() !== '' ? value.trim() : undefined
+function optionText(group: SiteOptionGroup | undefined, field: string): string | undefined {
+	return optionalText(group?.values[field])
 }
 
-export function optionImage(group: SiteOptionGroup | undefined, field: string): string | undefined {
+function optionImage(group: SiteOptionGroup | undefined, field: string): string | undefined {
 	const value = group?.values[field]
-	const url = typeof value === 'object' && value !== null && 'url' in value ? value.url : value
-	return typeof url === 'string' && /^https?:\/\//i.test(url.trim()) ? url.trim() : undefined
+	const url = optionalText(isRecord(value) ? value.url : value)
+	return url !== undefined && /^https?:\/\//i.test(url) ? url : undefined
 }
 
 export function siteOptionsFrom(group: SiteOptionGroup | undefined): SiteOptions {

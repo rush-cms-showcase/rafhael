@@ -1,4 +1,5 @@
 import type { Homepage } from '@rushcms/client'
+import { isRecord, optionalText, text } from './values'
 
 export type HomepageSection = Homepage['content'][number]
 
@@ -44,26 +45,13 @@ export type HomeSection = HeroSection | LoopSection
 
 const DEFAULT_QUANTITY = 3
 
-function textOf(value: unknown): string {
-	return typeof value === 'string' ? value.trim() : ''
-}
-
-function optionalText(value: unknown): string | undefined {
-	const text = textOf(value)
-	return text === '' ? undefined : text
-}
-
 function oneOf<T extends string>(options: readonly T[], value: unknown): T | undefined {
 	return options.find((option) => option === value)
 }
 
 function quantityOf(value: unknown): number {
-	const parsed = typeof value === 'number' ? value : Number.parseInt(textOf(value), 10)
+	const parsed = typeof value === 'number' ? value : Number.parseInt(text(value), 10)
 	return Number.isInteger(parsed) && parsed > 0 ? parsed : DEFAULT_QUANTITY
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-	return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
 function heroLinks(value: unknown): HeroLink[] {
@@ -71,7 +59,7 @@ function heroLinks(value: unknown): HeroLink[] {
 		return []
 	}
 	return value.filter(isRecord).flatMap((item) => {
-		const name = textOf(item.name)
+		const name = text(item.name)
 		return name === ''
 			? []
 			: [{ name, url: optionalText(item.url), icon: oneOf(HERO_ICONS, item.icon) }]
@@ -79,13 +67,13 @@ function heroLinks(value: unknown): HeroLink[] {
 }
 
 function heroSection(values: Record<string, unknown>): HeroSection | undefined {
-	const text = textOf(values.text)
-	if (text === '') {
+	const body = text(values.text)
+	if (body === '') {
 		return undefined
 	}
 	return {
 		kind: 'hero',
-		text,
+		text: body,
 		avatar: optionalText(values.avatar),
 		links: heroLinks(values.links)
 	}
@@ -99,7 +87,7 @@ function loopSection(values: Record<string, unknown>): LoopSection | undefined {
 	}
 	return {
 		kind: 'loop',
-		title: textOf(values.title),
+		title: text(values.title),
 		type,
 		quantity: quantityOf(values.quantity),
 		disposition
