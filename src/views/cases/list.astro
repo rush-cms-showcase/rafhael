@@ -27,13 +27,7 @@ const canonical = collectionCanonical(urls, collection, locale, page.page, Astro
 		<h1 class="mb-12 font-serif text-5xl font-bold text-primary lg:mb-16 lg:text-7xl">
 			{collection.name}
 		</h1>
-		<CaseRows
-			entries={entries.items}
-			locale={locale}
-			urls={urls}
-			start={(page.page - 1) * entries.meta.per_page + 1}
-			detailed
-		/>
+		<CaseRows entries={entries.items} locale={locale} urls={urls} detailed />
 		<Pager
 			locale={locale}
 			current={page.page}

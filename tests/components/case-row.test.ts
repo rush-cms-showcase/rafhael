@@ -4,7 +4,6 @@ import CaseRow from '../../src/components/case-row.astro'
 import { makeEntry } from '../helpers/make-entry'
 
 type RowOptions = {
-	position?: number
 	detailed?: boolean
 	excerpt?: string
 }
@@ -26,22 +25,22 @@ describe('CaseRow', () => {
 			props: {
 				entry,
 				href: '/cases/billing',
-				position: options.position ?? 1,
 				detailed: options.detailed ?? false
 			}
 		})
 	}
 
-	it('renders the title, the client and the link', async () => {
-		const html = await render({ client_name: 'Acme', period: '2024' })
+	it('renders the title and the link without client, role or index', async () => {
+		const html = await render({ client_name: 'Acme', role: 'Lead engineer', period: '2024' })
 		expect(html).toContain('Billing platform')
-		expect(html).toContain('Acme')
 		expect(html).toContain('href="/cases/billing"')
+		for (const value of ['Acme', 'Lead engineer', 'data-client', '>01<', '>1<']) {
+			expect(html).not.toContain(value)
+		}
 	})
 
-	it('renders the position as a two digit index', async () => {
-		expect(await render({}, { position: 3 })).toMatch(/>\s*03\s*</)
-		expect(await render({}, { position: 12 })).toMatch(/>\s*12\s*</)
+	it('marks the row with an accent line instead of a number', async () => {
+		expect(await render({})).toContain('data-accent')
 	})
 
 	it('renders no date and no time element', async () => {
@@ -51,22 +50,17 @@ describe('CaseRow', () => {
 		expect(html).not.toContain('Jun')
 	})
 
-	it('omits the client line when there is no client', async () => {
-		const html = await render({})
-		expect(html).toContain('Billing platform')
-		expect(html).not.toContain('undefined')
-		expect(html).not.toContain('data-client')
-	})
-
-	it('shows excerpt, role and stack only when detailed', async () => {
+	it('shows excerpt and stack only when detailed, never the role', async () => {
 		const data = { client_name: 'Acme', role: 'Lead engineer', stack: ['Go'] }
 		const compact = await render(data, { excerpt: 'Short summary' })
-		for (const value of ['Short summary', 'Lead engineer', '>Go<']) {
+		for (const value of ['Short summary', '>Go<']) {
 			expect(compact).not.toContain(value)
 		}
 		const detailed = await render(data, { excerpt: 'Short summary', detailed: true })
-		for (const value of ['Short summary', 'Lead engineer', '>Go<']) {
+		for (const value of ['Short summary', '>Go<']) {
 			expect(detailed).toContain(value)
 		}
+		expect(detailed).not.toContain('Lead engineer')
+		expect(detailed).not.toContain('undefined')
 	})
 })

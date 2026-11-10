@@ -7,28 +7,24 @@ import CaseStack from './case-stack.astro'
 type Props = {
 	entry: Entry
 	href: string
-	position: number
 	detailed: boolean
 }
 
-const { entry, href, position, detailed } = Astro.props
-const { clientName, role, stack } = caseMeta(entry)
-const showRole = detailed && role !== ''
-const showClient = clientName !== '' || showRole
+const { entry, href, detailed } = Astro.props
+const { stack } = caseMeta(entry)
 ---
 
 <a
 	href={href}
-	class="group grid grid-cols-[2rem_minmax(0,1fr)_auto] items-baseline gap-x-4 px-3 py-6 transition-colors hover:bg-bg-elevated lg:grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,11rem)_auto] lg:gap-x-6 lg:px-4 lg:py-7 xl:grid-cols-[3rem_minmax(0,1fr)_minmax(0,15rem)_auto] xl:gap-x-8"
+	class="group grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 py-6 lg:gap-x-8 lg:py-7"
 >
-	<span
-		aria-hidden="true"
-		class="text-sm font-medium text-text-subtle tabular-nums transition-colors group-hover:text-primary"
-	>
-		{String(position).padStart(2, '0')}
-	</span>
 	<span class="flex min-w-0 flex-col gap-3">
-		<span class="font-serif text-lg leading-snug text-pretty text-text-main transition-colors group-hover:text-primary xl:text-xl">
+		<span class="relative font-serif text-lg leading-snug text-pretty text-text-main transition-colors group-hover:text-primary group-focus-visible:text-primary xl:text-xl">
+			<span
+				data-accent
+				aria-hidden="true"
+				class="absolute top-[0.3em] -left-2 h-[1em] w-0.5 origin-center scale-y-50 rounded-full bg-primary opacity-40 transition duration-300 group-hover:scale-y-100 group-hover:opacity-100 group-focus-visible:scale-y-100 group-focus-visible:opacity-100 lg:-left-4"
+			></span>
 			{entry.title}
 		</span>
 		{detailed && entry.excerpt && (
@@ -36,14 +32,5 @@ const showClient = clientName !== '' || showRole
 		)}
 		{detailed && <CaseStack stack={stack} />}
 	</span>
-	{showClient && (
-		<span
-			data-client
-			class="col-start-2 row-start-2 mt-2 flex flex-col text-sm text-text-muted lg:col-start-3 lg:row-start-1 lg:mt-0 lg:text-right"
-		>
-			{clientName !== '' && <span>{clientName}</span>}
-			{showRole && <span class="text-text-subtle">{role}</span>}
-		</span>
-	)}
-	<Icons.arrow_right class="col-start-3 row-start-1 size-5 self-center text-text-subtle transition group-hover:translate-x-1.5 group-hover:text-primary lg:col-start-4" />
+	<Icons.arrow_right class="size-5 self-center text-text-subtle transition group-hover:translate-x-1.5 group-hover:text-primary group-focus-visible:translate-x-1.5 group-focus-visible:text-primary" />
 </a>

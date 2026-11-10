@@ -86,22 +86,15 @@ describe('case rows', () => {
 				entries: [first, second],
 				locale: 'en',
 				urls: makeUrls(),
-				detailed: true,
-				start: 11
+				detailed: true
 			}
 		})
-		for (const value of [
-			'Billing platform',
-			'Short summary',
-			'Go',
-			'Search rewrite',
-			'Globex'
-		]) {
+		for (const value of ['Billing platform', 'Short summary', 'Go', 'Search rewrite']) {
 			expect(html).toContain(value)
 		}
 		expect(html).toContain('href="/cases/search"')
-		expect(html).toMatch(/>\s*11\s*</)
-		expect(html).toMatch(/>\s*12\s*</)
+		expect(html).not.toContain('Globex')
+		expect(html).not.toMatch(/>\s*0?1\s*</)
 		expect(html).not.toContain('<img')
 		expect(html).not.toContain('<time')
 		expect(html).not.toContain('2026')
