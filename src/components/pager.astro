@@ -1,50 +1,40 @@
 ---
-import type { CollectionRef, LocaleCode, RushUrls } from '@rushcms/client'
+import type { LocaleCode } from '@rushcms/client'
 import { Icons } from '../lib/icons'
 import { labelsFor } from '../lib/labels'
+import type { PageUrl } from '../lib/page-url'
 
 type Props = {
-	collection: CollectionRef
 	locale: LocaleCode
 	current: number
 	last: number
-	urls: RushUrls
+	pageUrl: PageUrl
 }
 
-const { collection, locale, current, last, urls } = Astro.props
+const { locale, current, last, pageUrl } = Astro.props
 const labels = labelsFor(locale)
-const previousHref = current > 1 ? urls.collection(collection, locale, current - 1) : undefined
-const nextHref = current < last ? urls.collection(collection, locale, current + 1) : undefined
+const previousHref = current > 1 ? pageUrl(current - 1) : undefined
+const nextHref = current < last ? pageUrl(current + 1) : undefined
+const buttonClass =
+	'flex items-center gap-2 px-6 py-3 rounded-full bg-bg-elevated border border-border hover:border-primary hover:text-primary transition-all font-medium'
 ---
 
 {last > 1 && (
-	<nav class="flex items-center justify-between gap-4 pt-10" aria-label="Pagination">
-		{previousHref ? (
-			<a
-				href={previousHref}
-				rel="prev"
-				class="inline-flex items-center gap-2 text-text-muted transition-colors hover:text-primary"
-			>
-				<Icons.arrow_left class="h-4 w-4" />
+	<nav class="flex justify-center gap-4 mt-16 animate-fade-in-up" aria-label="Pagination">
+		{previousHref && (
+			<a href={previousHref} rel="prev" class={buttonClass}>
+				<Icons.chevron_left class="w-5 h-5" />
 				{labels.previous}
 			</a>
-		) : (
-			<span />
 		)}
-		<span class="text-sm text-text-subtle">
+		<span class="flex items-center px-4 font-serif font-bold text-text-muted">
 			{current} / {last}
 		</span>
-		{nextHref ? (
-			<a
-				href={nextHref}
-				rel="next"
-				class="inline-flex items-center gap-2 text-text-muted transition-colors hover:text-primary"
-			>
+		{nextHref && (
+			<a href={nextHref} rel="next" class={buttonClass}>
 				{labels.next}
-				<Icons.arrow_right class="h-4 w-4" />
+				<Icons.chevron_right class="w-5 h-5" />
 			</a>
-		) : (
-			<span />
 		)}
 	</nav>
 )}

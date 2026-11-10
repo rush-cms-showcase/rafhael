@@ -6,6 +6,7 @@ import Base from '../layouts/base.astro'
 import { formatDate } from '../lib/format-date'
 import type { ListViewProps } from './index'
 import { collectionCanonical } from '../lib/collection-canonical'
+import { collectionPageUrl } from '../lib/page-url'
 
 type Props = ListViewProps
 
@@ -64,11 +65,10 @@ const translations = collectionAlternates(collection.id, urls)
 			<p class="mt-12 text-text-muted">Nothing has been published here yet.</p>
 		)}
 		<Pager
-			collection={collection}
 			locale={locale}
 			current={page.page}
 			last={lastPage}
-			urls={urls}
+			pageUrl={collectionPageUrl(urls, collection, locale)}
 		/>
 	</div>
 </Base>

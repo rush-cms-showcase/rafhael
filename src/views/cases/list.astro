@@ -6,6 +6,7 @@ import Base from '../../layouts/base.astro'
 import type { CaseLink } from '../../lib/case-link'
 import type { ListViewProps } from '../index'
 import { collectionCanonical } from '../../lib/collection-canonical'
+import { collectionPageUrl } from '../../lib/page-url'
 
 type Props = ListViewProps
 
@@ -32,11 +33,10 @@ const canonical = collectionCanonical(urls, collection, locale, page.page, Astro
 		</h1>
 		<CaseIndex items={items} />
 		<Pager
-			collection={collection}
 			locale={locale}
 			current={page.page}
 			last={lastPage}
-			urls={urls}
+			pageUrl={collectionPageUrl(urls, collection, locale)}
 		/>
 	</div>
 </Base>

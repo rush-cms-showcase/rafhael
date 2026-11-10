@@ -8,6 +8,7 @@ import { labelsFor } from '../../lib/labels'
 import { taxonomyHref } from '../../lib/taxonomy-href'
 import type { ListViewProps } from '../index'
 import { collectionCanonical } from '../../lib/collection-canonical'
+import { collectionPageUrl } from '../../lib/page-url'
 
 type Props = ListViewProps
 
@@ -62,11 +63,10 @@ const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevate
 				</div>
 
 				<Pager
-					collection={collection}
 					locale={locale}
 					current={page.page}
 					last={lastPage}
-					urls={urls}
+					pageUrl={collectionPageUrl(urls, collection, locale)}
 				/>
 			</div>
 		</Container>
