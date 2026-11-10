@@ -37,6 +37,17 @@ describe('footer credits', () => {
 	})
 })
 
+describe('footer copyright', () => {
+	it('separates the year, the name and the rights text', async () => {
+		const container = await AstroContainer.create()
+		const html = await container.renderToString(Footer, {
+			props: { name: 'Ada Lovelace', locale: 'en', links: [], credits: {} }
+		})
+		const year = new Date().getFullYear()
+		expect(html).toContain(`© ${year} Ada Lovelace. All rights reserved.`)
+	})
+})
+
 describe('creditsFrom', () => {
 	it('reads non-empty string values and ignores the rest', () => {
 		const group = {

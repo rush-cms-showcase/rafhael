@@ -15,7 +15,7 @@ type Props = {
 
 const { name, locale, links, credits } = Astro.props
 const labels = labelsFor(locale)
-const currentYear = new Date().getFullYear()
+const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 ---
 
 <footer class="flex flex-col items-center border-t border-border-subtle bg-bg">
@@ -45,10 +45,7 @@ const currentYear = new Date().getFullYear()
 	</div>
 	<small class="w-full border-t border-border-subtle/40 p-4 text-sm text-text-muted lg:p-8">
 		<Container class="flex flex-col items-center gap-2 lg:flex-row lg:justify-between">
-			<span class="text-center lg:text-left">
-				&copy; {currentYear}
-				{name}. {labels.rights}
-			</span>
+			<span class="text-center lg:text-left">{copyright}</span>
 			{(credits.creatorUrl !== undefined || credits.platformUrl !== undefined) && (
 				<div class="flex flex-row items-center justify-center gap-2">
 					{credits.creatorUrl !== undefined && (
