@@ -39,8 +39,8 @@ describe('CaseRow', () => {
 		}
 	})
 
-	it('marks the row with an accent line instead of a number', async () => {
-		expect(await render({})).toContain('data-accent')
+	it('renders no accent line', async () => {
+		expect(await render({})).not.toContain('data-accent')
 	})
 
 	it('renders no date and no time element', async () => {
