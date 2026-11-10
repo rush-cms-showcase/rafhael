@@ -21,7 +21,7 @@ export type Labels = {
 	shareOnX: string
 	shareOnLinkedin: string
 	shareOnWhatsapp: string
-	copyLink: string,
+	copyLink: string
 	caseClient: string
 	caseRole: string
 	casePeriod: string
