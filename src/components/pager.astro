@@ -23,7 +23,7 @@ const buttonClass =
 	<nav class="flex justify-center gap-4 mt-16 animate-fade-in-up" aria-label={labels.pagination}>
 		{previousHref && (
 			<a href={previousHref} rel="prev" class={buttonClass}>
-				<Icons.chevron_left class="w-5 h-5" />
+				<Icons.chevron_left class="size-5" />
 				{labels.previous}
 			</a>
 		)}
@@ -33,7 +33,7 @@ const buttonClass =
 		{nextHref && (
 			<a href={nextHref} rel="next" class={buttonClass}>
 				{labels.next}
-				<Icons.chevron_right class="w-5 h-5" />
+				<Icons.chevron_right class="size-5" />
 			</a>
 		)}
 	</nav>
