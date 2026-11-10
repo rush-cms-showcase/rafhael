@@ -1,0 +1,25 @@
+---
+type Props = {
+	title: string
+	seeAllLabel: string
+	seeAllHref: string | undefined
+}
+
+const { title, seeAllLabel, seeAllHref } = Astro.props
+---
+
+{title !== '' && (
+	<div class="mb-8 flex items-baseline justify-between gap-6">
+		<h2 class="font-serif text-4xl leading-[1.1] font-bold text-primary lg:text-6xl">
+			{title}
+		</h2>
+		{seeAllHref !== undefined && (
+			<a
+				href={seeAllHref}
+				class="shrink-0 text-sm font-medium tracking-widest text-text-muted uppercase transition-colors hover:text-primary"
+			>
+				{seeAllLabel} →
+			</a>
+		)}
+	</div>
+)}

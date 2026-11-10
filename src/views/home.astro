@@ -1,21 +1,36 @@
 ---
-import { getRush, homepageTitle } from '@rushcms/astro'
+import { getRush, getUrls, homepageTitle } from '@rushcms/astro'
 import Seo from '@rushcms/astro/components/seo.astro'
-import Container from '../components/container.astro'
+import Hero from '../components/home/hero.astro'
+import Loop from '../components/home/loop.astro'
 import Base from '../layouts/base.astro'
+import { loadLoopEntries } from '../lib/home-loop'
+import { homeSections } from '../lib/home-sections'
 import type { HomeViewProps } from './index'
 
 type Props = HomeViewProps
 
 const { page } = Astro.props
 const { locale, homepage } = page
-const site = await getRush(Astro).site.get()
+const rush = getRush(Astro)
+const urls = getUrls(Astro)
+const site = await rush.site.get()
 const title = homepageTitle(homepage) === undefined ? site.name : undefined
+const sections = await Promise.all(
+	homeSections(homepage?.content ?? []).map(async (section) => ({
+		section,
+		entries: section.kind === 'loop' ? await loadLoopEntries(rush.entries, section, locale) : []
+	}))
+)
 ---
 
 <Base locale={locale} title={title}>
 	{homepage && <Seo slot="head" homepage={homepage} />}
-	<Container class="py-24">
-		<h1 class="font-serif text-4xl font-bold">{site.name}</h1>
-	</Container>
+	{sections.map(({ section, entries }) =>
+		section.kind === 'hero' ? (
+			<Hero section={section} />
+		) : (
+			<Loop section={section} entries={entries} locale={locale} urls={urls} />
+		)
+	)}
 </Base>

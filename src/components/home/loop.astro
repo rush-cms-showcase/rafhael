@@ -1,0 +1,36 @@
+---
+import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
+import { loopLayout } from '../../lib/home-sections'
+import type { LoopSection } from '../../lib/home-sections'
+import { labelsFor } from '../../lib/labels'
+import PostGrid from '../blog/post-grid.astro'
+import CaseRows from '../case-rows.astro'
+import Container from '../container.astro'
+import ProjectGrid from '../project-grid.astro'
+import SectionTitle from './section-title.astro'
+
+type Props = {
+	section: LoopSection
+	entries: Entry[]
+	locale: LocaleCode
+	urls: RushUrls
+}
+
+const { section, entries, locale, urls } = Astro.props
+const layout = loopLayout(section.type, section.disposition)
+const collection = urls.collectionRef(section.type, locale)
+const seeAllHref = collection === undefined ? undefined : urls.collection(collection, locale)
+---
+
+{entries.length > 0 && (
+	<Container class="pt-20 last:pb-24 lg:pt-28">
+		<SectionTitle
+			title={section.title}
+			seeAllLabel={labelsFor(locale).seeAll}
+			seeAllHref={seeAllHref}
+		/>
+		{layout === 'posts' && <PostGrid entries={entries} locale={locale} urls={urls} />}
+		{layout === 'projects' && <ProjectGrid entries={entries} locale={locale} urls={urls} />}
+		{layout === 'rows' && <CaseRows entries={entries} locale={locale} urls={urls} />}
+	</Container>
+)}

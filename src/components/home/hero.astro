@@ -1,0 +1,71 @@
+---
+import { Icons } from '../../lib/icons'
+import type { HeroIcon, HeroSection } from '../../lib/home-sections'
+import { splitHeroText } from '../../lib/home-sections'
+import { safeHref } from '../../lib/safe-href'
+import Container from '../container.astro'
+
+type Props = {
+	section: HeroSection
+}
+
+const iconFor = {
+	globe: Icons.globe,
+	github: Icons.github,
+	linkedin: Icons.linkedin,
+	location: Icons.map_pin,
+	envelope: Icons.mail,
+	whatsapp: Icons.whatsapp,
+	phone: Icons.phone
+} satisfies Record<HeroIcon, typeof Icons.globe>
+
+const { section } = Astro.props
+const { lead, comma, rest } = splitHeroText(section.text)
+const links = section.links.map((link) => ({
+	...link,
+	href: safeHref(link.url),
+	Icon: link.icon === undefined ? undefined : iconFor[link.icon]
+}))
+---
+
+<Container class="pt-16 pb-4 lg:pt-28">
+	<h1 class="max-w-[62rem] font-serif text-3xl leading-[1.35] lg:text-6xl">
+		<span class="font-bold text-text-main">{lead}</span>
+		{section.avatar !== undefined && (
+			<img
+				src={section.avatar}
+				alt=""
+				width="64"
+				height="64"
+				class="-mr-[0.15em] ml-[0.2em] inline-block size-[1.15em] rounded-full align-[-0.2em] object-cover"
+			/>
+		)}
+		{comma && <span class="font-bold text-text-main">,</span>}
+		{rest !== '' && (
+			<>
+				{' '}
+				<span class="font-normal text-text-muted">{rest}</span>
+			</>
+		)}
+	</h1>
+	{links.length > 0 && (
+		<p class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-text-muted">
+			{links.map(({ name, href, Icon }) =>
+				href === undefined ? (
+					<span class="inline-flex items-center gap-1.5 text-text-subtle">
+						{Icon && <Icon class="size-4" />}
+						{name}
+					</span>
+				) : (
+					<a
+						href={href}
+						class="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
+					>
+						{Icon && <Icon class="size-4" />}
+						{name}
+					</a>
+				)
+			)}
+		</p>
+	)}
+</Container>

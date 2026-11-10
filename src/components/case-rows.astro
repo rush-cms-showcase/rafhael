@@ -1,0 +1,18 @@
+---
+import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
+import CaseRow from './case-row.astro'
+
+type Props = {
+	entries: Entry[]
+	locale: LocaleCode
+	urls: RushUrls
+}
+
+const { entries, locale, urls } = Astro.props
+---
+
+<div class="border-t border-border">
+	{entries.map((entry) => (
+		<CaseRow entry={entry} href={urls.servedPath(entry, locale)} />
+	))}
+</div>
