@@ -73,6 +73,7 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 			links={legalLinks}
 			contacts={contactLinks(options)}
 			homeUrl={urls.homepage(locale)}
+			floatingAction={whatsapp !== undefined}
 		/>
 		{whatsapp !== undefined && <WhatsappFloat href={whatsapp} label={labels.whatsappChat} />}
 	</body>

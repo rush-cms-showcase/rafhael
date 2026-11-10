@@ -14,9 +14,10 @@ type Props = {
 	homeUrl: string
 	links: LinkableNavigation[]
 	contacts?: ContactLink[]
+	floatingAction?: boolean
 }
 
-const { name, locale, homeUrl, links, contacts = [] } = Astro.props
+const { name, locale, homeUrl, links, contacts = [], floatingAction = false } = Astro.props
 const labels = labelsFor(locale)
 const contactIcons = {
 	github: Icons.github,
@@ -70,7 +71,12 @@ const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 			</div>
 		</Container>
 	</div>
-	<small class="w-full border-t border-border-subtle/40 p-4 text-sm text-text-muted lg:p-8">
+	<small
+		class:list={[
+			'w-full border-t border-border-subtle/40 p-4 text-sm text-text-muted lg:p-8',
+			floatingAction && 'pb-24 lg:pb-32'
+		]}
+	>
 		<Container class="flex flex-col items-center gap-2 lg:flex-row lg:justify-between">
 			<span class="text-center lg:text-left">{copyright}</span>
 			<FooterCredits name={name} homeUrl={homeUrl} locale={locale} />
