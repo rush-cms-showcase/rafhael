@@ -1,0 +1,25 @@
+---
+import RushImage from '@rushcms/astro/components/rush-image.astro'
+import type { Entry } from '@rushcms/client'
+import { entryCover } from '../lib/entry-data'
+
+type Props = {
+	entry: Entry
+	class?: string | undefined
+	loading?: 'eager' | 'lazy' | undefined
+	fetchpriority?: 'high' | 'auto' | undefined
+}
+
+const { entry, class: className, loading = 'lazy', fetchpriority } = Astro.props
+const cover = entryCover(entry)
+---
+
+{cover && (
+	<RushImage
+		media={cover}
+		alt={cover.alt || entry.title}
+		class={className}
+		loading={loading}
+		fetchpriority={fetchpriority}
+	/>
+)}

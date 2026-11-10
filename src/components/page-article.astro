@@ -1,17 +1,17 @@
 ---
+import type { Entry } from '@rushcms/client'
+import ArticleShell from './article-shell.astro'
+import ArticleTitle from './article-title.astro'
 import Prose from './prose.astro'
 
 type Props = {
-	title: string
-	html: string
+	entry: Entry
 }
 
-const { title, html } = Astro.props
+const { entry } = Astro.props
 ---
 
-<article class="mx-auto flex max-w-3xl flex-col gap-10 px-3 pt-10 pb-16 lg:px-6 lg:pt-14 lg:pb-24">
-	<h1 class="font-serif text-4xl leading-tight font-bold text-text-main text-balance lg:text-5xl">
-		{title}
-	</h1>
-	<Prose html={html} />
-</article>
+<ArticleShell kind="page">
+	<ArticleTitle title={entry.title} tone="plain" />
+	<Prose entry={entry} />
+</ArticleShell>

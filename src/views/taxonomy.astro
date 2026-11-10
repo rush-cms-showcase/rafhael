@@ -18,7 +18,6 @@ const { page } = Astro.props
 const { tag, locale, entries, lastPage, alternates } = page
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
-const site = await rush.site.get()
 const categories = tag.type === 'category' ? await rush.tags.list({ type: 'category', locale }) : []
 const allHref = collectionHref(urls, 'blog', locale)
 const filters = categories.map((category) => ({
@@ -42,7 +41,7 @@ const trail = breadcrumbTrail({
 const heading = page.page > 1 ? `${tag.name} (${page.page}/${lastPage})` : tag.name
 ---
 
-<Base locale={locale} title={`${heading} - ${site.name}`} translations={alternates}>
+<Base locale={locale} title={{ from: 'page', page: heading }} translations={alternates}>
 	{canonical && <link slot="head" rel="canonical" href={canonical} />}
 	{page.page === 1 && <Hreflang slot="head" alternates={alternates} />}
 	<Breadcrumb trail={trail} />

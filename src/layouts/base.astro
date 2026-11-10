@@ -8,28 +8,30 @@ import Footer from '../components/footer.astro'
 import Header from '../components/header.astro'
 import SearchDialog from '../components/search-dialog.astro'
 import WhatsappFloat from '../components/whatsapp-float.astro'
+import { documentTitle } from '../lib/document-title'
+import type { TitleSource } from '../lib/document-title'
 import { labelsFor } from '../lib/labels'
 import { languageLinks } from '../lib/locale'
 import { contactLinks, loadSiteOptions } from '../lib/site-options'
-import { socialImageTag } from '../lib/social-image'
 import { whatsappUrl } from '../lib/whatsapp'
 import { LEGAL_NAVIGATION, MAIN_NAVIGATION, siteNavigation } from '../lib/site-navigation'
 import '../styles/global.css'
 
 type Props = {
 	locale: LocaleCode
-	title?: string | undefined
+	title: TitleSource
 	translations?: Alternate[]
 	socialImage?: boolean
 }
 
-const { locale, title, translations = [], socialImage = true } = Astro.props
+const { locale, title: titleSource, translations = [], socialImage = true } = Astro.props
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
 const site = await rush.site.get()
 const options = await loadSiteOptions(rush.siteOptions)
 const whatsapp = whatsappUrl(options.whatsappNumber, options.whatsappText)
-const banner = socialImageTag(options.bannerUrl, socialImage)
+const banner = socialImage ? options.bannerUrl : undefined
+const title = documentTitle(titleSource, site.name)
 const labels = labelsFor(locale)
 const languages = languageLinks(homepageAlternates(urls), translations)
 const mainLinks = await siteNavigation(Astro, MAIN_NAVIGATION)

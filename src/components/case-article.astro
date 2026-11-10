@@ -1,18 +1,18 @@
 ---
 import type { Entry, LocaleCode } from '@rushcms/client'
+import ArticleShell from './article-shell.astro'
 import CaseHeader from './case-header.astro'
 import Prose from './prose.astro'
 
 type Props = {
 	entry: Entry
-	html: string
 	locale: LocaleCode
 }
 
-const { entry, html, locale } = Astro.props
+const { entry, locale } = Astro.props
 ---
 
-<article class="mx-auto flex max-w-4xl flex-col gap-12 px-3 pt-10 pb-16 lg:px-6 lg:pt-14 lg:pb-24">
+<ArticleShell kind="case">
 	<CaseHeader entry={entry} locale={locale} />
-	<Prose html={html} />
-</article>
+	<Prose entry={entry} />
+</ArticleShell>

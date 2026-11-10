@@ -1,5 +1,5 @@
 ---
-import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import { collectionAlternates, getUrls } from '@rushcms/astro'
 import { requireSite } from '@rushcms/astro/components-runtime'
 import Container from '../../components/container.astro'
 import Pager from '../../components/pager.astro'
@@ -14,7 +14,6 @@ type Props = ListViewProps
 const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
-const site = await getRush(Astro).site.get()
 const labels = labelsFor(locale)
 const pageUrl = collectionPageUrl(urls, collection, locale)
 const canonical = absoluteUrl(
@@ -25,7 +24,7 @@ const canonical = absoluteUrl(
 
 <Base
 	locale={locale}
-	title={`${collection.name} | ${site.name}`}
+	title={{ from: 'page', page: collection.name }}
 	translations={collectionAlternates(collection.id, urls)}
 >
 	<meta slot="head" name="description" content={labels.projectsDescription} />

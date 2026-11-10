@@ -1,28 +1,21 @@
-import { experimental_AstroContainer as AstroContainer } from 'astro/container'
-import { beforeAll, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import ProjectArticle from '../../src/components/project-article.astro'
 import ProjectCard from '../../src/components/project-card.astro'
+import { render } from '../helpers/container'
 import { makeEntry } from '../helpers/make-entry'
 import { makeUrls } from '../helpers/make-urls'
 
 describe('projects', () => {
-	let container: AstroContainer
 	const urls = makeUrls()
-
-	beforeAll(async () => {
-		container = await AstroContainer.create()
-	})
 
 	function card(data: Record<string, unknown>, locale: 'en' | 'pt_BR' = 'en') {
 		const entry = makeEntry({ data, title: 'Engine', excerpt: 'Runs things' })
-		return container.renderToString(ProjectCard, { props: { entry, locale, urls } })
+		return render(ProjectCard, { entry, locale, urls })
 	}
 
 	function article(data: Record<string, unknown>) {
-		const entry = makeEntry({ data, title: 'Engine' })
-		return container.renderToString(ProjectArticle, {
-			props: { entry, html: '<p>Body</p>', locale: 'en' }
-		})
+		const entry = makeEntry({ data: { content: 'Body', ...data }, title: 'Engine' })
+		return render(ProjectArticle, { entry, locale: 'en' })
 	}
 
 	it('card falls back to a localized default label', async () => {

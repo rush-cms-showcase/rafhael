@@ -1,0 +1,38 @@
+---
+import { getUrls } from '@rushcms/astro'
+import Seo from '@rushcms/astro/components/seo.astro'
+import { alternates, toBcp47 } from '@rushcms/client'
+import type { Entry, LocaleCode } from '@rushcms/client'
+import Breadcrumb from '../components/breadcrumb.astro'
+import FallbackNotice from '../components/fallback-notice.astro'
+import { breadcrumbTrail } from '../lib/breadcrumb'
+import { entryCover } from '../lib/entry-data'
+import { ENTRY_WIDTHS } from '../lib/entry-width'
+import type { EntryKind } from '../lib/entry-width'
+import Base from './base.astro'
+
+type Props = {
+	entry: Entry
+	locale: LocaleCode
+	kind: EntryKind
+}
+
+const { entry, locale, kind } = Astro.props
+const urls = getUrls(Astro)
+const width = ENTRY_WIDTHS[kind]
+const trail = breadcrumbTrail({ kind, locale, urls, title: entry.title, path: urls.entry(entry) })
+---
+
+<Base
+	locale={locale}
+	title={{ from: 'seo' }}
+	socialImage={entryCover(entry) === undefined}
+	translations={alternates(entry, urls)}
+>
+	<Seo slot="head" entry={entry} />
+	<Breadcrumb trail={trail} class={width} />
+	<FallbackNotice entry={entry} locale={locale} class={width} />
+	<div lang={toBcp47(entry.locale)}>
+		<slot />
+	</div>
+</Base>

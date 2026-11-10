@@ -7,7 +7,6 @@ import { unified } from 'unified'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 import type { Entry } from '@rushcms/client'
-import { siteOrigin } from './site-env'
 
 const EXTERNAL_REL = ['nofollow', 'noopener', 'noreferrer']
 
@@ -34,10 +33,7 @@ export function markdownBody(entry: Entry): string {
 	return typeof content === 'string' ? content : ''
 }
 
-export async function renderMarkdown(
-	markdown: string,
-	origin: URL = siteOrigin(process.env)
-): Promise<string> {
+export async function renderMarkdown(markdown: string, origin: URL): Promise<string> {
 	const file = await unified()
 		.use(remarkParse)
 		.use(remarkRehype, { allowDangerousHtml: true })

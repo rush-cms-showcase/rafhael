@@ -1,35 +1,26 @@
 ---
-import RushImage from '@rushcms/astro/components/rush-image.astro'
 import type { Entry, LocaleCode } from '@rushcms/client'
 import { projectMeta } from '../lib/entry-data'
 import { Icons } from '../lib/icons'
 import { labelsFor } from '../lib/labels'
+import ArticleShell from './article-shell.astro'
+import ArticleTitle from './article-title.astro'
+import EntryCover from './entry-cover.astro'
 import Prose from './prose.astro'
 
 type Props = {
 	entry: Entry
-	html: string
 	locale: LocaleCode
 }
 
-const { entry, html, locale } = Astro.props
-const labels = labelsFor(locale)
+const { entry, locale } = Astro.props
 const { linkUrl, linkLabel } = projectMeta(entry)
-const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
 ---
 
-<article class="mx-auto flex max-w-4xl flex-col gap-10 px-3 pt-10 pb-16 lg:px-6 lg:pt-14 lg:pb-24">
-	<h1 class="font-serif text-4xl leading-tight font-bold text-primary text-balance lg:text-6xl">
-		{entry.title}
-	</h1>
-	{cover && (
-		<RushImage
-			media={cover}
-			alt={cover.alt || entry.title}
-			class="aspect-video w-full rounded-2xl object-cover"
-		/>
-	)}
-	<Prose html={html} />
+<ArticleShell kind="project">
+	<ArticleTitle title={entry.title} tone="accent" />
+	<EntryCover entry={entry} class="aspect-video w-full rounded-2xl object-cover" />
+	<Prose entry={entry} />
 	{linkUrl !== undefined && (
 		<a
 			href={linkUrl}
@@ -37,8 +28,8 @@ const cover = entry.featured_image?.url === undefined ? undefined : entry.featur
 			rel="noopener"
 			class="inline-flex items-center gap-2 self-start rounded-full bg-primary px-6 py-3 font-bold text-white transition-opacity hover:opacity-90"
 		>
-			{linkLabel ?? labels.openProject}
-			<Icons.external_link class="h-4 w-4" />
+			{linkLabel ?? labelsFor(locale).openProject}
+			<Icons.external_link class="size-4" />
 		</a>
 	)}
-</article>
+</ArticleShell>

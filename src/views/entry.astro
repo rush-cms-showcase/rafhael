@@ -1,74 +1,40 @@
 ---
-import { getUrls } from '@rushcms/astro'
 import RichText from '@rushcms/astro/components/rich-text.astro'
-import RushImage from '@rushcms/astro/components/rush-image.astro'
-import Seo from '@rushcms/astro/components/seo.astro'
-import { alternates, isRichText, toBcp47 } from '@rushcms/client'
-import Breadcrumb from '../components/breadcrumb.astro'
-import Base from '../layouts/base.astro'
-import { breadcrumbTrail } from '../lib/breadcrumb'
+import { isRichText } from '@rushcms/client'
+import ArticleShell from '../components/article-shell.astro'
+import ArticleTitle from '../components/article-title.astro'
+import EntryCover from '../components/entry-cover.astro'
+import EntryLayout from '../layouts/entry-layout.astro'
 import { formatDate } from '../lib/format-date'
-import { formatLabel, labelsFor } from '../lib/labels'
-import { languageName } from '../lib/locale'
 import type { EntryViewProps } from './index'
 
 type Props = EntryViewProps
 
 const { entry, locale } = Astro.props
-const urls = getUrls(Astro)
-const trail = breadcrumbTrail({
-	kind: 'page',
-	locale,
-	urls,
-	title: entry.title,
-	path: urls.entry(entry)
-})
 const documents = Object.values(entry.data).filter(isRichText)
 ---
 
-<Base
-	locale={locale}
-	socialImage={entry.featured_image?.url === undefined}
-	translations={alternates(entry, urls)}
->
-	<Seo slot="head" entry={entry} />
-	<Breadcrumb trail={trail} class="max-w-3xl" />
-	<article lang={toBcp47(entry.locale)} class="mx-auto max-w-3xl px-6 pt-10 pb-16">
-		<header>
-			<h1 class="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-				{entry.title}
-			</h1>
-			<p class="mt-4 text-sm text-text-muted">
+<EntryLayout entry={entry} locale={locale} kind="page">
+	<ArticleShell kind="page">
+		<header class="flex flex-col gap-4">
+			<ArticleTitle title={entry.title} tone="plain" />
+			<p class="text-sm text-text-muted">
 				<time datetime={entry.published_at}>
 					{formatDate(entry.published_at, entry.locale)}
 				</time>
 				{entry.author && <span> &middot; {entry.author.name}</span>}
 			</p>
-			{entry.fallback && (
-				<p
-					lang={toBcp47(locale)}
-					class="mt-6 rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm"
-				>
-					{formatLabel(labelsFor(locale).notTranslated, {
-						language: languageName(entry.locale)
-					})}
-				</p>
-			)}
 			{entry.excerpt && (
-				<p class="mt-8 text-xl text-pretty text-text-muted">{entry.excerpt}</p>
+				<p class="mt-4 text-xl text-pretty text-text-muted">{entry.excerpt}</p>
 			)}
 		</header>
-		{entry.featured_image?.url && (
-			<figure class="mt-10">
-				<RushImage media={entry.featured_image} class="w-full rounded-xl" loading="eager" />
-			</figure>
-		)}
+		<EntryCover entry={entry} class="w-full rounded-xl" loading="eager" />
 		{documents.length > 0 && (
-			<div class="prose prose-lg mt-10 max-w-none">
+			<div class="prose prose-lg max-w-none">
 				{documents.map((content) => (
 					<RichText content={content} media={entry.media} />
 				))}
 			</div>
 		)}
-	</article>
-</Base>
+	</ArticleShell>
+</EntryLayout>

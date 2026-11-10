@@ -14,8 +14,6 @@ const { page } = Astro.props
 const { locale, homepage } = page
 const rush = getRush(Astro)
 const urls = getUrls(Astro)
-const site = await rush.site.get()
-const title = homepageTitle(homepage) === undefined ? site.name : undefined
 const sections = await Promise.all(
 	homeSections(homepage?.content ?? []).map(async (section) => ({
 		section,
@@ -24,7 +22,11 @@ const sections = await Promise.all(
 )
 ---
 
-<Base locale={locale} title={title} socialImage={homepage?.meta?.og_image === undefined}>
+<Base
+	locale={locale}
+	title={homepageTitle(homepage) === undefined ? { from: 'site' } : { from: 'seo' }}
+	socialImage={homepage?.meta?.og_image === undefined}
+>
 	{homepage && <Seo slot="head" homepage={homepage} />}
 	{sections.map(({ section, entries }) =>
 		section.kind === 'hero' ? (

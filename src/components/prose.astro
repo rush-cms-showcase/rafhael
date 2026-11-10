@@ -1,12 +1,19 @@
 ---
+import { requireSite } from '@rushcms/astro/components-runtime'
+import type { Entry } from '@rushcms/client'
+import { markdownBody, renderMarkdown } from '../lib/markdown'
+
 type Props = {
-	html: string
+	entry: Entry
 }
 
-const { html } = Astro.props
+const { entry } = Astro.props
+const html = await renderMarkdown(markdownBody(entry), requireSite(Astro.site, '<Prose>'))
 ---
 
-<div
-	class="prose prose-lg max-w-none lg:prose-xl prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-code:before:content-none prose-code:after:content-none prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl"
-	set:html={html}
-/>
+{html !== '' && (
+	<div
+		class="prose prose-lg max-w-none lg:prose-xl prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-code:before:content-none prose-code:after:content-none prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl"
+		set:html={html}
+	/>
+)}

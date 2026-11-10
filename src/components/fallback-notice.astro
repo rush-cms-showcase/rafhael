@@ -1,0 +1,26 @@
+---
+import { toBcp47 } from '@rushcms/client'
+import type { Entry, LocaleCode } from '@rushcms/client'
+import { formatLabel, labelsFor } from '../lib/labels'
+import { languageName } from '../lib/locale'
+import Container from './container.astro'
+
+type Props = {
+	entry: Entry
+	locale: LocaleCode
+	class?: string | undefined
+}
+
+const { entry, locale, class: className } = Astro.props
+---
+
+{entry.fallback && (
+	<Container class:list={['pt-6', className]}>
+		<p
+			lang={toBcp47(locale)}
+			class="rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm"
+		>
+			{formatLabel(labelsFor(locale).notTranslated, { language: languageName(entry.locale) })}
+		</p>
+	</Container>
+)}

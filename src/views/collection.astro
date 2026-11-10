@@ -1,5 +1,5 @@
 ---
-import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import { collectionAlternates, getUrls } from '@rushcms/astro'
 import { requireSite } from '@rushcms/astro/components-runtime'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
 import Pager from '../components/pager.astro'
@@ -14,7 +14,6 @@ type Props = ListViewProps
 const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
-const site = await getRush(Astro).site.get()
 const pageUrl = collectionPageUrl(urls, collection, locale)
 const canonical = absoluteUrl(
 	urls.collection(collection, locale, page.page),
@@ -24,7 +23,7 @@ const heading = page.page > 1 ? `${collection.name} (${page.page}/${lastPage})` 
 const translations = collectionAlternates(collection.id, urls)
 ---
 
-<Base locale={locale} title={`${heading} | ${site.name}`} translations={translations}>
+<Base locale={locale} title={{ from: 'page', page: heading }} translations={translations}>
 	{canonical && <link slot="head" rel="canonical" href={canonical} />}
 	<div class="mx-auto max-w-6xl px-6 py-16">
 		<header class="max-w-3xl">

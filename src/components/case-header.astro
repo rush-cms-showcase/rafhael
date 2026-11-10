@@ -2,6 +2,7 @@
 import type { Entry, LocaleCode } from '@rushcms/client'
 import { caseFacts, caseMeta } from '../lib/entry-data'
 import { labelsFor } from '../lib/labels'
+import ArticleTitle from './article-title.astro'
 import CaseStack from './case-stack.astro'
 
 type Props = {
@@ -19,9 +20,7 @@ const term = 'text-[11px] font-medium tracking-[0.16em] text-text-subtle upperca
 ---
 
 <header class="flex flex-col gap-8">
-	<h1 class="font-serif text-4xl leading-tight font-bold text-text-main text-balance lg:text-5xl">
-		{entry.title}
-	</h1>
+	<ArticleTitle title={entry.title} tone="plain" />
 	{entry.excerpt && <p class="max-w-2xl text-xl text-pretty text-text-muted">{entry.excerpt}</p>}
 	{(facts.length > 0 || meta.stack.length > 0) && (
 		<dl class="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-border pt-6 sm:flex sm:flex-wrap sm:gap-x-0">

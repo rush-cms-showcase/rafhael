@@ -1,19 +1,18 @@
 ---
 import { getUrls } from '@rushcms/astro'
 import { requireSite } from '@rushcms/astro/components-runtime'
-import RushImage from '@rushcms/astro/components/rush-image.astro'
-import Seo from '@rushcms/astro/components/seo.astro'
-import { alternates, toBcp47 } from '@rushcms/client'
-import Breadcrumb from '../../components/breadcrumb.astro'
 import CategoryPills from '../../components/blog/category-pills.astro'
 import PostMeta from '../../components/blog/post-meta.astro'
 import Share from '../../components/blog/share.astro'
 import TagList from '../../components/blog/tag-list.astro'
+import ArticleTitle from '../../components/article-title.astro'
 import Container from '../../components/container.astro'
+import EntryCover from '../../components/entry-cover.astro'
 import Prose from '../../components/prose.astro'
-import Base from '../../layouts/base.astro'
-import { breadcrumbTrail } from '../../lib/breadcrumb'
-import { markdownBody, renderMarkdown } from '../../lib/markdown'
+import EntryLayout from '../../layouts/entry-layout.astro'
+import { entryCover } from '../../lib/entry-data'
+import { ENTRY_WIDTHS } from '../../lib/entry-width'
+import { markdownBody } from '../../lib/markdown'
 import { readingTime } from '../../lib/reading-time'
 import { absoluteUrl } from '../../lib/routing'
 import type { EntryViewProps } from '../index'
@@ -22,37 +21,25 @@ type Props = EntryViewProps
 
 const { entry, locale } = Astro.props
 const urls = getUrls(Astro)
-const markdown = markdownBody(entry)
-const html = await renderMarkdown(markdown)
-const path = urls.entry(entry)
-const shareUrl = absoluteUrl(path, requireSite(Astro.site, 'blog entry'))
-const trail = breadcrumbTrail({ kind: 'post', locale, urls, title: entry.title, path })
-const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
+const shareUrl = absoluteUrl(urls.entry(entry), requireSite(Astro.site, 'blog entry'))
+const width = ENTRY_WIDTHS.post
 ---
 
-<Base
-	locale={locale}
-	socialImage={entry.featured_image?.url === undefined}
-	translations={alternates(entry, urls)}
->
-	<Seo slot="head" entry={entry} />
-	<Breadcrumb trail={trail} class="max-w-4xl" />
+<EntryLayout entry={entry} locale={locale} kind="post">
 	<div class="pt-10 pb-24 lg:pt-14">
-		<article lang={toBcp47(entry.locale)} class="space-y-4">
-			<Container class="relative max-w-4xl space-y-4 lg:space-y-6">
+		<article class="space-y-4">
+			<Container class:list={['relative space-y-4 lg:space-y-6', width]}>
 				<PostMeta
-					minutes={readingTime(markdown)}
+					minutes={readingTime(markdownBody(entry))}
 					publishedAt={entry.published_at}
 					locale={locale}
 					size="post"
 					class="border-b border-white/2 pb-6 lg:pb-8"
 				/>
-				<h1 class="font-serif text-primary text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-					{entry.title}
-				</h1>
+				<ArticleTitle title={entry.title} tone="accent" />
 				<Share url={shareUrl} title={entry.title} locale={locale} class="lg:hidden" />
 			</Container>
-			<Container class="relative max-w-4xl">
+			<Container class:list={['relative', width]}>
 				<div class="hidden lg:block absolute top-0 bottom-0 -left-20 w-16">
 					<Share
 						url={shareUrl}
@@ -62,11 +49,10 @@ const cover = entry.featured_image?.url === undefined ? undefined : entry.featur
 					/>
 				</div>
 
-				{cover && (
+				{entryCover(entry) && (
 					<div class="rounded-3xl overflow-hidden shadow-2xl">
-						<RushImage
-							media={cover}
-							alt={cover.alt || entry.title}
+						<EntryCover
+							entry={entry}
 							class="w-full h-auto"
 							loading="eager"
 							fetchpriority="high"
@@ -81,7 +67,7 @@ const cover = entry.featured_image?.url === undefined ? undefined : entry.featur
 					variant="post"
 				/>
 
-				{html !== '' && <Prose html={html} />}
+				<Prose entry={entry} />
 
 				<TagList
 					tags={entry.tags}
@@ -92,4 +78,4 @@ const cover = entry.featured_image?.url === undefined ? undefined : entry.featur
 			</Container>
 		</article>
 	</div>
-</Base>
+</EntryLayout>

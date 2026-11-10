@@ -1,0 +1,19 @@
+---
+type TitleTone = 'accent' | 'plain'
+
+type Props = {
+	title: string
+	tone: TitleTone
+}
+
+const tones: Record<TitleTone, string> = {
+	accent: 'text-primary md:text-5xl lg:text-6xl',
+	plain: 'text-text-main lg:text-5xl'
+}
+
+const { title, tone } = Astro.props
+---
+
+<h1 class:list={['font-serif text-4xl leading-tight font-bold text-balance', tones[tone]]}>
+	{title}
+</h1>

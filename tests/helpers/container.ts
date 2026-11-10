@@ -2,7 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 
 export const SITE = new URL('https://site.example.test')
 
-type Component = Parameters<AstroContainer['renderToString']>[0]
+export type Component = Parameters<AstroContainer['renderToString']>[0]
 
 type Props = Record<string, unknown>
 

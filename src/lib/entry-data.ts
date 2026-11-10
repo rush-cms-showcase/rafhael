@@ -1,7 +1,11 @@
-import type { Entry } from '@rushcms/client'
+import type { Entry, Media } from '@rushcms/client'
 import type { Labels } from './labels'
 import { safeHref } from './safe-href'
 import { optionalText, text, textList } from './values'
+
+export function entryCover(entry: Entry): Media | undefined {
+	return entry.featured_image?.url === undefined ? undefined : entry.featured_image
+}
 
 export type CaseMeta = {
 	clientName: string

@@ -1,39 +1,13 @@
 ---
-import { getUrls } from '@rushcms/astro'
-import Seo from '@rushcms/astro/components/seo.astro'
-import { alternates, toBcp47 } from '@rushcms/client'
-import Breadcrumb from '../../components/breadcrumb.astro'
 import CaseArticle from '../../components/case-article.astro'
-import Base from '../../layouts/base.astro'
-import { breadcrumbTrail } from '../../lib/breadcrumb'
-import { markdownBody, renderMarkdown } from '../../lib/markdown'
+import EntryLayout from '../../layouts/entry-layout.astro'
 import type { EntryViewProps } from '../index'
 
 type Props = EntryViewProps
 
 const { entry, locale } = Astro.props
-const urls = getUrls(Astro)
-const trail = breadcrumbTrail({
-	kind: 'case',
-	locale,
-	urls,
-	title: entry.title,
-	path: urls.entry(entry)
-})
 ---
 
-<Base
-	locale={locale}
-	socialImage={entry.featured_image?.url === undefined}
-	translations={alternates(entry, urls)}
->
-	<Seo slot="head" entry={entry} />
-	<Breadcrumb trail={trail} class="max-w-4xl" />
-	<div lang={toBcp47(entry.locale)}>
-		<CaseArticle
-			entry={entry}
-			html={await renderMarkdown(markdownBody(entry))}
-			locale={locale}
-		/>
-	</div>
-</Base>
+<EntryLayout entry={entry} locale={locale} kind="case">
+	<CaseArticle entry={entry} locale={locale} />
+</EntryLayout>
