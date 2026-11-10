@@ -7,8 +7,12 @@ export type LoopQuery = {
 	per_page: number
 }
 
+export type EntryPage = {
+	items: Entry[]
+}
+
 export type EntryLister = {
-	list(collection: string, options: LoopQuery): Promise<{ items: Entry[] }>
+	list(collection: string, options: LoopQuery): Promise<EntryPage>
 }
 
 export async function loadLoopEntries(

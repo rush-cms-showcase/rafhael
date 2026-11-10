@@ -16,13 +16,17 @@ export type SearchWalkOptions = {
 	locale: LocaleCode
 }
 
+export type CollectionLister = {
+	list(options: SearchWalkOptions): Promise<CollectionRef[]>
+}
+
+export type EntryWalker = {
+	all(collection: string, options: SearchWalkOptions): AsyncGenerator<Entry, void, undefined>
+}
+
 export type SearchEntrySource = {
-	collections: {
-		list(options: SearchWalkOptions): Promise<CollectionRef[]>
-	}
-	entries: {
-		all(collection: string, options: SearchWalkOptions): AsyncGenerator<Entry, void, undefined>
-	}
+	collections: CollectionLister
+	entries: EntryWalker
 }
 
 export function searchIndexPath(locale: LocaleCode): string {
