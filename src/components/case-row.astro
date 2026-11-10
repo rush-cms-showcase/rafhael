@@ -2,25 +2,48 @@
 import type { Entry } from '@rushcms/client'
 import { caseMeta } from '../lib/entry-data'
 import { Icons } from '../lib/icons'
+import CaseStack from './case-stack.astro'
 
 type Props = {
 	entry: Entry
 	href: string
+	position: number
+	detailed: boolean
 }
 
-const { entry, href } = Astro.props
-const { clientName } = caseMeta(entry)
+const { entry, href, position, detailed } = Astro.props
+const { clientName, role, stack } = caseMeta(entry)
+const showRole = detailed && role !== ''
+const showClient = clientName !== '' || showRole
 ---
 
 <a
 	href={href}
-	class="group flex items-center justify-between gap-6 border-b border-border py-6 transition-colors hover:border-primary"
+	class="group grid grid-cols-[2rem_minmax(0,1fr)_auto] items-baseline gap-x-4 px-3 py-6 transition-colors hover:bg-bg-elevated lg:grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,11rem)_auto] lg:gap-x-6 lg:px-4 lg:py-7 xl:grid-cols-[3rem_minmax(0,1fr)_minmax(0,15rem)_auto] xl:gap-x-8"
 >
-	<span class="min-w-0">
-		<span class="block font-serif text-2xl font-bold text-text-main transition-colors group-hover:text-primary lg:text-3xl">
+	<span
+		aria-hidden="true"
+		class="text-sm font-medium text-text-subtle tabular-nums transition-colors group-hover:text-primary"
+	>
+		{String(position).padStart(2, '0')}
+	</span>
+	<span class="flex min-w-0 flex-col gap-3">
+		<span class="font-serif text-lg leading-snug text-pretty text-text-main transition-colors group-hover:text-primary xl:text-xl">
 			{entry.title}
 		</span>
-		{clientName !== '' && <span class="mt-1 block text-text-muted">{clientName}</span>}
+		{detailed && entry.excerpt && (
+			<span class="max-w-2xl text-base text-pretty text-text-muted">{entry.excerpt}</span>
+		)}
+		{detailed && <CaseStack stack={stack} />}
 	</span>
-	<Icons.arrow_right class="h-6 w-6 shrink-0 text-text-subtle transition group-hover:translate-x-1 group-hover:text-primary" />
+	{showClient && (
+		<span
+			data-client
+			class="col-start-2 row-start-2 mt-2 flex flex-col text-sm text-text-muted lg:col-start-3 lg:row-start-1 lg:mt-0 lg:text-right"
+		>
+			{clientName !== '' && <span>{clientName}</span>}
+			{showRole && <span class="text-text-subtle">{role}</span>}
+		</span>
+	)}
+	<Icons.arrow_right class="col-start-3 row-start-1 size-5 self-center text-text-subtle transition group-hover:translate-x-1.5 group-hover:text-primary lg:col-start-4" />
 </a>

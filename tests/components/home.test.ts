@@ -99,10 +99,12 @@ describe('home components', () => {
 		it('renders rows for list dispositions and for cases', async () => {
 			const list = await render(loop({ disposition: 'list' }))
 			expect(list).toContain('First entry')
-			expect(list).not.toContain('grid-cols')
+			expect(list).toContain('<ol')
+			expect(list).not.toContain('md:grid-cols-2')
 			const cases = await render(loop({ type: 'cases', disposition: 'grid' }))
 			expect(cases).toContain('Second entry')
-			expect(cases).not.toContain('grid-cols')
+			expect(cases).toContain('<ol')
+			expect(cases).not.toContain('md:grid-cols-2')
 		})
 
 		it('renders two columns for project grids with the default link label', async () => {

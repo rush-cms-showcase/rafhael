@@ -6,13 +6,22 @@ type Props = {
 	entries: Entry[]
 	locale: LocaleCode
 	urls: RushUrls
+	start?: number | undefined
+	detailed?: boolean | undefined
 }
 
-const { entries, locale, urls } = Astro.props
+const { entries, locale, urls, start = 1, detailed = false } = Astro.props
 ---
 
-<div class="border-t border-border">
-	{entries.map((entry) => (
-		<CaseRow entry={entry} href={urls.servedPath(entry, locale)} />
+<ol class="-mx-3 animate-fade-in divide-y divide-border border-y border-border lg:-mx-4">
+	{entries.map((entry, index) => (
+		<li>
+			<CaseRow
+				entry={entry}
+				href={urls.servedPath(entry, locale)}
+				position={start + index}
+				detailed={detailed}
+			/>
+		</li>
 	))}
-</div>
+</ol>

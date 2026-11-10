@@ -2,9 +2,10 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import type { Entry } from '@rushcms/client'
 import { beforeAll, describe, expect, it } from 'vitest'
 import CaseArticle from '../../src/components/case-article.astro'
-import CaseIndex from '../../src/components/case-index.astro'
+import CaseRows from '../../src/components/case-rows.astro'
 import { labelsFor } from '../../src/lib/labels'
 import { makeEntry } from '../helpers/make-entry'
+import { makeUrls } from '../helpers/make-urls'
 
 const IMAGE: NonNullable<Entry['featured_image']> = {
 	url: 'https://media.example.test/photo.jpg',
@@ -63,7 +64,7 @@ describe('case article', () => {
 	})
 })
 
-describe('case index', () => {
+describe('case rows', () => {
 	let container: AstroContainer
 
 	beforeAll(async () => {
@@ -74,13 +75,19 @@ describe('case index', () => {
 		const first = withImage(
 			makeEntry({ data: caseData, title: 'Billing platform', excerpt: 'Short summary' })
 		)
-		const second = makeEntry({ data: { client_name: 'Globex' }, title: 'Search rewrite' })
-		const html = await container.renderToString(CaseIndex, {
+		const second = makeEntry({
+			data: { client_name: 'Globex' },
+			title: 'Search rewrite',
+			slug: 'search',
+			collection: { id: 'cases', slug: 'cases' }
+		})
+		const html = await container.renderToString(CaseRows, {
 			props: {
-				items: [
-					{ entry: first, href: '/cases/billing' },
-					{ entry: second, href: '/cases/search' }
-				]
+				entries: [first, second],
+				locale: 'en',
+				urls: makeUrls(),
+				detailed: true,
+				start: 11
 			}
 		})
 		for (const value of [
@@ -93,6 +100,8 @@ describe('case index', () => {
 			expect(html).toContain(value)
 		}
 		expect(html).toContain('href="/cases/search"')
+		expect(html).toMatch(/>\s*11\s*</)
+		expect(html).toMatch(/>\s*12\s*</)
 		expect(html).not.toContain('<img')
 		expect(html).not.toContain('<time')
 		expect(html).not.toContain('2026')

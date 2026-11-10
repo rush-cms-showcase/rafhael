@@ -1,9 +1,9 @@
 ---
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
-import CaseIndex from '../../components/case-index.astro'
+import CaseRows from '../../components/case-rows.astro'
+import Container from '../../components/container.astro'
 import Pager from '../../components/pager.astro'
 import Base from '../../layouts/base.astro'
-import type { CaseLink } from '../../lib/case-link'
 import type { ListViewProps } from '../index'
 import { collectionCanonical } from '../../lib/collection-canonical'
 import { collectionPageUrl } from '../../lib/page-url'
@@ -14,10 +14,6 @@ const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 const site = await getRush(Astro).site.get()
-const items: CaseLink[] = entries.items.map((entry) => ({
-	entry,
-	href: urls.servedPath(entry, locale)
-}))
 const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
 ---
 
@@ -27,16 +23,22 @@ const canonical = collectionCanonical(urls, collection, locale, page.page, Astro
 	translations={collectionAlternates(collection.id, urls)}
 >
 	{canonical && <link slot="head" rel="canonical" href={canonical} />}
-	<div class="mx-auto max-w-5xl px-3 py-16 lg:px-6 lg:py-24">
+	<Container class="py-16 lg:py-24">
 		<h1 class="mb-12 font-serif text-5xl font-bold text-primary lg:mb-16 lg:text-7xl">
 			{collection.name}
 		</h1>
-		<CaseIndex items={items} />
+		<CaseRows
+			entries={entries.items}
+			locale={locale}
+			urls={urls}
+			start={(page.page - 1) * entries.meta.per_page + 1}
+			detailed
+		/>
 		<Pager
 			locale={locale}
 			current={page.page}
 			last={lastPage}
 			pageUrl={collectionPageUrl(urls, collection, locale)}
 		/>
-	</div>
+	</Container>
 </Base>
