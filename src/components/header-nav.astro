@@ -1,5 +1,6 @@
 ---
 import type { LinkableNavigation } from '../lib/locale'
+import NavLink from './nav-link.astro'
 
 type Props = {
 	links: LinkableNavigation[]
@@ -10,13 +11,9 @@ const { links } = Astro.props
 
 <nav class="mr-8 ml-auto hidden items-center gap-10 md:flex">
 	{links.map((link) => (
-		<a
-			href={link.href}
-			target={link.target}
-			rel={link.rel}
+		<NavLink
+			link={link}
 			class="text-sm font-medium text-text-muted transition-colors hover:text-text-main lg:text-lg"
-		>
-			{link.label}
-		</a>
+		/>
 	))}
 </nav>

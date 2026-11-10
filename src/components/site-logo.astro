@@ -1,0 +1,22 @@
+---
+type Props = {
+	logoUrl: string | undefined
+	name: string
+	size: number
+	class?: string | undefined
+	fetchpriority?: 'high' | 'auto' | undefined
+}
+
+const DEFAULT_LOGO = '/favicon.svg'
+const { logoUrl, name, size, class: className, fetchpriority } = Astro.props
+---
+
+<img
+	src={logoUrl ?? DEFAULT_LOGO}
+	onerror={`this.onerror=null;this.src='${DEFAULT_LOGO}'`}
+	fetchpriority={fetchpriority}
+	width={size}
+	height={size}
+	alt={name}
+	class={className}
+/>

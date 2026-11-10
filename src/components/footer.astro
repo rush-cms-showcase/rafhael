@@ -1,31 +1,38 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
 import { labelsFor } from '../lib/labels'
-import { Icons } from '../lib/icons'
+import { LINK_ICONS } from '../lib/icons'
 import type { LinkableNavigation } from '../lib/locale'
-import type { ContactKind, ContactLink } from '../lib/site-options'
+import type { ContactLink } from '../lib/site-options'
 import BrandName from './brand-name.astro'
 import Container from './container.astro'
 import FooterCredits from './footer-credits.astro'
+import NavLink from './nav-link.astro'
+import SiteLogo from './site-logo.astro'
 
 type Props = {
 	name: string
 	locale: LocaleCode
 	homeUrl: string
 	links: LinkableNavigation[]
+	year: number
+	logoUrl?: string | undefined
 	contacts?: ContactLink[]
 	floatingAction?: boolean
 }
 
-const { name, locale, homeUrl, links, contacts = [], floatingAction = false } = Astro.props
+const {
+	name,
+	locale,
+	homeUrl,
+	links,
+	year,
+	logoUrl,
+	contacts = [],
+	floatingAction = false
+} = Astro.props
 const labels = labelsFor(locale)
-const contactIcons = {
-	github: Icons.github,
-	linkedin: Icons.linkedin,
-	email: Icons.mail,
-	phone: Icons.phone
-} satisfies Record<ContactKind, typeof Icons.mail>
-const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
+const copyright = `© ${year} ${name}. ${labels.rights}`
 ---
 
 <footer class="flex flex-col items-center border-t border-border-subtle bg-bg">
@@ -36,12 +43,12 @@ const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 			</div>
 
 			<div class="lg:absolute lg:top-1/2 lg:left-1/2 lg:mt-[-32px] lg:ml-[-32px]">
-				<img src="/favicon.svg" width="64" height="64" alt={name} />
+				<SiteLogo logoUrl={logoUrl} name={name} size={64} />
 			</div>
 
 			<div class="flex flex-wrap justify-center gap-6">
 				{contacts.map(({ kind, href }) => {
-					const Icon = contactIcons[kind]
+					const Icon = LINK_ICONS[kind]
 					return (
 						<a
 							href={href}
@@ -53,14 +60,10 @@ const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 					)
 				})}
 				{links.map((link) => (
-					<a
-						href={link.href}
-						target={link.target}
-						rel={link.rel}
+					<NavLink
+						link={link}
 						class="text-sm text-text-muted transition-colors hover:text-primary"
-					>
-						{link.label}
-					</a>
+					/>
 				))}
 			</div>
 		</Container>

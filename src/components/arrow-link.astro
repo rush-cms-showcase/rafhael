@@ -1,0 +1,36 @@
+---
+import { Icons } from '../lib/icons'
+
+type ArrowTone = 'accent' | 'muted'
+
+type ArrowStyle = {
+	link: string
+	icon: string
+}
+
+type Props = {
+	href: string
+	label: string
+	tone: ArrowTone
+	class?: string | undefined
+}
+
+const styles: Record<ArrowTone, ArrowStyle> = {
+	accent: {
+		link: 'gap-1 text-sm font-bold text-primary',
+		icon: 'size-4 transition-transform group-hover/link:translate-x-1'
+	},
+	muted: {
+		link: 'gap-1.5 text-sm font-medium tracking-widest text-text-muted uppercase transition-colors hover:text-primary',
+		icon: 'size-4'
+	}
+}
+
+const { href, label, tone, class: className } = Astro.props
+const style = styles[tone]
+---
+
+<a href={href} class:list={['group/link flex items-center', style.link, className]}>
+	{label}
+	<Icons.arrow_right class={style.icon} aria-hidden="true" />
+</a>

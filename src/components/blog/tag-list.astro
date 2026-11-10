@@ -2,6 +2,7 @@
 import type { LocaleCode, RushUrls } from '@rushcms/client'
 import { labelsFor } from '../../lib/labels'
 import type { TaxonomyTerm } from '../../lib/types'
+import MaybeLink from '../maybe-link.astro'
 
 type Props = {
 	tags: TaxonomyTerm[]
@@ -23,15 +24,11 @@ const chips = tags.map((tag) => ({ name: tag.name, href: urls.taxonomy(tag, loca
 			{labels.tags}
 		</h3>
 		<div class="flex flex-wrap gap-2">
-			{chips.map((chip) =>
-				chip.href === undefined ? (
-					<span class={chipClass}>{chip.name}</span>
-				) : (
-					<a href={chip.href} class={`${chipClass} cursor-pointer`}>
-						{chip.name}
-					</a>
-				)
-			)}
+			{chips.map((chip) => (
+				<MaybeLink href={chip.href} class={chipClass}>
+					{chip.name}
+				</MaybeLink>
+			))}
 		</div>
 	</div>
 )}

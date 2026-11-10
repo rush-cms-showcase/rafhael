@@ -1,6 +1,7 @@
 ---
 import type { LocaleCode, RushUrls } from '@rushcms/client'
 import type { TaxonomyTerm } from '../../lib/types'
+import MaybeLink from '../maybe-link.astro'
 
 type PillVariant = 'overlay' | 'card' | 'post'
 
@@ -41,14 +42,10 @@ const pills = categories.map((category) => ({
 
 {pills.length > 0 && (
 	<div class={style.list}>
-		{pills.map((pill) =>
-			pill.href === undefined ? (
-				<span class={style.pill}>{pill.name}</span>
-			) : (
-				<a href={pill.href} class={style.pill}>
-					{pill.name}
-				</a>
-			)
-		)}
+		{pills.map((pill) => (
+			<MaybeLink href={pill.href} class={style.pill}>
+				{pill.name}
+			</MaybeLink>
+		))}
 	</div>
 )}

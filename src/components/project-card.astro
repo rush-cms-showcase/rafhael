@@ -1,9 +1,10 @@
 ---
-import RushImage from '@rushcms/astro/components/rush-image.astro'
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
-import { projectMeta } from '../lib/entry-data'
-import { Icons } from '../lib/icons'
+import { entryCover, projectMeta } from '../lib/entry-data'
 import { labelsFor } from '../lib/labels'
+import ArrowLink from './arrow-link.astro'
+import Card from './card.astro'
+import EntryCover from './entry-cover.astro'
 
 type Props = {
 	entry: Entry
@@ -13,18 +14,15 @@ type Props = {
 
 const { entry, locale, urls } = Astro.props
 const href = urls.entry(entry)
-const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
 const linkLabel = projectMeta(entry).linkLabel ?? labelsFor(locale).openProject
 ---
 
-<article class="group flex flex-col overflow-hidden rounded-2xl border border-primary/10 bg-bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/50">
-	{cover && (
+<Card>
+	{entryCover(entry) && (
 		<a href={href} class="block aspect-video overflow-hidden">
-			<RushImage
-				media={cover}
-				alt={cover.alt || entry.title}
-				class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-				loading="lazy"
+			<EntryCover
+				entry={entry}
+				class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
 			/>
 		</a>
 	)}
@@ -33,12 +31,6 @@ const linkLabel = projectMeta(entry).linkLabel ?? labelsFor(locale).openProject
 			<h3 class="mb-3 font-serif text-2xl leading-tight font-bold">{entry.title}</h3>
 		</a>
 		{entry.excerpt && <p class="text-text-muted">{entry.excerpt}</p>}
-		<a
-			href={href}
-			class="group/link mt-auto flex items-center gap-1 pt-6 text-sm font-bold text-primary"
-		>
-			{linkLabel}
-			<Icons.arrow_right class="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-		</a>
+		<ArrowLink href={href} label={linkLabel} tone="accent" class="mt-auto pt-6" />
 	</div>
-</article>
+</Card>

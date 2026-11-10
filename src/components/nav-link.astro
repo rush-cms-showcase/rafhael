@@ -1,0 +1,14 @@
+---
+import type { LinkableNavigation } from '../lib/locale'
+
+type Props = {
+	link: LinkableNavigation
+	class?: string | undefined
+}
+
+const { link, class: className } = Astro.props
+---
+
+<a href={link.href} target={link.target} rel={link.rel} class={className}>
+	{link.label}
+</a>

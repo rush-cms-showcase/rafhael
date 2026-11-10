@@ -1,30 +1,21 @@
 ---
-import { Icons } from '../../lib/icons'
-import type { HeroIcon, HeroSection } from '../../lib/home-sections'
+import { LINK_ICONS } from '../../lib/icons'
+import type { HeroSection } from '../../lib/home-sections'
 import { splitHeroText } from '../../lib/home-sections'
 import { safeHref } from '../../lib/safe-href'
 import Container from '../container.astro'
+import MaybeLink from '../maybe-link.astro'
 
 type Props = {
 	section: HeroSection
 }
-
-const iconFor = {
-	globe: Icons.globe,
-	github: Icons.github,
-	linkedin: Icons.linkedin,
-	location: Icons.map_pin,
-	envelope: Icons.mail,
-	whatsapp: Icons.whatsapp,
-	phone: Icons.phone
-} satisfies Record<HeroIcon, typeof Icons.globe>
 
 const { section } = Astro.props
 const { lead, comma, rest } = splitHeroText(section.text)
 const links = section.links.map((link) => ({
 	...link,
 	href: safeHref(link.url),
-	Icon: link.icon === undefined ? undefined : iconFor[link.icon]
+	Icon: link.icon === undefined ? undefined : LINK_ICONS[link.icon]
 }))
 ---
 
@@ -50,22 +41,17 @@ const links = section.links.map((link) => ({
 	</h1>
 	{links.length > 0 && (
 		<p class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-text-muted">
-			{links.map(({ name, href, Icon }) =>
-				href === undefined ? (
-					<span class="inline-flex items-center gap-1.5 text-text-subtle">
-						{Icon && <Icon class="size-4" />}
-						{name}
-					</span>
-				) : (
-					<a
-						href={href}
-						class="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
-					>
-						{Icon && <Icon class="size-4" />}
-						{name}
-					</a>
-				)
-			)}
+			{links.map(({ name, href, Icon }) => (
+				<MaybeLink
+					href={href}
+					class="inline-flex items-center gap-1.5"
+					linkClass="transition-colors hover:text-primary"
+					textClass="text-text-subtle"
+				>
+					{Icon && <Icon class="size-4" />}
+					{name}
+				</MaybeLink>
+			))}
 		</p>
 	)}
 </Container>

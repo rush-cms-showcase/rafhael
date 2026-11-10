@@ -1,0 +1,47 @@
+---
+import type { LocaleCode } from '@rushcms/client'
+import type { LanguageLink } from '../lib/locale'
+
+type LanguageVariant = 'pill' | 'menu'
+
+type LanguageStyle = {
+	link: string
+	active: string
+	idle: string
+	code: string
+}
+
+type Props = {
+	link: LanguageLink
+	current: LocaleCode
+	variant: LanguageVariant
+}
+
+const styles: Record<LanguageVariant, LanguageStyle> = {
+	pill: {
+		link: 'rounded-lg border px-4 py-2 transition-colors',
+		active: 'border-primary bg-primary text-white',
+		idle: 'border-white/10 text-text-muted hover:border-white/30',
+		code: 'text-sm font-bold'
+	},
+	menu: {
+		link: 'flex items-center gap-3 px-4 py-2 text-sm transition-colors hover:bg-white/5',
+		active: 'text-primary',
+		idle: 'text-text-muted',
+		code: 'font-medium'
+	}
+}
+
+const { link, current, variant } = Astro.props
+const style = styles[variant]
+const active = link.locale === current
+---
+
+<a
+	href={link.url}
+	hreflang={link.hreflang}
+	aria-current={active ? 'true' : undefined}
+	class:list={[style.link, active ? style.active : style.idle]}
+>
+	<span class={style.code}>{link.code}</span>
+</a>

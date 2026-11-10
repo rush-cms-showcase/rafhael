@@ -1,6 +1,7 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
 import { labelsFor } from '../../lib/labels'
+import ArrowLink from '../arrow-link.astro'
 
 type Props = {
 	title: string
@@ -17,12 +18,12 @@ const { title, locale, seeAllHref } = Astro.props
 			{title}
 		</h2>
 		{seeAllHref !== undefined && (
-			<a
+			<ArrowLink
 				href={seeAllHref}
-				class="shrink-0 text-sm font-medium tracking-widest text-text-muted uppercase transition-colors hover:text-primary"
-			>
-				{labelsFor(locale).seeAll} →
-			</a>
+				label={labelsFor(locale).seeAll}
+				tone="muted"
+				class="shrink-0"
+			/>
 		)}
 	</div>
 )}

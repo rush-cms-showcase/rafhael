@@ -1,10 +1,12 @@
 ---
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
-import RushImage from '@rushcms/astro/components/rush-image.astro'
-import { Icons } from '../../lib/icons'
+import { entryCover } from '../../lib/entry-data'
 import { labelsFor } from '../../lib/labels'
 import { markdownBody } from '../../lib/markdown'
 import { readingTime } from '../../lib/reading-time'
+import ArrowLink from '../arrow-link.astro'
+import Card from '../card.astro'
+import EntryCover from '../entry-cover.astro'
 import CategoryPills from './category-pills.astro'
 import PostMeta from './post-meta.astro'
 
@@ -15,32 +17,17 @@ type Props = {
 }
 
 const { entry, locale, urls } = Astro.props
-const labels = labelsFor(locale)
 const href = urls.entry(entry)
-const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
-const hasImage = cover !== undefined
-const ArrowRightIcon = Icons.arrow_right
-const meta = {
-	minutes: readingTime(markdownBody(entry)),
-	publishedAt: entry.published_at,
-	locale
-}
+const hasImage = entryCover(entry) !== undefined
 ---
 
-<article
-	class:list={[
-		'group flex flex-col bg-bg-card border border-primary/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:-translate-y-1',
-		{ 'animate-fade-in': !hasImage }
-	]}
->
-	{cover && (
+<Card class:list={[{ 'animate-fade-in': !hasImage }]}>
+	{hasImage && (
 		<div class="relative aspect-video overflow-hidden block">
 			<a href={href} class="block w-full h-full">
-				<RushImage
-					media={cover}
-					alt={cover.alt || entry.title}
+				<EntryCover
+					entry={entry}
 					class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-					loading="lazy"
 				/>
 			</a>
 			<CategoryPills
@@ -74,15 +61,13 @@ const meta = {
 		</a>
 
 		<div class="flex items-center justify-between pt-6 mt-auto">
-			<PostMeta {...meta} size="card" />
-
-			<a
-				href={href}
-				class="text-sm font-bold text-primary flex items-center gap-1 group/link"
-			>
-				{labels.readArticle}
-				<ArrowRightIcon class="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-			</a>
+			<PostMeta
+				minutes={readingTime(markdownBody(entry))}
+				publishedAt={entry.published_at}
+				locale={locale}
+				size="card"
+			/>
+			<ArrowLink href={href} label={labelsFor(locale).readArticle} tone="accent" />
 		</div>
 	</div>
-</article>
+</Card>

@@ -1,3 +1,5 @@
+import type { HeroIcon } from './home-sections'
+import type { ContactKind } from './site-options'
 import IconArrowRight from '~icons/lucide/arrow-right'
 import IconCalendar from '~icons/lucide/calendar-days'
 import IconCheck from '~icons/lucide/check'
@@ -13,12 +15,10 @@ import IconHouse from '~icons/lucide/house'
 import IconMail from '~icons/lucide/mail'
 import IconMapPin from '~icons/lucide/map-pin'
 import IconMenu from '~icons/lucide/menu'
-import IconMessageCircle from '~icons/lucide/message-circle'
 import IconPhone from '~icons/lucide/phone'
 import IconSearch from '~icons/lucide/search'
 import IconX from '~icons/lucide/x'
 import IconLinkedin from '~icons/simple-icons/linkedin'
-import IconTelegram from '~icons/simple-icons/telegram'
 import IconWhatsapp from '~icons/simple-icons/whatsapp'
 import IconTwitterX from '~icons/simple-icons/x'
 
@@ -39,13 +39,26 @@ export const Icons = {
 	mail: IconMail,
 	map_pin: IconMapPin,
 	menu: IconMenu,
-	message_circle: IconMessageCircle,
 	phone: IconPhone,
 	search: IconSearch,
-	telegram: IconTelegram,
 	twitter_x: IconTwitterX,
 	whatsapp: IconWhatsapp,
 	x: IconX
 } as const
 
 export type IconName = keyof typeof Icons
+
+export type IconComponent = (typeof Icons)[IconName]
+
+export type LinkIcon = HeroIcon | ContactKind
+
+export const LINK_ICONS: Record<LinkIcon, IconComponent> = {
+	globe: Icons.globe,
+	github: Icons.github,
+	linkedin: Icons.linkedin,
+	location: Icons.map_pin,
+	envelope: Icons.mail,
+	email: Icons.mail,
+	whatsapp: Icons.whatsapp,
+	phone: Icons.phone
+}

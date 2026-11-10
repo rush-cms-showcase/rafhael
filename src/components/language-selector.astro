@@ -3,6 +3,7 @@ import type { LocaleCode } from '@rushcms/client'
 import { Icons } from '../lib/icons'
 import { labelsFor } from '../lib/labels'
 import type { LanguageLink } from '../lib/locale'
+import LanguageOption from './language-option.astro'
 
 type Props = {
 	current: LocaleCode
@@ -21,19 +22,7 @@ const currentCode = links.find((link) => link.locale === current)?.code
 	(inline ? (
 		<div class="flex items-center justify-center gap-4">
 			{links.map((link) => (
-				<a
-					href={link.url}
-					hreflang={link.hreflang}
-					aria-current={link.locale === current ? 'true' : undefined}
-					class:list={[
-						'rounded-lg border px-4 py-2 transition-colors',
-						link.locale === current
-							? 'border-primary bg-primary text-white'
-							: 'border-white/10 text-text-muted hover:border-white/30'
-					]}
-				>
-					<span class="text-sm font-bold">{link.code}</span>
-				</a>
+				<LanguageOption link={link} current={current} variant="pill" />
 			))}
 		</div>
 	) : (
@@ -43,24 +32,14 @@ const currentCode = links.find((link) => link.locale === current)?.code
 				class="flex items-center gap-2 py-2 text-sm font-medium text-text-muted transition-colors hover:text-text-main"
 				aria-label={label}
 			>
-				<GlobeIcon class="h-4 w-4" />
+				<GlobeIcon class="size-4" />
 				<span class="uppercase">{currentCode}</span>
-				<ChevronDownIcon class="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
+				<ChevronDownIcon class="size-3.5 transition-transform group-hover:rotate-180" />
 			</button>
 
 			<div class="invisible absolute top-full right-0 mt-2 w-24 origin-top-right transform rounded-lg border border-white/10 bg-bg-elevated py-2 opacity-0 shadow-xl transition-all duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
 				{links.map((link) => (
-					<a
-						href={link.url}
-						hreflang={link.hreflang}
-						aria-current={link.locale === current ? 'true' : undefined}
-						class:list={[
-							'flex items-center gap-3 px-4 py-2 text-sm transition-colors hover:bg-white/5',
-							link.locale === current ? 'text-primary' : 'text-text-muted'
-						]}
-					>
-						<span class="font-medium">{link.code}</span>
-					</a>
+					<LanguageOption link={link} current={current} variant="menu" />
 				))}
 			</div>
 		</div>

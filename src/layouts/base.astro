@@ -73,6 +73,8 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 			name={site.name}
 			locale={locale}
 			links={legalLinks}
+			year={new Date().getFullYear()}
+			logoUrl={options.logoUrl}
 			contacts={contactLinks(options)}
 			homeUrl={urls.homepage(locale)}
 			floatingAction={whatsapp !== undefined}

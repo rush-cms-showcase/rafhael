@@ -4,6 +4,7 @@ import { Icons } from '../lib/icons'
 import { labelsFor } from '../lib/labels'
 import type { LanguageLink, LinkableNavigation } from '../lib/locale'
 import LanguageSelector from './language-selector.astro'
+import NavLink from './nav-link.astro'
 
 type Props = {
 	links: LinkableNavigation[]
@@ -23,7 +24,7 @@ const XIcon = Icons.x
 	class="flex h-12 w-12 items-center justify-center rounded-lg border border-white/20 bg-bg/50 text-text-main backdrop-blur-sm transition-colors hover:text-primary md:hidden"
 	aria-label={labels.openMenu}
 >
-	<MenuIcon class="h-6 w-6" />
+	<MenuIcon class="size-6" />
 </button>
 
 <div
@@ -40,20 +41,16 @@ const XIcon = Icons.x
 			class="flex h-12 w-12 items-center justify-center rounded-lg border border-white/20 bg-bg/50 text-text-main transition-colors hover:text-primary"
 			aria-label={labels.closeMenu}
 		>
-			<XIcon class="h-6 w-6" />
+			<XIcon class="size-6" />
 		</button>
 	</div>
 
 	<nav class="flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center">
 		{links.map((link) => (
-			<a
-				href={link.href}
-				target={link.target}
-				rel={link.rel}
+			<NavLink
+				link={link}
 				class="w-full py-3 font-serif text-4xl font-bold text-text-muted transition-colors hover:text-primary"
-			>
-				{link.label}
-			</a>
+			/>
 		))}
 	</nav>
 

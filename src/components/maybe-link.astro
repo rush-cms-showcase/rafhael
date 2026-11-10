@@ -1,0 +1,21 @@
+---
+type Props = {
+	href: string | undefined
+	class?: string | undefined
+	linkClass?: string | undefined
+	textClass?: string | undefined
+	current?: boolean | undefined
+}
+
+const { href, class: className, linkClass, textClass, current = false } = Astro.props
+---
+
+{href === undefined ? (
+	<span class:list={[className, textClass]}>
+		<slot />
+	</span>
+) : (
+	<a href={href} aria-current={current ? 'page' : undefined} class:list={[className, linkClass]}>
+		<slot />
+	</a>
+)}

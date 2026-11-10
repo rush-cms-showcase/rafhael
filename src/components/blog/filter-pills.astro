@@ -2,6 +2,7 @@
 import type { LocaleCode } from '@rushcms/client'
 import type { CategoryFilters } from '../../lib/category-filters'
 import { labelsFor } from '../../lib/labels'
+import MaybeLink from '../maybe-link.astro'
 
 type Props = {
 	filters: CategoryFilters
@@ -16,24 +17,16 @@ const allActive = !filters.filters.some((filter) => filter.active)
 ---
 
 <div class="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in">
-	<a
-		href={filters.allHref}
-		aria-current={allActive ? 'page' : undefined}
-		class={allActive ? pillActive : pillIdle}
-	>
+	<MaybeLink href={filters.allHref} current={allActive} class={allActive ? pillActive : pillIdle}>
 		{labelsFor(locale).allCategories}
-	</a>
-	{filters.filters.map((filter) =>
-		filter.href === undefined ? (
-			<span class={pillIdle}>{filter.name}</span>
-		) : (
-			<a
-				href={filter.href}
-				aria-current={filter.active ? 'page' : undefined}
-				class={filter.active ? pillActive : pillIdle}
-			>
-				{filter.name}
-			</a>
-		)
-	)}
+	</MaybeLink>
+	{filters.filters.map((filter) => (
+		<MaybeLink
+			href={filter.href}
+			class={filter.active ? pillActive : pillIdle}
+			current={filter.active}
+		>
+			{filter.name}
+		</MaybeLink>
+	))}
 </div>
