@@ -1,12 +1,12 @@
 ---
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import { requireSite } from '@rushcms/astro/components-runtime'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
 import Pager from '../components/pager.astro'
 import Base from '../layouts/base.astro'
+import { absoluteUrl, collectionPageUrl } from '../lib/routing'
 import { formatDate } from '../lib/format-date'
 import type { ListViewProps } from './index'
-import { collectionCanonical } from '../lib/collection-canonical'
-import { collectionPageUrl } from '../lib/page-url'
 
 type Props = ListViewProps
 
@@ -14,7 +14,11 @@ const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 const site = await getRush(Astro).site.get()
-const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
+const pageUrl = collectionPageUrl(urls, collection, locale)
+const canonical = absoluteUrl(
+	urls.collection(collection, locale, page.page),
+	requireSite(Astro.site, 'list view')
+)
 const heading = page.page > 1 ? `${collection.name} (${page.page}/${lastPage})` : collection.name
 const translations = collectionAlternates(collection.id, urls)
 ---
@@ -42,10 +46,7 @@ const translations = collectionAlternates(collection.id, urls)
 								/>
 							)}
 							<h2 class="text-lg font-medium group-hover:text-primary">
-								<a
-									href={urls.servedPath(entry, locale)}
-									class="after:absolute after:inset-0"
-								>
+								<a href={urls.entry(entry)} class="after:absolute after:inset-0">
 									{entry.title}
 								</a>
 							</h2>
@@ -64,11 +65,6 @@ const translations = collectionAlternates(collection.id, urls)
 		) : (
 			<p class="mt-12 text-text-muted">Nothing has been published here yet.</p>
 		)}
-		<Pager
-			locale={locale}
-			current={page.page}
-			last={lastPage}
-			pageUrl={collectionPageUrl(urls, collection, locale)}
-		/>
+		<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
 	</div>
 </Base>

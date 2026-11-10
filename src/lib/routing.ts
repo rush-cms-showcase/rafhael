@@ -1,4 +1,4 @@
-import type { LocaleCode, UrlConfig } from '@rushcms/client'
+import type { CollectionRef, LocaleCode, RushUrls, Tag, TagRef, UrlConfig } from '@rushcms/client'
 
 export type SiteUrlConfig = Required<Omit<UrlConfig, 'collections'>>
 
@@ -18,3 +18,30 @@ export const URL_CONFIG: SiteUrlConfig = {
 }
 
 export const LOCALES: LocaleCode[] = Object.keys(URL_CONFIG.localePaths)
+
+export type PageUrl = (page: number) => string | undefined
+
+export function absoluteUrl(path: string, site: URL): string {
+	return new URL(path, site).href
+}
+
+export function collectionHref(
+	urls: RushUrls,
+	key: string,
+	locale: LocaleCode
+): string | undefined {
+	const collection = urls.collectionRef(key, locale)
+	return collection === undefined ? undefined : urls.collection(collection, locale)
+}
+
+export function collectionPageUrl(
+	urls: RushUrls,
+	collection: CollectionRef,
+	locale: LocaleCode
+): PageUrl {
+	return (page) => urls.collection(collection, locale, page)
+}
+
+export function taxonomyPageUrl(urls: RushUrls, tag: TagRef | Tag, locale: LocaleCode): PageUrl {
+	return (page) => urls.taxonomy(tag, locale, page)
+}

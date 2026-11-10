@@ -1,7 +1,7 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { beforeAll, describe, expect, it } from 'vitest'
 import Pager from '../../src/components/pager.astro'
-import { collectionPageUrl } from '../../src/lib/page-url'
+import { collectionPageUrl } from '../../src/lib/routing'
 import { makeUrls } from '../helpers/make-urls'
 
 const COLLECTION = { id: 'blog', slug: 'blog', name: 'Blog' }

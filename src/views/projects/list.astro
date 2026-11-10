@@ -1,12 +1,12 @@
 ---
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import { requireSite } from '@rushcms/astro/components-runtime'
 import Container from '../../components/container.astro'
 import Pager from '../../components/pager.astro'
 import ProjectGrid from '../../components/project-grid.astro'
 import Base from '../../layouts/base.astro'
-import { collectionCanonical } from '../../lib/collection-canonical'
+import { absoluteUrl, collectionPageUrl } from '../../lib/routing'
 import { labelsFor } from '../../lib/labels'
-import { collectionPageUrl } from '../../lib/page-url'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
@@ -16,7 +16,11 @@ const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 const site = await getRush(Astro).site.get()
 const labels = labelsFor(locale)
-const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
+const pageUrl = collectionPageUrl(urls, collection, locale)
+const canonical = absoluteUrl(
+	urls.collection(collection, locale, page.page),
+	requireSite(Astro.site, 'list view')
+)
 ---
 
 <Base
@@ -31,11 +35,6 @@ const canonical = collectionCanonical(urls, collection, locale, page.page, Astro
 			{collection.name}
 		</h1>
 		<ProjectGrid entries={entries.items} locale={locale} urls={urls} />
-		<Pager
-			locale={locale}
-			current={page.page}
-			last={lastPage}
-			pageUrl={collectionPageUrl(urls, collection, locale)}
-		/>
+		<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
 	</Container>
 </Base>

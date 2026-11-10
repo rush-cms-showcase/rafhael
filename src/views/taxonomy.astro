@@ -1,5 +1,6 @@
 ---
 import { getRush, getUrls } from '@rushcms/astro'
+import { requireSite } from '@rushcms/astro/components-runtime'
 import Hreflang from '@rushcms/astro/components/hreflang.astro'
 import Breadcrumb from '../components/breadcrumb.astro'
 import FilterPills from '../components/blog/filter-pills.astro'
@@ -9,7 +10,7 @@ import Pager from '../components/pager.astro'
 import Base from '../layouts/base.astro'
 import { breadcrumbTrail } from '../lib/breadcrumb'
 import { labelsFor } from '../lib/labels'
-import { taxonomyHref } from '../lib/taxonomy-href'
+import { absoluteUrl, collectionHref, taxonomyPageUrl } from '../lib/routing'
 import type { TaxonomyViewProps } from './index'
 
 type Props = TaxonomyViewProps
@@ -21,17 +22,18 @@ const rush = getRush(Astro)
 const site = await rush.site.get()
 const labels = labelsFor(locale)
 const categories = tag.type === 'category' ? await rush.tags.list({ type: 'category', locale }) : []
-const blog = urls.collectionRef('blog', locale)
-const allHref = blog === undefined ? undefined : urls.collection(blog, locale)
+const allHref = collectionHref(urls, 'blog', locale)
 const filters = categories.map((category) => ({
 	name: category.name,
-	href: taxonomyHref(urls, category, locale),
+	href: urls.taxonomy(category, locale),
 	active: category.id === tag.id
 }))
-const pageUrl = (number: number) => urls.taxonomy(tag, locale, number)
+const pageUrl = taxonomyPageUrl(urls, tag, locale)
 const current = pageUrl(page.page)
 const canonical =
-	Astro.site && current !== undefined ? new URL(current, Astro.site).href : undefined
+	current === undefined
+		? undefined
+		: absoluteUrl(current, requireSite(Astro.site, 'taxonomy view'))
 const trail = breadcrumbTrail({
 	kind: tag.type,
 	locale,

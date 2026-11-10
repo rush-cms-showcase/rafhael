@@ -1,4 +1,5 @@
 ---
+import { requireSite } from '@rushcms/astro/components-runtime'
 import type { Breadcrumb } from '../lib/breadcrumb'
 import { breadcrumbJsonLd, jsonLdScript } from '../lib/breadcrumb'
 import { Icons } from '../lib/icons'
@@ -11,7 +12,7 @@ type Props = {
 
 const { trail, class: className } = Astro.props
 const links = trail.section === undefined ? [] : [trail.section]
-const json = jsonLdScript(breadcrumbJsonLd(trail, Astro.site))
+const json = jsonLdScript(breadcrumbJsonLd(trail, requireSite(Astro.site, '<Breadcrumb>')))
 ---
 
 <Container class:list={['pt-6 lg:pt-8', className]}>

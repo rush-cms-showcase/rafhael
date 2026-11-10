@@ -3,6 +3,7 @@ import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
 import { loopLayout } from '../../lib/home-sections'
 import type { LoopSection } from '../../lib/home-sections'
 import { labelsFor } from '../../lib/labels'
+import { collectionHref } from '../../lib/routing'
 import PostGrid from '../blog/post-grid.astro'
 import CaseRows from '../case-rows.astro'
 import Container from '../container.astro'
@@ -18,8 +19,7 @@ type Props = {
 
 const { section, entries, locale, urls } = Astro.props
 const layout = loopLayout(section.type, section.disposition)
-const collection = urls.collectionRef(section.type, locale)
-const seeAllHref = collection === undefined ? undefined : urls.collection(collection, locale)
+const seeAllHref = collectionHref(urls, section.type, locale)
 ---
 
 {entries.length > 0 && (
@@ -31,6 +31,6 @@ const seeAllHref = collection === undefined ? undefined : urls.collection(collec
 		/>
 		{layout === 'posts' && <PostGrid entries={entries} locale={locale} urls={urls} />}
 		{layout === 'projects' && <ProjectGrid entries={entries} locale={locale} urls={urls} />}
-		{layout === 'rows' && <CaseRows entries={entries} locale={locale} urls={urls} />}
+		{layout === 'rows' && <CaseRows entries={entries} urls={urls} />}
 	</Container>
 )}

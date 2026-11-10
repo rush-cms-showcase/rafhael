@@ -1,6 +1,7 @@
 import type { LocaleCode, RushUrls } from '@rushcms/client'
 import { labelsFor } from './labels'
 import type { Labels } from './labels'
+import { absoluteUrl, collectionHref } from './routing'
 
 export type BreadcrumbKind = 'case' | 'post' | 'project' | 'page' | 'category' | 'tag'
 
@@ -74,11 +75,11 @@ function sectionLink(
 	input: BreadcrumbInput,
 	labels: Labels
 ): BreadcrumbLink | undefined {
-	const collection =
-		rule === undefined ? undefined : input.urls.collectionRef(rule.collection, input.locale)
-	return rule === undefined || collection === undefined
+	const href =
+		rule === undefined ? undefined : collectionHref(input.urls, rule.collection, input.locale)
+	return rule === undefined || href === undefined
 		? undefined
-		: { label: labels[rule.label], href: input.urls.collection(collection, input.locale) }
+		: { label: labels[rule.label], href }
 }
 
 export function breadcrumbTrail(input: BreadcrumbInput): Breadcrumb {
@@ -92,11 +93,7 @@ export function breadcrumbTrail(input: BreadcrumbInput): Breadcrumb {
 	}
 }
 
-function absolute(path: string | undefined, site: URL | undefined): string | undefined {
-	return path === undefined || site === undefined ? path : new URL(path, site).href
-}
-
-export function breadcrumbJsonLd(trail: Breadcrumb, site: URL | undefined): BreadcrumbJsonLd {
+export function breadcrumbJsonLd(trail: Breadcrumb, site: URL): BreadcrumbJsonLd {
 	const links: BreadcrumbLink[] =
 		trail.section === undefined ? [trail.home] : [trail.home, trail.section]
 	const named: BreadcrumbNode[] = [
@@ -110,7 +107,7 @@ export function breadcrumbJsonLd(trail: Breadcrumb, site: URL | undefined): Brea
 			'@type': 'ListItem',
 			position: index + 1,
 			name: entry.name,
-			item: absolute(entry.path, site)
+			item: entry.path === undefined ? undefined : absoluteUrl(entry.path, site)
 		}))
 	}
 }

@@ -1,15 +1,14 @@
 ---
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import { requireSite } from '@rushcms/astro/components-runtime'
 import Container from '../../components/container.astro'
 import FilterPills from '../../components/blog/filter-pills.astro'
 import PostGrid from '../../components/blog/post-grid.astro'
 import Pager from '../../components/pager.astro'
 import Base from '../../layouts/base.astro'
+import { absoluteUrl, collectionPageUrl } from '../../lib/routing'
 import { labelsFor } from '../../lib/labels'
-import { taxonomyHref } from '../../lib/taxonomy-href'
 import type { ListViewProps } from '../index'
-import { collectionCanonical } from '../../lib/collection-canonical'
-import { collectionPageUrl } from '../../lib/page-url'
 
 type Props = ListViewProps
 
@@ -22,10 +21,14 @@ const labels = labelsFor(locale)
 const categories = await rush.tags.list({ type: 'category', locale })
 const filters = categories.map((category) => ({
 	name: category.name,
-	href: taxonomyHref(urls, category, locale),
+	href: urls.taxonomy(category, locale),
 	active: false
 }))
-const canonical = collectionCanonical(urls, collection, locale, page.page, Astro.site)
+const pageUrl = collectionPageUrl(urls, collection, locale)
+const canonical = absoluteUrl(
+	urls.collection(collection, locale, page.page),
+	requireSite(Astro.site, 'list view')
+)
 const translations = collectionAlternates(collection.id, urls)
 ---
 
@@ -45,12 +48,7 @@ const translations = collectionAlternates(collection.id, urls)
 				/>
 				<PostGrid entries={entries.items} locale={locale} urls={urls} />
 
-				<Pager
-					locale={locale}
-					current={page.page}
-					last={lastPage}
-					pageUrl={collectionPageUrl(urls, collection, locale)}
-				/>
+				<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
 			</div>
 		</Container>
 	</section>

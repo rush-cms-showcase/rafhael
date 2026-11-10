@@ -1,18 +1,12 @@
-import { experimental_AstroContainer as AstroContainer } from 'astro/container'
-import { beforeAll, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Breadcrumb from '../../src/components/breadcrumb.astro'
 import { breadcrumbTrail } from '../../src/lib/breadcrumb'
+import { render as renderComponent } from '../helpers/container'
 import { COLLECTIONS, makeUrls } from '../helpers/make-urls'
 
 const TITLE = 'Billing platform'
 
 describe('Breadcrumb', () => {
-	let container: AstroContainer
-
-	beforeAll(async () => {
-		container = await AstroContainer.create()
-	})
-
 	function render() {
 		const trail = breadcrumbTrail({
 			kind: 'case',
@@ -21,7 +15,7 @@ describe('Breadcrumb', () => {
 			title: TITLE,
 			path: '/br/cases/billing'
 		})
-		return container.renderToString(Breadcrumb, { props: { trail } })
+		return renderComponent(Breadcrumb, { trail })
 	}
 
 	function visible(html: string): string {
@@ -50,5 +44,6 @@ describe('Breadcrumb', () => {
 		const data = JSON.parse(match?.[1] ?? '{}')
 		expect(data['@type']).toBe('BreadcrumbList')
 		expect(data.itemListElement.at(-1).name).toBe(TITLE)
+		expect(data.itemListElement[0].item).toBe('https://site.example.test/br')
 	})
 })

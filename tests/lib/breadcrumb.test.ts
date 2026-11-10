@@ -176,9 +176,20 @@ describe('breadcrumbJsonLd', () => {
 		expect(items.map((item) => item.name)).not.toContain('This page')
 	})
 
-	it('keeps relative urls without a site', () => {
-		const items = breadcrumbJsonLd(trail('case', 'es'), undefined).itemListElement
-		expect(items.map((item) => item.item)).toEqual(['/es', '/es/cases', '/somewhere/current'])
+	it('leaves the current item without a url when its path is unknown', () => {
+		const current = breadcrumbTrail({
+			kind: 'tag',
+			locale: 'es',
+			urls: makeUrls(COLLECTIONS),
+			title: TITLE,
+			path: undefined
+		})
+		const items = breadcrumbJsonLd(current, SITE).itemListElement
+		expect(items.map((item) => item.item)).toEqual([
+			'https://site.example.test/es',
+			'https://site.example.test/es/blog',
+			undefined
+		])
 	})
 })
 

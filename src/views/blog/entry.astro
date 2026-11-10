@@ -1,5 +1,6 @@
 ---
 import { getUrls } from '@rushcms/astro'
+import { requireSite } from '@rushcms/astro/components-runtime'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, toBcp47 } from '@rushcms/client'
@@ -14,6 +15,7 @@ import Base from '../../layouts/base.astro'
 import { breadcrumbTrail } from '../../lib/breadcrumb'
 import { markdownBody, renderMarkdown } from '../../lib/markdown'
 import { readingTime } from '../../lib/reading-time'
+import { absoluteUrl } from '../../lib/routing'
 import type { EntryViewProps } from '../index'
 
 type Props = EntryViewProps
@@ -23,7 +25,7 @@ const urls = getUrls(Astro)
 const markdown = markdownBody(entry)
 const html = await renderMarkdown(markdown)
 const path = urls.entry(entry)
-const shareUrl = new URL(path, Astro.site).href
+const shareUrl = absoluteUrl(path, requireSite(Astro.site, 'blog entry'))
 const trail = breadcrumbTrail({ kind: 'post', locale, urls, title: entry.title, path })
 const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
 ---

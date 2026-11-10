@@ -39,7 +39,7 @@ export function buildSearchIndex(
 		.map((entry) => ({
 			title: entry.title,
 			excerpt: entry.excerpt?.trim() ?? '',
-			url: urls.servedPath(entry, locale),
+			url: urls.entry(entry),
 			kind: entry.collection.slug
 		}))
 }

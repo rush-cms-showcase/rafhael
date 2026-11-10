@@ -1,8 +1,7 @@
 ---
 import type { LocaleCode, RushUrls } from '@rushcms/client'
 import { labelsFor } from '../../lib/labels'
-import { taxonomyHref } from '../../lib/taxonomy-href'
-import type { TaxonomyTerm } from '../../lib/taxonomy-href'
+import type { TaxonomyTerm } from '../../lib/types'
 
 type Props = {
 	tags: TaxonomyTerm[]
@@ -15,7 +14,7 @@ const { tags, urls, locale, class: className } = Astro.props
 const labels = labelsFor(locale)
 const chipClass =
 	'px-3 py-1 bg-bg-elevated border border-border rounded-lg text-sm text-text-subtle hover:text-primary hover:border-primary/30 transition-colors'
-const chips = tags.map((tag) => ({ name: tag.name, href: taxonomyHref(urls, tag, locale) }))
+const chips = tags.map((tag) => ({ name: tag.name, href: urls.taxonomy(tag, locale) }))
 ---
 
 {chips.length > 0 && (

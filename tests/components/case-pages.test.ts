@@ -91,7 +91,6 @@ describe('case rows', () => {
 		const html = await container.renderToString(CaseRows, {
 			props: {
 				entries: [first, second],
-				locale: 'en',
 				urls: makeUrls(),
 				detailed: true
 			}

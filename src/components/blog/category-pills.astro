@@ -1,7 +1,6 @@
 ---
 import type { LocaleCode, RushUrls } from '@rushcms/client'
-import { taxonomyHref } from '../../lib/taxonomy-href'
-import type { TaxonomyTerm } from '../../lib/taxonomy-href'
+import type { TaxonomyTerm } from '../../lib/types'
 
 type PillVariant = 'overlay' | 'card' | 'post'
 
@@ -36,7 +35,7 @@ const { categories, urls, locale, variant } = Astro.props
 const style = styles[variant]
 const pills = categories.map((category) => ({
 	name: category.name,
-	href: taxonomyHref(urls, category, locale)
+	href: urls.taxonomy(category, locale)
 }))
 ---
 
