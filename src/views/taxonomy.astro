@@ -1,0 +1,57 @@
+---
+import { getRush, getUrls } from '@rushcms/astro'
+import Hreflang from '@rushcms/astro/components/hreflang.astro'
+import FilterPills from '../components/blog/filter-pills.astro'
+import PostGrid from '../components/blog/post-grid.astro'
+import Container from '../components/container.astro'
+import Pager from '../components/pager.astro'
+import Base from '../layouts/base.astro'
+import { labelsFor } from '../lib/labels'
+import { taxonomyHref } from '../lib/taxonomy-href'
+import type { TaxonomyViewProps } from './index'
+
+type Props = TaxonomyViewProps
+
+const { page } = Astro.props
+const { tag, locale, entries, lastPage, alternates } = page
+const urls = getUrls(Astro)
+const rush = getRush(Astro)
+const site = await rush.site.get()
+const labels = labelsFor(locale)
+const categories = tag.type === 'category' ? await rush.tags.list({ type: 'category', locale }) : []
+const blog = urls.collectionRef('blog', locale)
+const allHref = blog === undefined ? undefined : urls.collection(blog, locale)
+const filters = categories.map((category) => ({
+	name: category.name,
+	href: taxonomyHref(urls, category, locale),
+	active: category.id === tag.id
+}))
+const pageUrl = (number: number) => urls.taxonomy(tag, locale, number)
+const current = pageUrl(page.page)
+const canonical =
+	Astro.site && current !== undefined ? new URL(current, Astro.site).href : undefined
+const heading = page.page > 1 ? `${tag.name} (${page.page}/${lastPage})` : tag.name
+---
+
+<Base locale={locale} title={`${heading} - ${site.name}`} translations={alternates}>
+	{canonical && <link slot="head" rel="canonical" href={canonical} />}
+	{page.page === 1 && <Hreflang slot="head" alternates={alternates} />}
+	<section class="py-20 md:py-32 relative overflow-hidden">
+		<Container>
+			<div class="text-center">
+				<h1 class="text-primary text-4xl lg:text-6xl font-bold mb-8">{tag.name}</h1>
+			</div>
+			<div class="w-full">
+				{filters.length > 0 && (
+					<FilterPills
+						allHref={allHref}
+						allLabel={labels.allCategories}
+						filters={filters}
+					/>
+				)}
+				<PostGrid entries={entries.items} locale={locale} urls={urls} />
+				<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
+			</div>
+		</Container>
+	</section>
+</Base>

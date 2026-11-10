@@ -1,4 +1,4 @@
-import type { CollectionPage, HomepagePage } from '@rushcms/astro'
+import type { CollectionPage, HomepagePage, TaxonomyPage } from '@rushcms/astro'
 import type { CollectionRef, Entry, LocaleCode, RushUrls } from '@rushcms/client'
 import GenericList from './collection.astro'
 import BlogEntry from './blog/entry.astro'
@@ -14,6 +14,10 @@ export type HomeViewProps = {
 
 export type ListViewProps = {
 	page: CollectionPage
+}
+
+export type TaxonomyViewProps = {
+	page: TaxonomyPage
 }
 
 export type EntryViewProps = {

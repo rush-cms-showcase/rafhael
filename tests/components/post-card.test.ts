@@ -38,10 +38,10 @@ describe('PostCard', () => {
 		expect(html).not.toContain('flex-wrap')
 	})
 
-	it('renders pills as plain labels while taxonomy has no target', async () => {
+	it('links pills to the category page', async () => {
 		const html = await render({ featured_image: COVER, categories: [CATEGORY] })
 		expect(html).toContain('Engineering')
-		expect(html).not.toContain('/category/')
+		expect(html).toContain('href="/category/engineering"')
 		expect(html).not.toContain('href="undefined"')
 	})
 

@@ -31,6 +31,10 @@ export default defineConfig({
 				pages: '/{locale}/{slug}'
 			},
 			pageSegments: { en: 'page', pt_BR: 'pagina', es: 'pagina' },
+			taxonomies: {
+				category: { en: 'category', pt_BR: 'categoria', es: 'categoria' },
+				tag: { en: 'tag', pt_BR: 'tag', es: 'etiqueta' }
+			},
 			trustedProxies: 1
 		})
 	]
