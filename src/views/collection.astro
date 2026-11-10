@@ -1,6 +1,7 @@
 ---
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
+import Pager from '../components/pager.astro'
 import Base from '../layouts/base.astro'
 import { formatDate } from '../lib/format-date'
 import type { ListViewProps } from './index'
@@ -11,8 +12,6 @@ const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 const site = await getRush(Astro).site.get()
-const previous = page.page > 1 ? urls.collection(collection, locale, page.page - 1) : undefined
-const next = page.page < lastPage ? urls.collection(collection, locale, page.page + 1) : undefined
 const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
 const heading = page.page > 1 ? `${collection.name} (${page.page}/${lastPage})` : collection.name
 const translations = collectionAlternates(collection.id, urls)
@@ -63,21 +62,12 @@ const translations = collectionAlternates(collection.id, urls)
 		) : (
 			<p class="mt-12 text-text-muted">Nothing has been published here yet.</p>
 		)}
-		{lastPage > 1 && (
-			<nav aria-label="Pagination" class="mt-12 flex items-center justify-between gap-4">
-				{previous ? (
-					<a href={previous} rel="prev" class="button button-secondary">
-						Previous page
-					</a>
-				) : (
-					<span />
-				)}
-				{next && (
-					<a href={next} rel="next" class="button button-secondary">
-						Next page
-					</a>
-				)}
-			</nav>
-		)}
+		<Pager
+			collection={collection}
+			locale={locale}
+			current={page.page}
+			last={lastPage}
+			urls={urls}
+		/>
 	</div>
 </Base>

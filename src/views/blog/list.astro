@@ -2,8 +2,8 @@
 import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
 import Container from '../../components/container.astro'
 import PostCard from '../../components/blog/post-card.astro'
+import Pager from '../../components/pager.astro'
 import Base from '../../layouts/base.astro'
-import { Icons } from '../../lib/icons'
 import { labelsFor } from '../../lib/labels'
 import { taxonomyHref } from '../../lib/taxonomy-href'
 import type { ListViewProps } from '../index'
@@ -21,16 +21,10 @@ const filters = categories.map((category) => ({
 	name: category.name,
 	href: taxonomyHref(urls, category, locale)
 }))
-const previous = page.page > 1 ? urls.collection(collection, locale, page.page - 1) : undefined
-const next = page.page < lastPage ? urls.collection(collection, locale, page.page + 1) : undefined
 const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
 const translations = collectionAlternates(collection.id, urls)
 const pillBase = 'px-4 py-2 rounded-full text-sm font-medium transition-colors'
 const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevated/80 hover:text-primary border border-border`
-const stepLink =
-	'flex items-center gap-2 px-6 py-3 rounded-full bg-bg-elevated border border-border hover:border-primary hover:text-primary transition-all font-medium'
-const ChevronLeftIcon = Icons.chevron_left
-const ChevronRightIcon = Icons.chevron_right
 ---
 
 <Base locale={locale} title={`${labels.blog} - ${site.name}`} translations={translations}>
@@ -66,25 +60,13 @@ const ChevronRightIcon = Icons.chevron_right
 					))}
 				</div>
 
-				{lastPage > 1 && (
-					<div class="flex justify-center gap-4 mt-16 animate-fade-in-up">
-						{previous && (
-							<a href={previous} rel="prev" class={stepLink}>
-								<ChevronLeftIcon class="w-5 h-5" />
-								{labels.previous}
-							</a>
-						)}
-						<span class="flex items-center px-4 font-serif font-bold text-text-muted">
-							{page.page} / {lastPage}
-						</span>
-						{next && (
-							<a href={next} rel="next" class={stepLink}>
-								{labels.next}
-								<ChevronRightIcon class="w-5 h-5" />
-							</a>
-						)}
-					</div>
-				)}
+				<Pager
+					collection={collection}
+					locale={locale}
+					current={page.page}
+					last={lastPage}
+					urls={urls}
+				/>
 			</div>
 		</Container>
 	</section>

@@ -27,8 +27,6 @@ export type Labels = {
 	casePeriod: string
 	caseStack: string
 	allCases: string
-	previousPage: string
-	nextPage: string
 }
 
 const english: Labels = {
@@ -57,9 +55,7 @@ const english: Labels = {
 	caseRole: 'Role',
 	casePeriod: 'Period',
 	caseStack: 'Stack',
-	allCases: 'All cases',
-	previousPage: 'Previous',
-	nextPage: 'Next'
+	allCases: 'All cases'
 }
 
 const dictionary: Record<string, Labels> = {
@@ -90,9 +86,7 @@ const dictionary: Record<string, Labels> = {
 		caseRole: 'Função',
 		casePeriod: 'Período',
 		caseStack: 'Stack',
-		allCases: 'Todos os cases',
-		previousPage: 'Anterior',
-		nextPage: 'Próxima'
+		allCases: 'Todos os cases'
 	},
 	es: {
 		skipToContent: 'Saltar al contenido',
@@ -120,9 +114,7 @@ const dictionary: Record<string, Labels> = {
 		caseRole: 'Rol',
 		casePeriod: 'Período',
 		caseStack: 'Stack',
-		allCases: 'Todos los casos',
-		previousPage: 'Anterior',
-		nextPage: 'Siguiente'
+		allCases: 'Todos los casos'
 	}
 }
 

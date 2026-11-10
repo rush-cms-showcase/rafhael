@@ -1,16 +1,20 @@
 ---
+import type { CollectionRef, LocaleCode, RushUrls } from '@rushcms/client'
 import { Icons } from '../lib/icons'
+import { labelsFor } from '../lib/labels'
 
 type Props = {
+	collection: CollectionRef
+	locale: LocaleCode
 	current: number
 	last: number
-	previousHref?: string | undefined
-	nextHref?: string | undefined
-	previousLabel: string
-	nextLabel: string
+	urls: RushUrls
 }
 
-const { current, last, previousHref, nextHref, previousLabel, nextLabel } = Astro.props
+const { collection, locale, current, last, urls } = Astro.props
+const labels = labelsFor(locale)
+const previousHref = current > 1 ? urls.collection(collection, locale, current - 1) : undefined
+const nextHref = current < last ? urls.collection(collection, locale, current + 1) : undefined
 ---
 
 {last > 1 && (
@@ -22,7 +26,7 @@ const { current, last, previousHref, nextHref, previousLabel, nextLabel } = Astr
 				class="inline-flex items-center gap-2 text-text-muted transition-colors hover:text-primary"
 			>
 				<Icons.arrow_left class="h-4 w-4" />
-				{previousLabel}
+				{labels.previous}
 			</a>
 		) : (
 			<span />
@@ -36,7 +40,7 @@ const { current, last, previousHref, nextHref, previousLabel, nextLabel } = Astr
 				rel="next"
 				class="inline-flex items-center gap-2 text-text-muted transition-colors hover:text-primary"
 			>
-				{nextLabel}
+				{labels.next}
 				<Icons.arrow_right class="h-4 w-4" />
 			</a>
 		) : (

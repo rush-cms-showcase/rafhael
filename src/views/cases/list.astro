@@ -4,7 +4,6 @@ import CaseIndex from '../../components/case-index.astro'
 import Pager from '../../components/pager.astro'
 import Base from '../../layouts/base.astro'
 import type { CaseLink } from '../../lib/case-link'
-import { labelsFor } from '../../lib/labels'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
@@ -12,14 +11,11 @@ type Props = ListViewProps
 const { page } = Astro.props
 const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
-const labels = labelsFor(locale)
 const site = await getRush(Astro).site.get()
 const items: CaseLink[] = entries.items.map((entry) => ({
 	entry,
 	href: urls.servedPath(entry, locale)
 }))
-const previous = page.page > 1 ? urls.collection(collection, locale, page.page - 1) : undefined
-const next = page.page < lastPage ? urls.collection(collection, locale, page.page + 1) : undefined
 const canonical = Astro.site && new URL(urls.collection(collection, locale, page.page), Astro.site)
 ---
 
@@ -35,12 +31,11 @@ const canonical = Astro.site && new URL(urls.collection(collection, locale, page
 		</h1>
 		<CaseIndex items={items} />
 		<Pager
+			collection={collection}
+			locale={locale}
 			current={page.page}
 			last={lastPage}
-			previousHref={previous}
-			nextHref={next}
-			previousLabel={labels.previousPage}
-			nextLabel={labels.nextPage}
+			urls={urls}
 		/>
 	</div>
 </Base>
