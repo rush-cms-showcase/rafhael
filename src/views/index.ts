@@ -7,6 +7,8 @@ import GenericEntry from './entry.astro'
 import CaseEntry from './cases/entry.astro'
 import CaseList from './cases/list.astro'
 import PageEntry from './pages/entry.astro'
+import ProjectEntry from './projects/entry.astro'
+import ProjectList from './projects/list.astro'
 
 export type HomeViewProps = {
 	page: HomepagePage
@@ -41,7 +43,8 @@ const generic: CollectionViews = { list: GenericList, entry: GenericEntry }
 const views: ViewMap = {
 	blog: { list: BlogList, entry: BlogEntry },
 	cases: { list: CaseList, entry: CaseEntry },
-	pages: { entry: PageEntry }
+	pages: { entry: PageEntry },
+	projects: { list: ProjectList, entry: ProjectEntry }
 }
 
 export function viewsFor(collection: CollectionRef | undefined, urls: RushUrls): CollectionViews {

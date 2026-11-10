@@ -28,6 +28,7 @@ export default defineConfig({
 			routes: {
 				blog: '/{locale}/blog/{slug}',
 				cases: '/{locale}/cases/{slug}',
+				projects: '/{locale}/projects/{slug}',
 				pages: '/{locale}/{slug}'
 			},
 			pageSegments: { en: 'page', pt_BR: 'pagina', es: 'pagina' },

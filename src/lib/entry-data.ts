@@ -1,4 +1,5 @@
 import type { Entry } from '@rushcms/client'
+import { safeHref } from './safe-href'
 
 export type CaseMeta = {
 	clientName: string
@@ -21,5 +22,18 @@ export function caseMeta(entry: Entry): CaseMeta {
 		role: textOf(entry.data.role),
 		period: textOf(entry.data.period),
 		stack: listOf(entry.data.stack)
+	}
+}
+
+export type ProjectMeta = {
+	linkUrl: string | undefined
+	linkLabel: string | undefined
+}
+
+export function projectMeta(entry: Entry): ProjectMeta {
+	const label = textOf(entry.data.link_label)
+	return {
+		linkUrl: safeHref(textOf(entry.data.link_url)),
+		linkLabel: label === '' ? undefined : label
 	}
 }
