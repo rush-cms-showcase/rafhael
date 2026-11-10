@@ -1,7 +1,5 @@
 import { toBcp47 } from '@rushcms/client'
-import type { Alternate, LocaleCode, NavigationLink, RushLocalePaths } from '@rushcms/client'
-
-export const LOCALE_PATHS: RushLocalePaths = { en: '', pt_BR: 'br', es: 'es' }
+import type { Alternate, LocaleCode, NavigationLink } from '@rushcms/client'
 
 export type LanguageLink = {
 	locale: LocaleCode

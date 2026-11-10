@@ -1,14 +1,13 @@
 import { getRush, getUrls } from '@rushcms/astro'
 import type { APIRoute, GetStaticPaths } from 'astro'
-import { LOCALE_PATHS } from '../../lib/locale'
+import { LOCALES } from '../../lib/routing'
 import { buildSearchIndex, collectSearchEntries } from '../../lib/search-index'
 
-export const getStaticPaths: GetStaticPaths = () =>
-	Object.keys(LOCALE_PATHS).map((code) => ({ params: { code } }))
+export const getStaticPaths: GetStaticPaths = () => LOCALES.map((code) => ({ params: { code } }))
 
 export const GET: APIRoute = async (context) => {
 	const urls = getUrls(context)
-	const locale = urls.locales.find((candidate) => candidate === context.params.code)
+	const locale = LOCALES.find((candidate) => candidate === context.params.code)
 	if (locale === undefined) {
 		return new Response(null, { status: 404 })
 	}

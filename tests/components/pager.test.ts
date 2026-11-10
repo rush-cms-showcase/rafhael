@@ -13,13 +13,13 @@ describe('Pager', () => {
 		container = await AstroContainer.create()
 	})
 
-	function render(current: number, last: number) {
+	function render(current: number, last: number, locale = 'en') {
 		return container.renderToString(Pager, {
 			props: {
-				locale: 'en',
+				locale,
 				current,
 				last,
-				pageUrl: collectionPageUrl(makeUrls(), COLLECTION, 'en')
+				pageUrl: collectionPageUrl(makeUrls(), COLLECTION, locale)
 			}
 		})
 	}
@@ -48,5 +48,10 @@ describe('Pager', () => {
 		const html = await render(2, 3)
 		expect(html).toContain('rel="prev"')
 		expect(html).toContain('rel="next"')
+	})
+	it('uses the page segment of the locale from the site url config', async () => {
+		const html = await render(2, 3, 'es')
+		expect(html).toContain('href="/es/blog/pagina/3"')
+		expect(html).toContain('href="/es/blog"')
 	})
 })
