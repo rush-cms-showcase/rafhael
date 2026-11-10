@@ -24,7 +24,7 @@ const translations = collectionAlternates(collection.id, urls)
 		<header class="max-w-3xl">
 			<h1 class="text-4xl font-semibold tracking-tight">{collection.name}</h1>
 			{lastPage > 1 && (
-				<p class="mt-2 text-muted">
+				<p class="mt-2 text-text-muted">
 					Page {page.page} of {lastPage}
 				</p>
 			)}
@@ -40,7 +40,7 @@ const translations = collectionAlternates(collection.id, urls)
 									class="mb-4 aspect-video w-full rounded-lg object-cover"
 								/>
 							)}
-							<h2 class="text-lg font-medium group-hover:text-accent">
+							<h2 class="text-lg font-medium group-hover:text-primary">
 								<a
 									href={urls.servedPath(entry, locale)}
 									class="after:absolute after:inset-0"
@@ -49,9 +49,9 @@ const translations = collectionAlternates(collection.id, urls)
 								</a>
 							</h2>
 							{entry.excerpt && (
-								<p class="mt-2 line-clamp-3 text-muted">{entry.excerpt}</p>
+								<p class="mt-2 line-clamp-3 text-text-muted">{entry.excerpt}</p>
 							)}
-							<p class="mt-auto pt-4 text-sm text-muted">
+							<p class="mt-auto pt-4 text-sm text-text-muted">
 								<time datetime={entry.published_at}>
 									{formatDate(entry.published_at, locale)}
 								</time>
@@ -61,7 +61,7 @@ const translations = collectionAlternates(collection.id, urls)
 				))}
 			</ul>
 		) : (
-			<p class="mt-12 text-muted">Nothing has been published here yet.</p>
+			<p class="mt-12 text-text-muted">Nothing has been published here yet.</p>
 		)}
 		{lastPage > 1 && (
 			<nav aria-label="Pagination" class="mt-12 flex items-center justify-between gap-4">

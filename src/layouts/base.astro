@@ -1,10 +1,15 @@
 ---
-import { getNavigation, getRush, getUrls } from '@rushcms/astro'
+import { getRush, getUrls, homepageAlternates } from '@rushcms/astro'
 import PreviewBanner from '@rushcms/astro/components/preview-banner.astro'
 import { optional, toBcp47 } from '@rushcms/client'
 import type { Alternate, LocaleCode } from '@rushcms/client'
-import SiteFooter from '../components/site-footer.astro'
-import SiteHeader from '../components/site-header.astro'
+import Analytics from '../components/analytics.astro'
+import Footer from '../components/footer.astro'
+import Header from '../components/header.astro'
+import { labelsFor } from '../lib/labels'
+import { languageLinks } from '../lib/locale'
+import { creditsFrom } from '../lib/site-credits'
+import { LEGAL_NAVIGATION, MAIN_NAVIGATION, siteNavigation } from '../lib/site-navigation'
 import '../styles/global.css'
 
 type Props = {
@@ -14,42 +19,46 @@ type Props = {
 }
 
 const { locale, title, translations = [] } = Astro.props
-const site = await getRush(Astro).site.get()
-const home = getUrls(Astro).homepage(locale)
-// TODO: create a navigation with the key "main" in Rush CMS, or change the key here.
-const main = (await optional(getNavigation(Astro, 'main'))) ?? []
-// TODO: create a navigation with the key "footer" in Rush CMS, or change the key here.
-const footer = (await optional(getNavigation(Astro, 'footer'))) ?? []
+const urls = getUrls(Astro)
+const rush = getRush(Astro)
+const site = await rush.site.get()
+const credits = creditsFrom(await optional(rush.siteOptions.get('contact')))
+const labels = labelsFor(locale)
+const languages = languageLinks(homepageAlternates(urls), translations)
+const mainLinks = await siteNavigation(Astro, MAIN_NAVIGATION)
+const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 ---
 
 <!doctype html>
-<html lang={toBcp47(locale)}>
+<html lang={toBcp47(locale)} class="scroll-smooth">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="color-scheme" content="light dark" />
+		<meta name="color-scheme" content="dark" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		{title !== undefined && <title>{title}</title>}
 		<slot name="head" />
+		<Analytics id={import.meta.env.GTAG} />
 	</head>
-	<body class="flex min-h-screen flex-col bg-canvas font-sans text-ink antialiased">
+	<body class="flex min-h-screen flex-col overflow-x-hidden bg-bg text-text-main antialiased selection:bg-primary selection:text-white">
 		<a
 			href="#content"
-			class="sr-only rounded-md bg-accent px-4 py-2 font-medium text-accent-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
+			class="sr-only rounded-md bg-primary px-4 py-2 font-medium text-white focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000]"
 		>
-			Skip to content
+			{labels.skipToContent}
 		</a>
 		<PreviewBanner />
-		<SiteHeader
+		<Header
 			name={site.name}
-			home={home}
-			links={main}
+			homeUrl={urls.homepage(locale)}
 			locale={locale}
-			translations={translations}
+			links={mainLinks}
+			languages={languages}
+			labels={labels}
 		/>
 		<main id="content" tabindex="-1" class="flex-1 focus:outline-none">
 			<slot />
 		</main>
-		<SiteFooter name={site.name} links={footer} />
+		<Footer name={site.name} locale={locale} links={legalLinks} credits={credits} />
 	</body>
 </html>

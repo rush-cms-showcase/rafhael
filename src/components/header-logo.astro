@@ -1,0 +1,27 @@
+---
+import BrandName from './brand-name.astro'
+
+type Props = {
+	homeUrl: string
+	name: string
+}
+
+const { homeUrl, name } = Astro.props
+---
+
+<a href={homeUrl} class="group flex items-center gap-2">
+	<div class="flex items-center gap-3">
+		<img
+			src="/favicon.svg"
+			fetchpriority="high"
+			width={48}
+			height={48}
+			alt={name}
+			class="h-12 w-12 lg:h-8 lg:w-8"
+		/>
+		<BrandName
+			name={name}
+			class="hidden text-xl transition-colors duration-300 group-hover:text-primary md:block"
+		/>
+	</div>
+</a>

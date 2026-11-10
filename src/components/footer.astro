@@ -1,0 +1,74 @@
+---
+import type { LocaleCode } from '@rushcms/client'
+import { labelsFor } from '../lib/labels'
+import type { LinkableNavigation } from '../lib/locale'
+import type { Credits } from '../lib/site-credits'
+import BrandName from './brand-name.astro'
+import Container from './container.astro'
+
+type Props = {
+	name: string
+	locale: LocaleCode
+	links: LinkableNavigation[]
+	credits: Credits
+}
+
+const { name, locale, links, credits } = Astro.props
+const labels = labelsFor(locale)
+const currentYear = new Date().getFullYear()
+---
+
+<footer class="flex flex-col items-center border-t border-border-subtle bg-bg">
+	<div class="w-full py-12">
+		<Container class="relative flex flex-col items-center justify-between gap-6 md:flex-row">
+			<div class="flex items-center gap-2">
+				<BrandName name={name} class="text-xl" />
+			</div>
+
+			<div class="lg:absolute lg:top-1/2 lg:left-1/2 lg:mt-[-32px] lg:ml-[-32px]">
+				<img src="/favicon.svg" width="64" height="64" alt={name} />
+			</div>
+
+			<div class="flex gap-6">
+				{links.map((link) => (
+					<a
+						href={link.href}
+						target={link.target}
+						rel={link.rel}
+						class="text-sm text-text-muted transition-colors hover:text-primary"
+					>
+						{link.label}
+					</a>
+				))}
+			</div>
+		</Container>
+	</div>
+	<small class="w-full border-t border-border-subtle/40 p-4 text-sm text-text-muted lg:p-8">
+		<Container class="flex flex-col items-center gap-2 lg:flex-row lg:justify-between">
+			<span class="text-center lg:text-left">
+				&copy; {currentYear}
+				{name}. {labels.rights}
+			</span>
+			{(credits.creatorUrl !== undefined || credits.platformUrl !== undefined) && (
+				<div class="flex flex-row items-center justify-center gap-2">
+					{credits.creatorUrl !== undefined && (
+						<>
+							{labels.createdBy}
+							<a href={credits.creatorUrl}>
+								<img src="/favicon.svg" width="32" height="32" alt={name} />
+							</a>
+						</>
+					)}
+					{credits.platformUrl !== undefined && (
+						<>
+							{labels.poweredBy}
+							<a href={credits.platformUrl}>
+								<img src="/rush-cms.svg" width="32" height="32" alt="Rush CMS" />
+							</a>
+						</>
+					)}
+				</div>
+			)}
+		</Container>
+	</small>
+</footer>

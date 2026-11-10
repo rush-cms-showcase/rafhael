@@ -1,0 +1,21 @@
+---
+import { splitName } from '../lib/brand'
+
+type Props = {
+	name: string
+	class?: string | undefined
+}
+
+const { name, class: className } = Astro.props
+const { first, last } = splitName(name)
+---
+
+<span class:list={['font-serif font-bold text-text-main', className]}>
+	{first}
+	{last !== '' && (
+		<>
+			{' '}
+			<span class="text-primary">{last}</span>
+		</>
+	)}
+</span>

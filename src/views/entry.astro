@@ -22,7 +22,10 @@ const documents = Object.values(entry.data).filter(isRichText)
 		<header>
 			{list && (
 				<p class="text-sm">
-					<a href={urls.collection(list, locale)} class="text-muted hover:text-accent">
+					<a
+						href={urls.collection(list, locale)}
+						class="text-text-muted hover:text-primary"
+					>
 						&larr; Back to the list
 					</a>
 				</p>
@@ -30,7 +33,7 @@ const documents = Object.values(entry.data).filter(isRichText)
 			<h1 class="mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
 				{entry.title}
 			</h1>
-			<p class="mt-4 text-sm text-muted">
+			<p class="mt-4 text-sm text-text-muted">
 				<time datetime={entry.published_at}>
 					{formatDate(entry.published_at, entry.locale)}
 				</time>
@@ -39,12 +42,14 @@ const documents = Object.values(entry.data).filter(isRichText)
 			{entry.fallback && (
 				<p
 					lang="en"
-					class="mt-6 rounded-lg border border-line bg-surface px-4 py-3 text-sm"
+					class="mt-6 rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm"
 				>
 					Not translated yet: shown in {languageName(entry.locale)}.
 				</p>
 			)}
-			{entry.excerpt && <p class="mt-8 text-xl text-pretty text-muted">{entry.excerpt}</p>}
+			{entry.excerpt && (
+				<p class="mt-8 text-xl text-pretty text-text-muted">{entry.excerpt}</p>
+			)}
 		</header>
 		{entry.featured_image?.url && (
 			<figure class="mt-10">

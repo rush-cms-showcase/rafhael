@@ -1,0 +1,105 @@
+---
+import type { LocaleCode } from '@rushcms/client'
+import { Icons } from '../lib/icons'
+import type { Labels } from '../lib/labels'
+import type { LanguageLink, LinkableNavigation } from '../lib/locale'
+import LanguageSelector from './language-selector.astro'
+
+type Props = {
+	links: LinkableNavigation[]
+	languages: LanguageLink[]
+	locale: LocaleCode
+	labels: Labels
+}
+
+const { links, languages, locale, labels } = Astro.props
+const MenuIcon = Icons.menu
+const XIcon = Icons.x
+---
+
+<button
+	id="menu-toggle"
+	type="button"
+	class="flex h-12 w-12 items-center justify-center rounded-lg border border-white/20 bg-bg/50 text-text-main backdrop-blur-sm transition-colors hover:text-primary md:hidden"
+	aria-label={labels.openMenu}
+>
+	<MenuIcon class="h-6 w-6" />
+</button>
+
+<div
+	id="mobile-menu"
+	class="pointer-events-none fixed inset-0 z-[9999] flex flex-col bg-bg/98 opacity-0 backdrop-blur-xl transition-opacity duration-300 md:hidden"
+>
+	<div class="flex items-center justify-between border-b border-border/20 px-5 py-5">
+		<span class="text-sm font-medium tracking-widest text-text-muted uppercase">
+			{labels.menu}
+		</span>
+		<button
+			id="menu-close"
+			type="button"
+			class="flex h-12 w-12 items-center justify-center rounded-lg border border-white/20 bg-bg/50 text-text-main transition-colors hover:text-primary"
+			aria-label={labels.closeMenu}
+		>
+			<XIcon class="h-6 w-6" />
+		</button>
+	</div>
+
+	<nav class="flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center">
+		{links.map((link) => (
+			<a
+				href={link.href}
+				target={link.target}
+				rel={link.rel}
+				class="w-full py-3 font-serif text-4xl font-bold text-text-muted transition-colors hover:text-primary"
+			>
+				{link.label}
+			</a>
+		))}
+	</nav>
+
+	<div class="flex flex-col gap-4 px-6 pb-10">
+		<div class="h-px w-full bg-border/20"></div>
+		<div class="flex justify-center py-2">
+			<LanguageSelector
+				current={locale}
+				links={languages}
+				label={labels.selectLanguage}
+				inline
+			/>
+		</div>
+	</div>
+
+	<div class="pointer-events-none absolute top-1/2 left-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[120px]"></div>
+</div>
+
+<script>
+	const mobileMenu = document.getElementById('mobile-menu')
+	const menuToggle = document.getElementById('menu-toggle')
+	const menuClose = document.getElementById('menu-close')
+	const hiddenClasses = ['opacity-0', 'pointer-events-none']
+	const visibleClasses = ['opacity-100', 'pointer-events-auto']
+
+	if (mobileMenu !== null && mobileMenu.parentElement !== document.body) {
+		document.body.appendChild(mobileMenu)
+	}
+
+	function openMenu() {
+		mobileMenu?.classList.remove(...hiddenClasses)
+		mobileMenu?.classList.add(...visibleClasses)
+		document.body.style.overflow = 'hidden'
+	}
+
+	function closeMenu() {
+		mobileMenu?.classList.add(...hiddenClasses)
+		mobileMenu?.classList.remove(...visibleClasses)
+		document.body.style.overflow = ''
+	}
+
+	menuToggle?.addEventListener('click', openMenu)
+	menuClose?.addEventListener('click', closeMenu)
+	mobileMenu?.addEventListener('click', (event) => {
+		if (event.target instanceof HTMLElement && event.target.closest('a') !== null) {
+			closeMenu()
+		}
+	})
+</script>

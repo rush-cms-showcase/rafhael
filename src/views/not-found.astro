@@ -9,12 +9,15 @@ const site = await getRush(Astro).site.get()
 <Base locale={locale} title={`Page not found | ${site.name}`}>
 	<meta slot="head" name="robots" content="noindex" />
 	<div lang="en" class="mx-auto flex max-w-3xl flex-col items-start px-6 py-24 sm:py-32">
-		<p class="font-mono text-sm text-accent">404</p>
+		<p class="font-mono text-sm text-primary">404</p>
 		<h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Page not found</h1>
-		<p class="mt-6 text-lg text-muted">
+		<p class="mt-6 text-lg text-text-muted">
 			The page you are looking for does not exist or is no longer available.
 		</p>
-		<a href={getUrls(Astro).homepage(locale)} class="button button-primary mt-10">
+		<a
+			href={getUrls(Astro).homepage(locale)}
+			class="mt-10 inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-hover"
+		>
 			Back to the home page
 		</a>
 	</div>

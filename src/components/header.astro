@@ -1,0 +1,54 @@
+---
+import type { LocaleCode } from '@rushcms/client'
+import { Icons } from '../lib/icons'
+import type { Labels } from '../lib/labels'
+import type { LanguageLink, LinkableNavigation } from '../lib/locale'
+import Container from './container.astro'
+import HeaderLogo from './header-logo.astro'
+import HeaderNav from './header-nav.astro'
+import LanguageSelector from './language-selector.astro'
+import MobileMenu from './mobile-menu.astro'
+
+type Props = {
+	name: string
+	homeUrl: string
+	locale: LocaleCode
+	links: LinkableNavigation[]
+	languages: LanguageLink[]
+	labels: Labels
+}
+
+const { name, homeUrl, locale, links, languages, labels } = Astro.props
+const SearchIcon = Icons.search
+---
+
+<header class="sticky top-0 right-0 left-0 z-50 border-b border-border/50 bg-bg/95 py-5 backdrop-blur-md transition-all duration-300">
+	<Container class="flex items-center justify-between">
+		<HeaderLogo homeUrl={homeUrl} name={name} />
+		<HeaderNav links={links} />
+
+		<div class="flex items-center gap-4">
+			<button
+				id="search-trigger"
+				type="button"
+				class="group relative flex h-10 w-10 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-bg-elevated hover:text-primary"
+				aria-label={labels.search}
+			>
+				<SearchIcon class="h-5 w-5" />
+				<span class="pointer-events-none absolute -top-1.5 -right-1.5 flex h-4 w-6 items-center justify-center rounded border border-border/50 bg-bg-elevated/90 text-[9px] font-bold text-text-muted shadow-sm backdrop-blur-sm transition-colors group-hover:border-primary/50 group-hover:text-primary">
+					⌘ K
+				</span>
+			</button>
+
+			<div class="hidden px-2 lg:block">
+				<LanguageSelector
+					current={locale}
+					links={languages}
+					label={labels.selectLanguage}
+				/>
+			</div>
+
+			<MobileMenu links={links} languages={languages} locale={locale} labels={labels} />
+		</div>
+	</Container>
+</header>

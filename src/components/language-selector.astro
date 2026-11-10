@@ -1,0 +1,66 @@
+---
+import type { LocaleCode } from '@rushcms/client'
+import { Icons } from '../lib/icons'
+import type { LanguageLink } from '../lib/locale'
+
+type Props = {
+	current: LocaleCode
+	links: LanguageLink[]
+	label: string
+	inline?: boolean
+}
+
+const { current, links, label, inline = false } = Astro.props
+const GlobeIcon = Icons.globe
+const ChevronDownIcon = Icons.chevron_down
+const currentCode = links.find((link) => link.locale === current)?.code
+---
+
+{links.length > 1 &&
+	(inline ? (
+		<div class="flex items-center justify-center gap-4">
+			{links.map((link) => (
+				<a
+					href={link.url}
+					hreflang={link.hreflang}
+					aria-current={link.locale === current ? 'true' : undefined}
+					class:list={[
+						'rounded-lg border px-4 py-2 transition-colors',
+						link.locale === current
+							? 'border-primary bg-primary text-white'
+							: 'border-white/10 text-text-muted hover:border-white/30'
+					]}
+				>
+					<span class="text-sm font-bold">{link.code}</span>
+				</a>
+			))}
+		</div>
+	) : (
+		<div class="group relative z-50">
+			<button
+				type="button"
+				class="flex items-center gap-2 py-2 text-sm font-medium text-text-muted transition-colors hover:text-text-main"
+				aria-label={label}
+			>
+				<GlobeIcon class="h-4 w-4" />
+				<span class="uppercase">{currentCode}</span>
+				<ChevronDownIcon class="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
+			</button>
+
+			<div class="invisible absolute top-full right-0 mt-2 w-24 origin-top-right transform rounded-lg border border-white/10 bg-bg-elevated py-2 opacity-0 shadow-xl transition-all duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+				{links.map((link) => (
+					<a
+						href={link.url}
+						hreflang={link.hreflang}
+						aria-current={link.locale === current ? 'true' : undefined}
+						class:list={[
+							'flex items-center gap-3 px-4 py-2 text-sm transition-colors hover:bg-white/5',
+							link.locale === current ? 'text-primary' : 'text-text-muted'
+						]}
+					>
+						<span class="font-medium">{link.code}</span>
+					</a>
+				))}
+			</div>
+		</div>
+	))}
