@@ -8,5 +8,7 @@ export function whatsappUrl(
 	}
 	const message = (text ?? '').trim()
 	const base = `https://wa.me/${digits}`
-	return message === '' ? base : `${base}?text=${encodeURIComponent(message)}`
+	return message === ''
+		? base
+		: `${base}?text=${encodeURIComponent(message).replaceAll('%20', '+')}`
 }

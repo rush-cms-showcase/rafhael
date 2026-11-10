@@ -4,8 +4,12 @@ import { whatsappUrl } from '../../src/lib/whatsapp'
 describe('whatsappUrl', () => {
 	it('keeps only the digits of the number and encodes the text', () => {
 		expect(whatsappUrl('+55 (11) 91234-5678', 'oi, tudo bem?')).toBe(
-			'https://wa.me/5511912345678?text=oi%2C%20tudo%20bem%3F'
+			'https://wa.me/5511912345678?text=oi%2C+tudo+bem%3F'
 		)
+	})
+
+	it('turns spaces into plus signs and keeps a literal plus encoded', () => {
+		expect(whatsappUrl('15550100', 'a b  c+d')).toBe('https://wa.me/15550100?text=a+b++c%2Bd')
 	})
 
 	it('omits the text when it is empty', () => {
