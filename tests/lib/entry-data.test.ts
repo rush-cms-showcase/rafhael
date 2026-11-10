@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bodyOf, caseMeta } from '../../src/lib/entry-data'
+import { caseMeta } from '../../src/lib/entry-data'
 import { entryFixture } from '../helpers/entry'
 
 describe('caseMeta', () => {
@@ -25,13 +25,5 @@ describe('caseMeta', () => {
 			period: '',
 			stack: []
 		})
-	})
-})
-
-describe('bodyOf', () => {
-	it('returns the markdown content or an empty string', () => {
-		expect(bodyOf(entryFixture({ content: '# Hi' }))).toBe('# Hi')
-		expect(bodyOf(entryFixture({}))).toBe('')
-		expect(bodyOf(entryFixture({ content: { type: 'doc' } }))).toBe('')
 	})
 })

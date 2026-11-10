@@ -23,7 +23,3 @@ export function caseMeta(entry: Entry): CaseMeta {
 		stack: listOf(entry.data.stack)
 	}
 }
-
-export function bodyOf(entry: Entry): string {
-	return typeof entry.data.content === 'string' ? entry.data.content : ''
-}
