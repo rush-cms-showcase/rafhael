@@ -34,7 +34,7 @@ describe('case article', () => {
 
 	function render(entry: Entry) {
 		return container.renderToString(CaseArticle, {
-			props: { entry, html: '<p>Body text</p>', labels }
+			props: { entry, html: '<p>Body text</p>', locale: 'en' }
 		})
 	}
 

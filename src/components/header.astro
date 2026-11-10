@@ -1,7 +1,7 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
 import { Icons } from '../lib/icons'
-import type { Labels } from '../lib/labels'
+import { labelsFor } from '../lib/labels'
 import type { LanguageLink, LinkableNavigation } from '../lib/locale'
 import Container from './container.astro'
 import HeaderLogo from './header-logo.astro'
@@ -15,11 +15,11 @@ type Props = {
 	locale: LocaleCode
 	links: LinkableNavigation[]
 	languages: LanguageLink[]
-	labels: Labels
 	logoUrl?: string | undefined
 }
 
-const { name, homeUrl, locale, links, languages, labels, logoUrl } = Astro.props
+const { name, homeUrl, locale, links, languages, logoUrl } = Astro.props
+const labels = labelsFor(locale)
 const SearchIcon = Icons.search
 ---
 
@@ -38,20 +38,19 @@ const SearchIcon = Icons.search
 				aria-label={labels.search}
 			>
 				<SearchIcon class="h-5 w-5" />
-				<span class="pointer-events-none absolute -top-1.5 -right-1.5 flex h-4 w-6 items-center justify-center rounded border border-border/50 bg-bg-elevated/90 text-[9px] font-bold text-text-muted shadow-sm backdrop-blur-sm transition-colors group-hover:border-primary/50 group-hover:text-primary">
-					⌘ K
+				<span
+					aria-hidden="true"
+					class="pointer-events-none absolute -top-1.5 -right-1.5 flex h-4 min-w-6 items-center justify-center rounded border border-border/50 bg-bg-elevated/90 px-0.5 text-[9px] font-bold whitespace-nowrap text-text-muted shadow-sm backdrop-blur-sm transition-colors group-hover:border-primary/50 group-hover:text-primary"
+				>
+					{labels.searchShortcut}
 				</span>
 			</button>
 
 			<div class="hidden px-2 lg:block">
-				<LanguageSelector
-					current={locale}
-					links={languages}
-					label={labels.selectLanguage}
-				/>
+				<LanguageSelector current={locale} links={languages} />
 			</div>
 
-			<MobileMenu links={links} languages={languages} locale={locale} labels={labels} />
+			<MobileMenu links={links} languages={languages} locale={locale} />
 		</div>
 	</Container>
 </header>

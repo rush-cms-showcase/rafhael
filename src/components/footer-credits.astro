@@ -1,11 +1,7 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
+import { labelsFor } from '../lib/labels'
 import { PLATFORM_NAME, PLATFORM_URL } from '../lib/platform'
-
-type CreditsCopy = {
-	createdBy: string
-	poweredBy: string
-}
 
 type Props = {
 	name: string
@@ -13,24 +9,16 @@ type Props = {
 	locale: LocaleCode
 }
 
-const english: CreditsCopy = { createdBy: 'Created by', poweredBy: 'Powered by' }
-
-const copies: Record<string, CreditsCopy> = {
-	en: english,
-	pt_BR: { createdBy: 'Criado por', poweredBy: 'Desenvolvido com' },
-	es: { createdBy: 'Creado por', poweredBy: 'Desarrollado con' }
-}
-
 const { name, homeUrl, locale } = Astro.props
-const copy = copies[locale] ?? english
+const labels = labelsFor(locale)
 ---
 
 <div class="flex flex-row items-center justify-center gap-2">
-	{copy.createdBy}
+	{labels.createdBy}
 	<a href={homeUrl}>
 		<img src="/favicon.svg" width="32" height="32" alt={name} />
 	</a>
-	{copy.poweredBy}
+	{labels.poweredBy}
 	<a href={PLATFORM_URL}>
 		<img src="/rush-cms.svg" width="32" height="32" alt={PLATFORM_NAME} />
 	</a>

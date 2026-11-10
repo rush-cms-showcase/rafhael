@@ -123,7 +123,7 @@ describe('home components', () => {
 	describe('WhatsappFloat', () => {
 		it('links to the given url with a label', async () => {
 			const html = await container.renderToString(WhatsappFloat, {
-				props: { href: 'https://wa.me/15550100', label: 'Chat on WhatsApp' }
+				props: { href: 'https://wa.me/15550100', locale: 'en' }
 			})
 			expect(html).toContain('href="https://wa.me/15550100"')
 			expect(html).toContain('aria-label="Chat on WhatsApp"')

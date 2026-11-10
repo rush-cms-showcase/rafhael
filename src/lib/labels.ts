@@ -49,7 +49,20 @@ export type Labels = {
 	thisPage: string
 	thisCategory: string
 	thisTag: string
+	pagination: string
+	searchShortcut: string
+	notTranslated: string
+	notFoundTitle: string
+	notFoundText: string
+	backHome: string
+	emptyCollection: string
+	createdBy: string
+	poweredBy: string
+	github: string
+	linkedin: string
 }
+
+export type LabelValues = Record<string, string>
 
 const english: Labels = {
 	skipToContent: 'Skip to content',
@@ -99,7 +112,18 @@ const english: Labels = {
 	thisProject: 'This project',
 	thisPage: 'This page',
 	thisCategory: 'This category',
-	thisTag: 'This tag'
+	thisTag: 'This tag',
+	pagination: 'Pagination',
+	searchShortcut: 'Ctrl K',
+	notTranslated: 'Not translated yet: shown in {language}.',
+	notFoundTitle: 'Page not found',
+	notFoundText: 'The page you are looking for does not exist or is no longer available.',
+	backHome: 'Back to the home page',
+	emptyCollection: 'Nothing has been published here yet.',
+	createdBy: 'Created by',
+	poweredBy: 'Powered by',
+	github: 'GitHub',
+	linkedin: 'LinkedIn'
 }
 
 const dictionary: Record<string, Labels> = {
@@ -152,7 +176,18 @@ const dictionary: Record<string, Labels> = {
 		thisProject: 'Este projeto',
 		thisPage: 'Esta página',
 		thisCategory: 'Esta categoria',
-		thisTag: 'Esta tag'
+		thisTag: 'Esta tag',
+		pagination: 'Paginação',
+		searchShortcut: 'Ctrl K',
+		notTranslated: 'Ainda não traduzido: exibido em {language}.',
+		notFoundTitle: 'Página não encontrada',
+		notFoundText: 'A página que você procura não existe ou não está mais disponível.',
+		backHome: 'Voltar para o início',
+		emptyCollection: 'Nada foi publicado aqui ainda.',
+		createdBy: 'Criado por',
+		poweredBy: 'Desenvolvido com',
+		github: 'GitHub',
+		linkedin: 'LinkedIn'
 	},
 	es: {
 		skipToContent: 'Saltar al contenido',
@@ -202,7 +237,18 @@ const dictionary: Record<string, Labels> = {
 		thisProject: 'Este proyecto',
 		thisPage: 'Esta página',
 		thisCategory: 'Esta categoría',
-		thisTag: 'Esta etiqueta'
+		thisTag: 'Esta etiqueta',
+		pagination: 'Paginación',
+		searchShortcut: 'Ctrl K',
+		notTranslated: 'Aún sin traducir: se muestra en {language}.',
+		notFoundTitle: 'Página no encontrada',
+		notFoundText: 'La página que buscas no existe o ya no está disponible.',
+		backHome: 'Volver al inicio',
+		emptyCollection: 'Todavía no se ha publicado nada aquí.',
+		createdBy: 'Creado por',
+		poweredBy: 'Desarrollado con',
+		github: 'GitHub',
+		linkedin: 'LinkedIn'
 	}
 }
 
@@ -217,4 +263,8 @@ export function kindLabels(labels: Labels): Record<string, string> {
 
 export function labelsFor(locale: LocaleCode): Labels {
 	return dictionary[locale] ?? english
+}
+
+export function formatLabel(template: string, values: LabelValues): string {
+	return template.replace(/\{(\w+)\}/g, (token, name: string) => values[name] ?? token)
 }

@@ -1,11 +1,14 @@
 ---
+import type { LocaleCode } from '@rushcms/client'
+import { labelsFor } from '../../lib/labels'
+
 type Props = {
 	title: string
-	seeAllLabel: string
+	locale: LocaleCode
 	seeAllHref: string | undefined
 }
 
-const { title, seeAllLabel, seeAllHref } = Astro.props
+const { title, locale, seeAllHref } = Astro.props
 ---
 
 {title !== '' && (
@@ -18,7 +21,7 @@ const { title, seeAllLabel, seeAllHref } = Astro.props
 				href={seeAllHref}
 				class="shrink-0 text-sm font-medium tracking-widest text-text-muted uppercase transition-colors hover:text-primary"
 			>
-				{seeAllLabel} →
+				{labelsFor(locale).seeAll} →
 			</a>
 		)}
 	</div>

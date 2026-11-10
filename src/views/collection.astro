@@ -6,6 +6,7 @@ import Pager from '../components/pager.astro'
 import Base from '../layouts/base.astro'
 import { absoluteUrl, collectionPageUrl } from '../lib/routing'
 import { formatDate } from '../lib/format-date'
+import { labelsFor } from '../lib/labels'
 import type { ListViewProps } from './index'
 
 type Props = ListViewProps
@@ -28,11 +29,6 @@ const translations = collectionAlternates(collection.id, urls)
 	<div class="mx-auto max-w-6xl px-6 py-16">
 		<header class="max-w-3xl">
 			<h1 class="text-4xl font-semibold tracking-tight">{collection.name}</h1>
-			{lastPage > 1 && (
-				<p class="mt-2 text-text-muted">
-					Page {page.page} of {lastPage}
-				</p>
-			)}
 		</header>
 		{entries.items.length > 0 ? (
 			<ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -63,7 +59,7 @@ const translations = collectionAlternates(collection.id, urls)
 				))}
 			</ul>
 		) : (
-			<p class="mt-12 text-text-muted">Nothing has been published here yet.</p>
+			<p class="mt-12 text-text-muted">{labelsFor(locale).emptyCollection}</p>
 		)}
 		<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />
 	</div>

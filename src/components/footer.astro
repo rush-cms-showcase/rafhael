@@ -25,12 +25,6 @@ const contactIcons = {
 	email: Icons.mail,
 	phone: Icons.phone
 } satisfies Record<ContactKind, typeof Icons.mail>
-const contactNames: Record<ContactKind, string> = {
-	github: 'GitHub',
-	linkedin: 'LinkedIn',
-	email: labels.email,
-	phone: labels.phone
-}
 const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 ---
 
@@ -51,7 +45,7 @@ const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 					return (
 						<a
 							href={href}
-							aria-label={contactNames[kind]}
+							aria-label={labels[kind]}
 							class="text-text-muted transition-colors hover:text-primary"
 						>
 							<Icon class="size-5" />

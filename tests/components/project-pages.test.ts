@@ -2,7 +2,6 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { beforeAll, describe, expect, it } from 'vitest'
 import ProjectArticle from '../../src/components/project-article.astro'
 import ProjectCard from '../../src/components/project-card.astro'
-import { labelsFor } from '../../src/lib/labels'
 import { makeEntry } from '../helpers/make-entry'
 import { makeUrls } from '../helpers/make-urls'
 
@@ -22,7 +21,7 @@ describe('projects', () => {
 	function article(data: Record<string, unknown>) {
 		const entry = makeEntry({ data, title: 'Engine' })
 		return container.renderToString(ProjectArticle, {
-			props: { entry, html: '<p>Body</p>', labels: labelsFor('en') }
+			props: { entry, html: '<p>Body</p>', locale: 'en' }
 		})
 	}
 

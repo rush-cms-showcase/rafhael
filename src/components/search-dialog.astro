@@ -1,16 +1,15 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
 import { Icons } from '../lib/icons'
-import { kindLabels } from '../lib/labels'
-import type { Labels } from '../lib/labels'
+import { kindLabels, labelsFor } from '../lib/labels'
 import { searchIndexPath } from '../lib/search-index'
 
 type Props = {
 	locale: LocaleCode
-	labels: Labels
 }
 
-const { locale, labels } = Astro.props
+const { locale } = Astro.props
+const labels = labelsFor(locale)
 const SearchIcon = Icons.search
 const CloseIcon = Icons.x
 const ArrowIcon = Icons.arrow_right

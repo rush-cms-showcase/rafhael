@@ -1,4 +1,7 @@
 ---
+import type { LocaleCode } from '@rushcms/client'
+import { labelsFor } from '../../lib/labels'
+
 type PillFilter = {
 	name: string
 	href: string | undefined
@@ -7,11 +10,11 @@ type PillFilter = {
 
 type Props = {
 	allHref: string | undefined
-	allLabel: string
+	locale: LocaleCode
 	filters: PillFilter[]
 }
 
-const { allHref, allLabel, filters } = Astro.props
+const { allHref, locale, filters } = Astro.props
 const pillBase = 'px-4 py-2 rounded-full text-sm font-medium transition-colors'
 const pillActive = `${pillBase} bg-primary text-white shadow-lg`
 const pillIdle = `${pillBase} bg-bg-elevated text-text-muted hover:bg-bg-elevated/80 hover:text-primary border border-border`
@@ -20,7 +23,7 @@ const allActive = !filters.some((filter) => filter.active)
 
 <div class="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in">
 	<a href={allHref} class={allActive ? pillActive : pillIdle}>
-		{allLabel}
+		{labelsFor(locale).allCategories}
 	</a>
 	{filters.map((filter) =>
 		filter.href === undefined ? (

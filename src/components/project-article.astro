@@ -1,18 +1,19 @@
 ---
 import RushImage from '@rushcms/astro/components/rush-image.astro'
-import type { Entry } from '@rushcms/client'
+import type { Entry, LocaleCode } from '@rushcms/client'
 import { projectMeta } from '../lib/entry-data'
 import { Icons } from '../lib/icons'
-import type { Labels } from '../lib/labels'
+import { labelsFor } from '../lib/labels'
 import Prose from './prose.astro'
 
 type Props = {
 	entry: Entry
 	html: string
-	labels: Labels
+	locale: LocaleCode
 }
 
-const { entry, html, labels } = Astro.props
+const { entry, html, locale } = Astro.props
+const labels = labelsFor(locale)
 const { linkUrl, linkLabel } = projectMeta(entry)
 const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
 ---

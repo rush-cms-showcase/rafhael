@@ -8,6 +8,7 @@ import Breadcrumb from '../components/breadcrumb.astro'
 import Base from '../layouts/base.astro'
 import { breadcrumbTrail } from '../lib/breadcrumb'
 import { formatDate } from '../lib/format-date'
+import { formatLabel, labelsFor } from '../lib/labels'
 import { languageName } from '../lib/locale'
 import type { EntryViewProps } from './index'
 
@@ -45,10 +46,12 @@ const documents = Object.values(entry.data).filter(isRichText)
 			</p>
 			{entry.fallback && (
 				<p
-					lang="en"
+					lang={toBcp47(locale)}
 					class="mt-6 rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm"
 				>
-					Not translated yet: shown in {languageName(entry.locale)}.
+					{formatLabel(labelsFor(locale).notTranslated, {
+						language: languageName(entry.locale)
+					})}
 				</p>
 			)}
 			{entry.excerpt && (

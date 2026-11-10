@@ -1,16 +1,17 @@
 ---
 import type { LocaleCode } from '@rushcms/client'
 import { Icons } from '../lib/icons'
+import { labelsFor } from '../lib/labels'
 import type { LanguageLink } from '../lib/locale'
 
 type Props = {
 	current: LocaleCode
 	links: LanguageLink[]
-	label: string
 	inline?: boolean
 }
 
-const { current, links, label, inline = false } = Astro.props
+const { current, links, inline = false } = Astro.props
+const label = labelsFor(current).selectLanguage
 const GlobeIcon = Icons.globe
 const ChevronDownIcon = Icons.chevron_down
 const currentCode = links.find((link) => link.locale === current)?.code

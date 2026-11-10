@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { labelsFor } from '../../src/lib/labels'
+import { formatLabel, labelsFor } from '../../src/lib/labels'
 import { languageCode, languageLinks, linkable } from '../../src/lib/locale'
 
 const homepages = [
@@ -37,6 +37,15 @@ describe('linkable', () => {
 			{ label: 'B', attributes: {}, children: [] }
 		]
 		expect(linkable(links).map((link) => link.label)).toEqual(['A'])
+	})
+})
+
+describe('formatLabel', () => {
+	it('fills every named placeholder and keeps unknown ones', () => {
+		expect(formatLabel('Shown in {language}.', { language: 'English' })).toBe(
+			'Shown in English.'
+		)
+		expect(formatLabel('{a} and {a}, {b}', { a: 'x' })).toBe('x and x, {b}')
 	})
 })
 

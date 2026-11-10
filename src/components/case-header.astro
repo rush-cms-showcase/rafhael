@@ -1,15 +1,16 @@
 ---
-import type { Entry } from '@rushcms/client'
+import type { Entry, LocaleCode } from '@rushcms/client'
 import { caseFacts, caseMeta } from '../lib/entry-data'
-import type { Labels } from '../lib/labels'
+import { labelsFor } from '../lib/labels'
 import CaseStack from './case-stack.astro'
 
 type Props = {
 	entry: Entry
-	labels: Labels
+	locale: LocaleCode
 }
 
-const { entry, labels } = Astro.props
+const { entry, locale } = Astro.props
+const labels = labelsFor(locale)
 const meta = caseMeta(entry)
 const facts = caseFacts(meta, labels)
 const pair =

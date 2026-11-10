@@ -2,7 +2,6 @@
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
 import { loopLayout } from '../../lib/home-sections'
 import type { LoopSection } from '../../lib/home-sections'
-import { labelsFor } from '../../lib/labels'
 import { collectionHref } from '../../lib/routing'
 import PostGrid from '../blog/post-grid.astro'
 import CaseRows from '../case-rows.astro'
@@ -24,11 +23,7 @@ const seeAllHref = collectionHref(urls, section.type, locale)
 
 {entries.length > 0 && (
 	<Container class="pt-20 last:pb-24 lg:pt-28">
-		<SectionTitle
-			title={section.title}
-			seeAllLabel={labelsFor(locale).seeAll}
-			seeAllHref={seeAllHref}
-		/>
+		<SectionTitle title={section.title} locale={locale} seeAllHref={seeAllHref} />
 		{layout === 'posts' && <PostGrid entries={entries} locale={locale} urls={urls} />}
 		{layout === 'projects' && <ProjectGrid entries={entries} locale={locale} urls={urls} />}
 		{layout === 'rows' && <CaseRows entries={entries} urls={urls} />}

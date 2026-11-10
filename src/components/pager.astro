@@ -20,7 +20,7 @@ const buttonClass =
 ---
 
 {last > 1 && (
-	<nav class="flex justify-center gap-4 mt-16 animate-fade-in-up" aria-label="Pagination">
+	<nav class="flex justify-center gap-4 mt-16 animate-fade-in-up" aria-label={labels.pagination}>
 		{previousHref && (
 			<a href={previousHref} rel="prev" class={buttonClass}>
 				<Icons.chevron_left class="w-5 h-5" />

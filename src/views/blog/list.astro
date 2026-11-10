@@ -43,7 +43,7 @@ const translations = collectionAlternates(collection.id, urls)
 			<div class="w-full">
 				<FilterPills
 					allHref={urls.collection(collection, locale)}
-					allLabel={labels.allCategories}
+					locale={locale}
 					filters={filters}
 				/>
 				<PostGrid entries={entries.items} locale={locale} urls={urls} />

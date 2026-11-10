@@ -62,7 +62,6 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 			locale={locale}
 			links={mainLinks}
 			languages={languages}
-			labels={labels}
 			logoUrl={options.logoUrl}
 		/>
 		<main id="content" tabindex="-1" class="flex-1 focus:outline-none">
@@ -76,7 +75,7 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 			homeUrl={urls.homepage(locale)}
 			floatingAction={whatsapp !== undefined}
 		/>
-		<SearchDialog locale={locale} labels={labels} />
-		{whatsapp !== undefined && <WhatsappFloat href={whatsapp} label={labels.whatsappChat} />}
+		<SearchDialog locale={locale} />
+		{whatsapp !== undefined && <WhatsappFloat href={whatsapp} locale={locale} />}
 	</body>
 </html>

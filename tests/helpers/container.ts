@@ -8,7 +8,11 @@ type Props = Record<string, unknown>
 
 let container: Promise<AstroContainer> | undefined
 
-export async function render(component: Component, props: Props = {}): Promise<string> {
+export async function render(
+	component: Component,
+	props: Props = {},
+	locals: object = {}
+): Promise<string> {
 	container ??= AstroContainer.create({ astroConfig: { site: SITE.href } })
-	return (await container).renderToString(component, { props })
+	return (await container).renderToString(component, { props, locals })
 }

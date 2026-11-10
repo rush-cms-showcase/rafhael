@@ -9,7 +9,6 @@ import Container from '../components/container.astro'
 import Pager from '../components/pager.astro'
 import Base from '../layouts/base.astro'
 import { breadcrumbTrail } from '../lib/breadcrumb'
-import { labelsFor } from '../lib/labels'
 import { absoluteUrl, collectionHref, taxonomyPageUrl } from '../lib/routing'
 import type { TaxonomyViewProps } from './index'
 
@@ -20,7 +19,6 @@ const { tag, locale, entries, lastPage, alternates } = page
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
 const site = await rush.site.get()
-const labels = labelsFor(locale)
 const categories = tag.type === 'category' ? await rush.tags.list({ type: 'category', locale }) : []
 const allHref = collectionHref(urls, 'blog', locale)
 const filters = categories.map((category) => ({
@@ -55,11 +53,7 @@ const heading = page.page > 1 ? `${tag.name} (${page.page}/${lastPage})` : tag.n
 			</div>
 			<div class="w-full">
 				{filters.length > 0 && (
-					<FilterPills
-						allHref={allHref}
-						allLabel={labels.allCategories}
-						filters={filters}
-					/>
+					<FilterPills allHref={allHref} locale={locale} filters={filters} />
 				)}
 				<PostGrid entries={entries.items} locale={locale} urls={urls} />
 				<Pager locale={locale} current={page.page} last={lastPage} pageUrl={pageUrl} />

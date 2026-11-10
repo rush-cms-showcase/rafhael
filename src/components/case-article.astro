@@ -1,19 +1,18 @@
 ---
-import type { Entry } from '@rushcms/client'
-import type { Labels } from '../lib/labels'
+import type { Entry, LocaleCode } from '@rushcms/client'
 import CaseHeader from './case-header.astro'
 import Prose from './prose.astro'
 
 type Props = {
 	entry: Entry
 	html: string
-	labels: Labels
+	locale: LocaleCode
 }
 
-const { entry, html, labels } = Astro.props
+const { entry, html, locale } = Astro.props
 ---
 
 <article class="mx-auto flex max-w-4xl flex-col gap-12 px-3 pt-10 pb-16 lg:px-6 lg:pt-14 lg:pb-24">
-	<CaseHeader entry={entry} labels={labels} />
+	<CaseHeader entry={entry} locale={locale} />
 	<Prose html={html} />
 </article>
