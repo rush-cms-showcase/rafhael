@@ -45,3 +45,12 @@ export function collectionPageUrl(
 export function taxonomyPageUrl(urls: RushUrls, tag: TagRef | Tag, locale: LocaleCode): PageUrl {
 	return (page) => urls.taxonomy(tag, locale, page)
 }
+
+export type TermLink = {
+	name: string
+	href: string | undefined
+}
+
+export function termLink(urls: RushUrls, term: TagRef, locale: LocaleCode): TermLink {
+	return { name: term.name, href: urls.taxonomy(term, locale) }
+}

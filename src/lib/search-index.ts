@@ -1,4 +1,5 @@
 import type { CollectionRef, Entry, LocaleCode, RushUrls } from '@rushcms/client'
+import { text } from './values'
 
 export type SearchItem = {
 	title: string
@@ -42,7 +43,7 @@ export function buildSearchIndex(
 		.filter((entry) => entry.locale === locale && entry.status === 'published')
 		.map((entry) => ({
 			title: entry.title,
-			excerpt: entry.excerpt?.trim() ?? '',
+			excerpt: text(entry.excerpt),
 			url: urls.entry(entry),
 			kind: entry.collection.slug
 		}))

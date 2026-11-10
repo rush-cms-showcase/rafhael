@@ -1,6 +1,6 @@
 ---
-import type { LocaleCode, RushUrls } from '@rushcms/client'
-import type { TaxonomyTerm } from '../../lib/types'
+import type { LocaleCode, RushUrls, TagRef } from '@rushcms/client'
+import { termLink } from '../../lib/routing'
 import MaybeLink from '../maybe-link.astro'
 
 type PillVariant = 'overlay' | 'card' | 'post'
@@ -11,7 +11,7 @@ type PillStyle = {
 }
 
 type Props = {
-	categories: TaxonomyTerm[]
+	categories: TagRef[]
 	urls: RushUrls
 	locale: LocaleCode
 	variant: PillVariant
@@ -34,10 +34,7 @@ const styles: Record<PillVariant, PillStyle> = {
 
 const { categories, urls, locale, variant } = Astro.props
 const style = styles[variant]
-const pills = categories.map((category) => ({
-	name: category.name,
-	href: urls.taxonomy(category, locale)
-}))
+const pills = categories.map((category) => termLink(urls, category, locale))
 ---
 
 {pills.length > 0 && (

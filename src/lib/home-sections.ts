@@ -129,23 +129,23 @@ export type HeroText = {
 const AVATAR_TOKEN = '{avatar}'
 
 function afterLead(remainder: string): Pick<HeroText, 'comma' | 'rest'> {
-	const text = remainder.trim()
-	return text.startsWith(',')
-		? { comma: true, rest: text.slice(1).trim() }
-		: { comma: false, rest: text }
+	const trimmed = remainder.trim()
+	return trimmed.startsWith(',')
+		? { comma: true, rest: trimmed.slice(1).trim() }
+		: { comma: false, rest: trimmed }
 }
 
-export function splitHeroText(text: string): HeroText {
-	const token = text.indexOf(AVATAR_TOKEN)
+export function splitHeroText(source: string): HeroText {
+	const token = source.indexOf(AVATAR_TOKEN)
 	if (token !== -1) {
 		return {
-			lead: text.slice(0, token).trim(),
-			...afterLead(text.slice(token + AVATAR_TOKEN.length))
+			lead: source.slice(0, token).trim(),
+			...afterLead(source.slice(token + AVATAR_TOKEN.length))
 		}
 	}
-	const comma = text.indexOf(',')
+	const comma = source.indexOf(',')
 	if (comma === -1) {
-		return { lead: text.trim(), comma: false, rest: '' }
+		return { lead: source.trim(), comma: false, rest: '' }
 	}
-	return { lead: text.slice(0, comma).trim(), ...afterLead(text.slice(comma)) }
+	return { lead: source.slice(0, comma).trim(), ...afterLead(source.slice(comma)) }
 }

@@ -1,11 +1,10 @@
 import type { LocaleCode, RushUrls, Tag, TagListOptions } from '@rushcms/client'
-import { collectionHref } from './routing'
+import { collectionHref, termLink } from './routing'
+import type { TermLink } from './routing'
 
 export const BLOG_COLLECTION = 'blog'
 
-export type CategoryFilter = {
-	name: string
-	href: string | undefined
+export type CategoryFilter = TermLink & {
 	active: boolean
 }
 
@@ -28,8 +27,7 @@ export async function loadCategoryFilters(
 	return {
 		allHref: collectionHref(urls, BLOG_COLLECTION, locale),
 		filters: categories.map((category) => ({
-			name: category.name,
-			href: urls.taxonomy(category, locale),
+			...termLink(urls, category, locale),
 			active: category.id === activeId
 		}))
 	}
