@@ -1,4 +1,5 @@
 import type { Entry } from '@rushcms/client'
+import type { Labels } from './labels'
 import { safeHref } from './safe-href'
 
 export type CaseMeta = {
@@ -23,6 +24,20 @@ export function caseMeta(entry: Entry): CaseMeta {
 		period: textOf(entry.data.period),
 		stack: listOf(entry.data.stack)
 	}
+}
+
+export type CaseFact = {
+	label: string
+	value: string
+}
+
+export function caseFacts(meta: CaseMeta, labels: Labels): CaseFact[] {
+	const facts: CaseFact[] = [
+		{ label: labels.caseClient, value: meta.clientName },
+		{ label: labels.caseRole, value: meta.role },
+		{ label: labels.casePeriod, value: meta.period }
+	]
+	return facts.filter((fact) => fact.value !== '')
 }
 
 export type ProjectMeta = {

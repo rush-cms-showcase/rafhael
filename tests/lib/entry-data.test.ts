@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { caseMeta, projectMeta } from '../../src/lib/entry-data'
+import { caseFacts, caseMeta, projectMeta } from '../../src/lib/entry-data'
+import { labelsFor } from '../../src/lib/labels'
 import { makeEntry } from '../helpers/make-entry'
 
 describe('caseMeta', () => {
@@ -27,6 +28,32 @@ describe('caseMeta', () => {
 			period: '',
 			stack: []
 		})
+	})
+})
+
+describe('caseFacts', () => {
+	const labels = labelsFor('pt_BR')
+
+	it('pairs each filled value with its translated label in order', () => {
+		const meta = caseMeta(
+			makeEntry({ data: { client_name: 'Acme', role: 'Lead', period: '2024' } })
+		)
+		expect(caseFacts(meta, labels)).toEqual([
+			{ label: 'Cliente', value: 'Acme' },
+			{ label: 'Função', value: 'Lead' },
+			{ label: 'Período', value: '2024' }
+		])
+	})
+
+	it('hides every pair whose value is empty', () => {
+		const meta = caseMeta(
+			makeEntry({ data: { client_name: 'Acme', role: ' ', period: '2024' } })
+		)
+		expect(caseFacts(meta, labels)).toEqual([
+			{ label: 'Cliente', value: 'Acme' },
+			{ label: 'Período', value: '2024' }
+		])
+		expect(caseFacts(caseMeta(makeEntry({ data: {} })), labels)).toEqual([])
 	})
 })
 
