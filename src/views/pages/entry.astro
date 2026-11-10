@@ -12,7 +12,11 @@ type Props = EntryViewProps
 const { entry, locale } = Astro.props
 ---
 
-<Base locale={locale} translations={alternates(entry, getUrls(Astro))}>
+<Base
+	locale={locale}
+	socialImage={entry.featured_image?.url === undefined}
+	translations={alternates(entry, getUrls(Astro))}
+>
 	<Seo slot="head" entry={entry} />
 	<div lang={toBcp47(entry.locale)}>
 		<PageArticle title={entry.title} html={await renderMarkdown(markdownBody(entry))} />

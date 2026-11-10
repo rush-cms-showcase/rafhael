@@ -16,15 +16,16 @@ type Props = {
 	links: LinkableNavigation[]
 	languages: LanguageLink[]
 	labels: Labels
+	logoUrl?: string | undefined
 }
 
-const { name, homeUrl, locale, links, languages, labels } = Astro.props
+const { name, homeUrl, locale, links, languages, labels, logoUrl } = Astro.props
 const SearchIcon = Icons.search
 ---
 
 <header class="sticky top-0 right-0 left-0 z-50 border-b border-border/50 bg-bg/95 py-5 backdrop-blur-md transition-all duration-300">
 	<Container class="flex items-center justify-between">
-		<HeaderLogo homeUrl={homeUrl} name={name} />
+		<HeaderLogo homeUrl={homeUrl} name={name} logoUrl={logoUrl} />
 		<HeaderNav links={links} />
 
 		<div class="flex items-center gap-4">

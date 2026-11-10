@@ -17,7 +17,11 @@ const list = urls.collectionRef(entry.collection.id, locale)
 const documents = Object.values(entry.data).filter(isRichText)
 ---
 
-<Base locale={locale} translations={alternates(entry, urls)}>
+<Base
+	locale={locale}
+	socialImage={entry.featured_image?.url === undefined}
+	translations={alternates(entry, urls)}
+>
 	<Seo slot="head" entry={entry} />
 	<article lang={toBcp47(entry.locale)} class="mx-auto max-w-3xl px-6 py-16">
 		<header>

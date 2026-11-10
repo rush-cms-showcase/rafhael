@@ -24,7 +24,11 @@ const shareUrl = new URL(urls.entry(entry), Astro.site).href
 const cover = entry.featured_image?.url === undefined ? undefined : entry.featured_image
 ---
 
-<Base locale={locale} translations={alternates(entry, urls)}>
+<Base
+	locale={locale}
+	socialImage={entry.featured_image?.url === undefined}
+	translations={alternates(entry, urls)}
+>
 	<Seo slot="head" entry={entry} />
 	<div class="py-24 mt-4 lg:mt-16">
 		<article lang={toBcp47(entry.locale)} class="space-y-4">

@@ -8,8 +8,6 @@ export type Labels = {
 	menu: string
 	selectLanguage: string
 	rights: string
-	createdBy: string
-	poweredBy: string
 	blog: string
 	blogDescription: string
 	allCategories: string
@@ -45,8 +43,6 @@ const english: Labels = {
 	menu: 'Menu',
 	selectLanguage: 'Select language',
 	rights: 'All rights reserved.',
-	createdBy: 'Created by',
-	poweredBy: 'Powered by',
 	blog: 'Blog',
 	blogDescription: 'Articles about software development, architecture and technology.',
 	allCategories: 'All',
@@ -84,8 +80,6 @@ const dictionary: Record<string, Labels> = {
 		menu: 'Menu',
 		selectLanguage: 'Selecionar idioma',
 		rights: 'Todos os direitos reservados.',
-		createdBy: 'Criado por',
-		poweredBy: 'Powered by',
 		blog: 'Blog',
 		blogDescription: 'Artigos sobre desenvolvimento, arquitetura e tecnologia.',
 		allCategories: 'Todos',
@@ -120,8 +114,6 @@ const dictionary: Record<string, Labels> = {
 		menu: 'Menú',
 		selectLanguage: 'Seleccionar idioma',
 		rights: 'Todos los derechos reservados.',
-		createdBy: 'Creado por',
-		poweredBy: 'Powered by',
 		blog: 'Blog',
 		blogDescription: 'Artículos sobre desarrollo, arquitectura y tecnología.',
 		allCategories: 'Todos',

@@ -3,20 +3,20 @@ import type { LocaleCode } from '@rushcms/client'
 import { labelsFor } from '../lib/labels'
 import { Icons } from '../lib/icons'
 import type { LinkableNavigation } from '../lib/locale'
-import type { Credits } from '../lib/site-credits'
 import type { ContactKind, ContactLink } from '../lib/site-options'
 import BrandName from './brand-name.astro'
 import Container from './container.astro'
+import FooterCredits from './footer-credits.astro'
 
 type Props = {
 	name: string
 	locale: LocaleCode
+	homeUrl: string
 	links: LinkableNavigation[]
 	contacts?: ContactLink[]
-	credits: Credits
 }
 
-const { name, locale, links, contacts = [], credits } = Astro.props
+const { name, locale, homeUrl, links, contacts = [] } = Astro.props
 const labels = labelsFor(locale)
 const contactIcons = {
 	github: Icons.github,
@@ -73,26 +73,7 @@ const copyright = `© ${new Date().getFullYear()} ${name}. ${labels.rights}`
 	<small class="w-full border-t border-border-subtle/40 p-4 text-sm text-text-muted lg:p-8">
 		<Container class="flex flex-col items-center gap-2 lg:flex-row lg:justify-between">
 			<span class="text-center lg:text-left">{copyright}</span>
-			{(credits.creatorUrl !== undefined || credits.platformUrl !== undefined) && (
-				<div class="flex flex-row items-center justify-center gap-2">
-					{credits.creatorUrl !== undefined && (
-						<>
-							{labels.createdBy}
-							<a href={credits.creatorUrl}>
-								<img src="/favicon.svg" width="32" height="32" alt={name} />
-							</a>
-						</>
-					)}
-					{credits.platformUrl !== undefined && (
-						<>
-							{labels.poweredBy}
-							<a href={credits.platformUrl}>
-								<img src="/rush-cms.svg" width="32" height="32" alt="Rush CMS" />
-							</a>
-						</>
-					)}
-				</div>
-			)}
+			<FooterCredits name={name} homeUrl={homeUrl} locale={locale} />
 		</Container>
 	</small>
 </footer>

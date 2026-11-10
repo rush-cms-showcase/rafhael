@@ -10,8 +10,8 @@ export type SiteOptions = {
 	contactPhone: string | undefined
 	whatsappNumber: string | undefined
 	whatsappText: string | undefined
-	creatorUrl: string | undefined
-	platformUrl: string | undefined
+	logoUrl: string | undefined
+	bannerUrl: string | undefined
 }
 
 export type ContactKind = 'github' | 'linkedin' | 'email' | 'phone'
@@ -34,6 +34,12 @@ export function optionText(group: SiteOptionGroup | undefined, field: string): s
 	return typeof value === 'string' && value.trim() !== '' ? value.trim() : undefined
 }
 
+export function optionImage(group: SiteOptionGroup | undefined, field: string): string | undefined {
+	const value = group?.values[field]
+	const url = typeof value === 'object' && value !== null && 'url' in value ? value.url : value
+	return typeof url === 'string' && /^https?:\/\//i.test(url.trim()) ? url.trim() : undefined
+}
+
 export function siteOptionsFrom(group: SiteOptionGroup | undefined): SiteOptions {
 	return {
 		contactEmail: optionText(group, 'contact_email'),
@@ -42,8 +48,8 @@ export function siteOptionsFrom(group: SiteOptionGroup | undefined): SiteOptions
 		contactPhone: optionText(group, 'contact_phone'),
 		whatsappNumber: optionText(group, 'whatsapp_number'),
 		whatsappText: optionText(group, 'whatsapp_text'),
-		creatorUrl: optionText(group, 'creator_url'),
-		platformUrl: optionText(group, 'platform_url')
+		logoUrl: optionImage(group, 'site_logo'),
+		bannerUrl: optionImage(group, 'site_banner')
 	}
 }
 

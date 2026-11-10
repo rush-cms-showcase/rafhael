@@ -24,7 +24,7 @@ const sections = await Promise.all(
 )
 ---
 
-<Base locale={locale} title={title}>
+<Base locale={locale} title={title} socialImage={homepage?.meta?.og_image === undefined}>
 	{homepage && <Seo slot="head" homepage={homepage} />}
 	{sections.map(({ section, entries }) =>
 		section.kind === 'hero' ? (

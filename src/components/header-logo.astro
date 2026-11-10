@@ -4,20 +4,23 @@ import BrandName from './brand-name.astro'
 type Props = {
 	homeUrl: string
 	name: string
+	logoUrl?: string | undefined
 }
 
-const { homeUrl, name } = Astro.props
+const DEFAULT_LOGO = '/favicon.svg'
+const { homeUrl, name, logoUrl } = Astro.props
 ---
 
 <a href={homeUrl} class="group flex items-center gap-2">
 	<div class="flex items-center gap-3">
 		<img
-			src="/favicon.svg"
+			src={logoUrl ?? DEFAULT_LOGO}
+			onerror={`this.onerror=null;this.src='${DEFAULT_LOGO}'`}
 			fetchpriority="high"
 			width={48}
 			height={48}
 			alt={name}
-			class="h-12 w-12 lg:h-8 lg:w-8"
+			class="h-12 w-12 object-contain lg:h-8 lg:w-8"
 		/>
 		<BrandName
 			name={name}

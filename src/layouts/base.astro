@@ -9,8 +9,8 @@ import Header from '../components/header.astro'
 import WhatsappFloat from '../components/whatsapp-float.astro'
 import { labelsFor } from '../lib/labels'
 import { languageLinks } from '../lib/locale'
-import { creditsFrom } from '../lib/site-credits'
 import { contactLinks, loadSiteOptions } from '../lib/site-options'
+import { socialImageTag } from '../lib/social-image'
 import { whatsappUrl } from '../lib/whatsapp'
 import { LEGAL_NAVIGATION, MAIN_NAVIGATION, siteNavigation } from '../lib/site-navigation'
 import '../styles/global.css'
@@ -19,15 +19,16 @@ type Props = {
 	locale: LocaleCode
 	title?: string | undefined
 	translations?: Alternate[]
+	socialImage?: boolean
 }
 
-const { locale, title, translations = [] } = Astro.props
+const { locale, title, translations = [], socialImage = true } = Astro.props
 const urls = getUrls(Astro)
 const rush = getRush(Astro)
 const site = await rush.site.get()
 const options = await loadSiteOptions(rush, locale)
-const credits = creditsFrom(options)
 const whatsapp = whatsappUrl(options.whatsappNumber, options.whatsappText)
+const banner = socialImageTag(options.bannerUrl, socialImage)
 const labels = labelsFor(locale)
 const languages = languageLinks(homepageAlternates(urls), translations)
 const mainLinks = await siteNavigation(Astro, MAIN_NAVIGATION)
@@ -43,6 +44,7 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		{title !== undefined && <title>{title}</title>}
 		<slot name="head" />
+		{banner !== undefined && <meta property="og:image" content={banner} />}
 		<Analytics id={import.meta.env.GTAG} />
 	</head>
 	<body class="flex min-h-screen flex-col overflow-x-hidden bg-bg text-text-main antialiased selection:bg-primary selection:text-white">
@@ -60,6 +62,7 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 			links={mainLinks}
 			languages={languages}
 			labels={labels}
+			logoUrl={options.logoUrl}
 		/>
 		<main id="content" tabindex="-1" class="flex-1 focus:outline-none">
 			<slot />
@@ -69,7 +72,7 @@ const legalLinks = await siteNavigation(Astro, LEGAL_NAVIGATION)
 			locale={locale}
 			links={legalLinks}
 			contacts={contactLinks(options)}
-			credits={credits}
+			homeUrl={urls.homepage(locale)}
 		/>
 		{whatsapp !== undefined && <WhatsappFloat href={whatsapp} label={labels.whatsappChat} />}
 	</body>

@@ -16,7 +16,11 @@ const list = urls.collectionRef(entry.collection.id, locale)
 const backHref = list === undefined ? urls.homepage(locale) : urls.collection(list, locale)
 ---
 
-<Base locale={locale} translations={alternates(entry, urls)}>
+<Base
+	locale={locale}
+	socialImage={entry.featured_image?.url === undefined}
+	translations={alternates(entry, urls)}
+>
 	<Seo slot="head" entry={entry} />
 	<div lang={toBcp47(entry.locale)}>
 		<CaseArticle

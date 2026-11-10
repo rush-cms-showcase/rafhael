@@ -38,13 +38,34 @@ describe('siteOptionsFrom', () => {
 			contactPhone: undefined,
 			whatsappNumber: '+1 555 0100',
 			whatsappText: 'hello',
-			creatorUrl: undefined,
-			platformUrl: undefined
+			logoUrl: undefined,
+			bannerUrl: undefined
 		})
 	})
 
 	it('is empty when the group is missing', () => {
 		expect(siteOptionsFrom(undefined).contactEmail).toBeUndefined()
+	})
+})
+
+describe('logo and banner options', () => {
+	it('uses http urls, as a string or a media object', () => {
+		const options = siteOptionsFrom(
+			group({
+				site_logo: 'https://cdn.example.test/logo.svg',
+				site_banner: { url: 'https://cdn.example.test/b.png' }
+			})
+		)
+		expect(options.logoUrl).toBe('https://cdn.example.test/logo.svg')
+		expect(options.bannerUrl).toBe('https://cdn.example.test/b.png')
+	})
+
+	it('ignores null, empty and non-http values', () => {
+		for (const value of [null, '', '  ', 'javascript:x', '/relative.png', 5, {}]) {
+			const options = siteOptionsFrom(group({ site_logo: value, site_banner: value }))
+			expect(options.logoUrl).toBeUndefined()
+			expect(options.bannerUrl).toBeUndefined()
+		}
 	})
 })
 
