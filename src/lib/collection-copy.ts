@@ -2,6 +2,8 @@ import type { CollectionRef, LocaleCode, RushUrls } from '@rushcms/client'
 import { kindLabels, labelsFor } from './labels'
 import type { Labels } from './labels'
 
+export type NamedCollection = CollectionRef & { name: string }
+
 export type CollectionCopy = {
 	title: string
 	description: string | undefined
@@ -15,7 +17,7 @@ const DESCRIPTIONS: Record<string, keyof Labels> = {
 
 export function collectionCopy(
 	urls: RushUrls,
-	collection: CollectionRef & { name: string },
+	collection: NamedCollection,
 	locale: LocaleCode
 ): CollectionCopy {
 	const labels = labelsFor(locale)
