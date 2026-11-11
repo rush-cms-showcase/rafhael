@@ -9,15 +9,14 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
-		"preview": "node --env-file-if-exists=.env ./dist/server/entry.mjs",
+		"preview": "astro preview",
 		"check": "astro check",
 		"test": "vitest run",
 		"format": "prettier --write .",
 		"format:check": "prettier --check ."
 	},
 	"dependencies": {
-		"@astrojs/node": "11.1.11",
-		"@rushcms/astro": "0.4.0",
+		"@rushcms/astro": "0.5.0",
 		"@rushcms/client": "4.1.0",
 		"@tailwindcss/typography": "0.5.20",
 		"@tailwindcss/vite": "4.3.5",

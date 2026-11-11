@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { allowedDomain, siteOrigin } from '../../src/lib/site-env'
+import { siteOrigin } from '../../src/lib/site-env'
 
 describe('siteOrigin', () => {
 	it('returns the configured origin', () => {
@@ -30,22 +30,5 @@ describe('siteOrigin', () => {
 	it('accepts http outside production', () => {
 		const origin = siteOrigin({ SITE_URL: 'http://localhost:4321', NODE_ENV: 'development' })
 		expect(origin.href).toBe('http://localhost:4321/')
-	})
-})
-
-describe('allowedDomain', () => {
-	it('maps an https origin to a remote pattern', () => {
-		expect(allowedDomain(new URL('https://example.test'))).toEqual({
-			protocol: 'https',
-			hostname: 'example.test'
-		})
-	})
-
-	it('keeps an explicit port', () => {
-		expect(allowedDomain(new URL('http://localhost:4321'))).toEqual({
-			protocol: 'http',
-			hostname: 'localhost',
-			port: '4321'
-		})
 	})
 })
