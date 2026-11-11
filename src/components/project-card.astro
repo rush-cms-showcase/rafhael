@@ -1,6 +1,8 @@
 ---
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
 import { entryCover, projectMeta } from '../lib/entry-data'
+import { DEFAULT_HEADING } from '../lib/heading'
+import type { HeadingLevel } from '../lib/heading'
 import { labelsFor } from '../lib/labels'
 import ArrowLink from './arrow-link.astro'
 import Card from './card.astro'
@@ -10,9 +12,11 @@ type Props = {
 	entry: Entry
 	locale: LocaleCode
 	urls: RushUrls
+	headingLevel?: HeadingLevel | undefined
 }
 
-const { entry, locale, urls } = Astro.props
+const { entry, locale, urls, headingLevel = DEFAULT_HEADING } = Astro.props
+const Heading = headingLevel
 const href = urls.entry(entry)
 const linkLabel = projectMeta(entry).linkLabel ?? labelsFor(locale).openProject
 ---
@@ -28,7 +32,9 @@ const linkLabel = projectMeta(entry).linkLabel ?? labelsFor(locale).openProject
 	)}
 	<div class="flex flex-1 flex-col p-6">
 		<a href={href} class="transition-colors group-hover:text-primary">
-			<h3 class="mb-3 font-serif text-2xl leading-tight font-bold">{entry.title}</h3>
+			<Heading class="mb-3 font-serif text-2xl leading-tight font-bold">
+				{entry.title}
+			</Heading>
 		</a>
 		{entry.excerpt && <p class="text-text-muted">{entry.excerpt}</p>}
 		<ArrowLink href={href} label={linkLabel} tone="accent" class="mt-auto pt-6" />

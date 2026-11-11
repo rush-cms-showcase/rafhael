@@ -1,6 +1,8 @@
 ---
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
 import { entryCover } from '../../lib/entry-data'
+import { DEFAULT_HEADING } from '../../lib/heading'
+import type { HeadingLevel } from '../../lib/heading'
 import { labelsFor } from '../../lib/labels'
 import { markdownBody } from '../../lib/markdown'
 import { readingTime } from '../../lib/reading-time'
@@ -14,9 +16,11 @@ type Props = {
 	entry: Entry
 	locale: LocaleCode
 	urls: RushUrls
+	headingLevel?: HeadingLevel | undefined
 }
 
-const { entry, locale, urls } = Astro.props
+const { entry, locale, urls, headingLevel = DEFAULT_HEADING } = Astro.props
+const Heading = headingLevel
 const href = urls.entry(entry)
 const hasImage = entryCover(entry) !== undefined
 ---
@@ -50,14 +54,14 @@ const hasImage = entryCover(entry) !== undefined
 		)}
 
 		<a href={href} class="group-hover:text-primary transition-colors block">
-			<h3
+			<Heading
 				class:list={[
 					'font-serif font-bold mb-3 leading-tight group-hover:underline',
 					hasImage ? 'text-2xl' : 'text-3xl md:text-4xl'
 				]}
 			>
 				{entry.title}
-			</h3>
+			</Heading>
 		</a>
 
 		<div class="flex items-center justify-between pt-6 mt-auto">
