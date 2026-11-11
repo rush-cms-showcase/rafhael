@@ -10,6 +10,12 @@ describe('renderMarkdown', () => {
 		expect(html).toContain('Println')
 	})
 
+	it('highlights postgresql fences through the sql grammar', async () => {
+		const html = await renderMarkdown('```postgresql\nSELECT 1;\n```', SITE)
+		expect(html).toContain('class="expressive-code"')
+		expect(html).toContain('SELECT')
+	})
+
 	it('opens external links in a new tab without referrer', async () => {
 		const html = await renderMarkdown('[out](https://other.example.test/a)', SITE)
 		expect(html).toContain('target="_blank"')
