@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { brandHeadTitle, documentTitle } from '../../src/lib/document-title'
+import { documentTitle, titleSuffix } from '../../src/lib/document-title'
 
 describe('documentTitle', () => {
 	it('leaves the title to the seo tags, uses the site name alone or suffixes a page', () => {
@@ -9,14 +9,8 @@ describe('documentTitle', () => {
 	})
 })
 
-describe('brandHeadTitle', () => {
-	it('suffixes the head title with the separator and the escaped site name', () => {
-		expect(brandHeadTitle('<title>Post</title><meta name="x">', 'Ada & Co')).toBe(
-			'<title>Post | Ada &amp; Co</title><meta name="x">'
-		)
-	})
-
-	it('leaves a head without a title alone', () => {
-		expect(brandHeadTitle('<meta name="x">', 'Ada')).toBe('<meta name="x">')
+describe('titleSuffix', () => {
+	it('joins the site name after the separator', () => {
+		expect(titleSuffix('Ada & Co')).toBe(' | Ada & Co')
 	})
 })

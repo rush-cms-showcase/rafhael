@@ -7,9 +7,9 @@ import type { Entry, LocaleCode } from '@rushcms/client'
 import Breadcrumb from '../components/breadcrumb.astro'
 import FallbackNotice from '../components/fallback-notice.astro'
 import JsonLd from '../components/json-ld.astro'
-import TitledHead from '../components/titled-head.astro'
 import { breadcrumbTrail } from '../lib/breadcrumb'
 import { entryCover } from '../lib/entry-data'
+import { titleSuffix } from '../lib/document-title'
 import { ENTRY_WIDTHS } from '../lib/entry-width'
 import { absoluteUrl } from '../lib/routing'
 import { articleJsonLd, loadSiteIdentity } from '../lib/structured-data'
@@ -43,9 +43,7 @@ const trail = breadcrumbTrail({ kind, locale, urls, title: entry.title, path: ur
 	socialImage={entryCover(entry) === undefined}
 	translations={alternates(entry, urls)}
 >
-	<TitledHead slot="head" siteName={identity.name}>
-		<Seo entry={entry} />
-	</TitledHead>
+	<Seo slot="head" entry={entry} titleSuffix={titleSuffix(identity.name)} />
 	{articleType && (
 		<JsonLd
 			slot="head"
