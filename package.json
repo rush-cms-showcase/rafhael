@@ -17,7 +17,7 @@
 	},
 	"dependencies": {
 		"@astrojs/node": "11.1.11",
-		"@rushcms/astro": "0.3.0",
+		"@rushcms/astro": "0.3.1",
 		"@rushcms/client": "4.1.0",
 		"@tailwindcss/typography": "0.5.20",
 		"@tailwindcss/vite": "4.3.5",
