@@ -1,0 +1,12 @@
+---
+import { brandHeadTitle } from '../lib/document-title'
+
+type Props = {
+	siteName: string
+}
+
+const { siteName } = Astro.props
+const head = brandHeadTitle(await Astro.slots.render('default'), siteName)
+---
+
+<Fragment set:html={head} />
