@@ -10,7 +10,7 @@ describe('caseMeta', () => {
 				client_name: ' Acme ',
 				role: 'Lead',
 				period: '2024',
-				stack: ['Go', ' Astro ', '', 3]
+				stack: ['Go', ' Astro ', '']
 			}
 		})
 		expect(caseMeta(entry)).toEqual({

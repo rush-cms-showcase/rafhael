@@ -1,6 +1,6 @@
 import { optional } from '@rushcms/client'
 import type { Media, SiteOptionGroup } from '@rushcms/client'
-import { isRecord, optionalText } from './values'
+import { optionalText } from './values'
 
 export const SITE_OPTIONS_GROUP = 'opcoes-do-site'
 
@@ -32,7 +32,7 @@ function optionText(group: SiteOptionGroup | undefined, field: string): string |
 
 function optionImage(group: SiteOptionGroup | undefined, field: string): string | undefined {
 	const value = group?.values[field]
-	const url = optionalText(isRecord(value) ? value.url : value)
+	const url = optionalText(value)
 	return url !== undefined && /^https?:\/\//i.test(url) ? url : undefined
 }
 

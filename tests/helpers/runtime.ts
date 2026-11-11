@@ -21,7 +21,7 @@ function fakeClient(site: FakeSite): RushClient {
 		siteOptions: {
 			get: async (slug: string) => ({
 				slug,
-				values: site.bannerUrl === undefined ? {} : { site_banner: { url: site.bannerUrl } }
+				values: site.bannerUrl === undefined ? {} : { site_banner: site.bannerUrl }
 			})
 		},
 		navigations: { get: async () => ({ items: [] }) },

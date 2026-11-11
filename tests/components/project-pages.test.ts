@@ -1,3 +1,4 @@
+import type { FieldValues } from '@rushcms/client'
 import { describe, expect, it } from 'vitest'
 import ProjectArticle from '../../src/components/project-article.astro'
 import ProjectCard from '../../src/components/project-card.astro'
@@ -8,12 +9,12 @@ import { makeUrls } from '../helpers/make-urls'
 describe('projects', () => {
 	const urls = makeUrls()
 
-	function card(data: Record<string, unknown>, locale: 'en' | 'pt_BR' = 'en') {
+	function card(data: FieldValues, locale: 'en' | 'pt_BR' = 'en') {
 		const entry = makeEntry({ data, title: 'Engine', excerpt: 'Runs things' })
 		return render(ProjectCard, { entry, locale, urls })
 	}
 
-	function article(data: Record<string, unknown>) {
+	function article(data: FieldValues) {
 		const entry = makeEntry({ data: { content: 'Body', ...data }, title: 'Engine' })
 		return render(ProjectArticle, { entry, locale: 'en' })
 	}

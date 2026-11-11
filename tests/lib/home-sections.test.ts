@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { homeSections, loopLayout, splitHeroText } from '../../src/lib/home-sections'
+import type { BlockValues } from '@rushcms/client'
 import type { HomepageSection } from '../../src/lib/home-sections'
 
-function loop(values: Record<string, unknown>): HomepageSection {
+function loop(values: BlockValues): HomepageSection {
 	return { block: 'loop', values }
 }
 
@@ -74,7 +75,7 @@ describe('homeSections', () => {
 	})
 
 	it('falls back to a default quantity when it is not a positive integer', () => {
-		for (const quantity of ['', 'many', '0', '-2', undefined, null]) {
+		for (const quantity of ['', 'many', '0', '-2', null]) {
 			const [section] = homeSections([
 				loop({ title: 'A', type: 'blog', quantity, disposition: 'grid' })
 			])

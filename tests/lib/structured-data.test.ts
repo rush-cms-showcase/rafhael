@@ -13,7 +13,7 @@ const OPTIONS = siteOptionsFrom({
 		contact_github: 'https://code.example.test/ada',
 		contact_linkedin: 'https://network.example.test/in/ada',
 		contact_email: 'ada@example.test',
-		site_banner: { url: BANNER }
+		site_banner: BANNER
 	}
 } as never)
 

@@ -1,3 +1,4 @@
+import type { FieldValues } from '@rushcms/client'
 import { describe, expect, it } from 'vitest'
 import CaseRow from '../../src/components/case-row.astro'
 import { render } from '../helpers/container'
@@ -8,7 +9,7 @@ type RowOptions = {
 	excerpt?: string
 }
 
-function renderRow(data: Record<string, unknown>, options: RowOptions = {}) {
+function renderRow(data: FieldValues, options: RowOptions = {}) {
 	const entry = makeEntry({
 		data,
 		title: 'Billing platform',

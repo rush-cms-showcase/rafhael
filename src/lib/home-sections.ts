@@ -1,5 +1,5 @@
-import type { Homepage } from '@rushcms/client'
-import { isRecord, optionalText, text } from './values'
+import type { BlockValues, Homepage, RepeaterItem } from '@rushcms/client'
+import { optionalText, text } from './values'
 
 export type HomepageSection = Homepage['content'][number]
 
@@ -55,11 +55,15 @@ function quantityOf(value: unknown): number {
 	return Number.isInteger(parsed) && parsed > 0 ? parsed : DEFAULT_QUANTITY
 }
 
-function heroLinks(value: unknown): HeroLink[] {
+function isRepeaterItem(item: unknown): item is RepeaterItem {
+	return typeof item === 'object' && item !== null && '_id' in item
+}
+
+function heroLinks(value: BlockValues[string] | undefined): HeroLink[] {
 	if (!Array.isArray(value)) {
 		return []
 	}
-	return value.filter(isRecord).flatMap((item) => {
+	return value.filter(isRepeaterItem).flatMap((item) => {
 		const name = text(item.name)
 		return name === ''
 			? []
@@ -67,7 +71,7 @@ function heroLinks(value: unknown): HeroLink[] {
 	})
 }
 
-function heroSection(values: Record<string, unknown>): HeroSection | undefined {
+function heroSection(values: BlockValues): HeroSection | undefined {
 	const body = text(values.text)
 	if (body === '') {
 		return undefined
@@ -80,7 +84,7 @@ function heroSection(values: Record<string, unknown>): HeroSection | undefined {
 	}
 }
 
-function loopSection(values: Record<string, unknown>): LoopSection | undefined {
+function loopSection(values: BlockValues): LoopSection | undefined {
 	const type = oneOf(LOOP_TYPES, values.type)
 	const disposition = oneOf(DISPOSITIONS, values.disposition)
 	if (type === undefined || disposition === undefined) {
@@ -96,12 +100,11 @@ function loopSection(values: Record<string, unknown>): LoopSection | undefined {
 }
 
 function sectionOf(section: HomepageSection): HomeSection | undefined {
-	const values = isRecord(section.values) ? section.values : {}
 	if (section.block === 'hero') {
-		return heroSection(values)
+		return heroSection(section.values)
 	}
 	if (section.block === 'loop') {
-		return loopSection(values)
+		return loopSection(section.values)
 	}
 	return undefined
 }

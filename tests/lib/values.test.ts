@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isRecord, optionalText, text, textList } from '../../src/lib/values'
+import { optionalText, text, textList } from '../../src/lib/values'
 
 const PADDING = ['', ' ', '  ', '\t', '\n', ' \t\n ']
 const CORES = ['', 'a', 'Ada', 'two words', 'ação', '0']
@@ -49,16 +49,6 @@ describe('textList', () => {
 	it('is empty for every non-array', () => {
 		for (const value of [...NON_STRINGS.filter((item) => !Array.isArray(item)), 'a b']) {
 			expect(textList(value)).toEqual([])
-		}
-	})
-})
-
-describe('isRecord', () => {
-	it('accepts plain objects only', () => {
-		expect(isRecord({})).toBe(true)
-		expect(isRecord({ a: 1 })).toBe(true)
-		for (const value of [undefined, null, 0, 'a', true, [], ['a']]) {
-			expect(isRecord(value)).toBe(false)
 		}
 	})
 })

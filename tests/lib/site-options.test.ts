@@ -49,11 +49,11 @@ describe('siteOptionsFrom', () => {
 })
 
 describe('logo and banner options', () => {
-	it('uses http urls, as a string or a media object', () => {
+	it('uses http urls, as strings', () => {
 		const options = siteOptionsFrom(
 			group({
 				site_logo: 'https://cdn.example.test/logo.svg',
-				site_banner: { url: 'https://cdn.example.test/b.png' }
+				site_banner: 'https://cdn.example.test/b.png'
 			})
 		)
 		expect(options.logoUrl).toBe('https://cdn.example.test/logo.svg')
@@ -61,7 +61,7 @@ describe('logo and banner options', () => {
 	})
 
 	it('ignores null, empty and non-http values', () => {
-		for (const value of [null, '', '  ', 'javascript:x', '/relative.png', 5, {}]) {
+		for (const value of [null, '', '  ', 'javascript:x', '/relative.png', 5]) {
 			const options = siteOptionsFrom(group({ site_logo: value, site_banner: value }))
 			expect(options.logoUrl).toBeUndefined()
 			expect(options.bannerUrl).toBeUndefined()
