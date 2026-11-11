@@ -1,25 +1,21 @@
 ---
-import { collectionAlternates, getUrls } from '@rushcms/astro'
+import { getUrls } from '@rushcms/astro'
 import EntryGrid from '../components/entry-grid.astro'
-import ListLayout from '../layouts/list-layout.astro'
-import { collectionPageUrl } from '../lib/routing'
+import CollectionListLayout from '../layouts/collection-list-layout.astro'
 import type { ListViewProps } from './index'
 
 type Props = ListViewProps
 
 const { page } = Astro.props
-const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 ---
 
-<ListLayout
-	locale={locale}
-	name={collection.name}
-	page={page.page}
-	lastPage={lastPage}
-	pageUrl={collectionPageUrl(urls, collection, locale)}
-	alternates={collectionAlternates(collection.id, urls)}
-	empty={entries.items.length === 0}
->
-	<EntryGrid entries={entries.items} locale={locale} urls={urls} layout="posts" />
-</ListLayout>
+<CollectionListLayout page={page}>
+	<EntryGrid
+		entries={page.entries.items}
+		locale={page.locale}
+		urls={urls}
+		layout="posts"
+		headingLevel="h2"
+	/>
+</CollectionListLayout>

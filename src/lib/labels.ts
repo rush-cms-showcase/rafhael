@@ -40,6 +40,8 @@ export type Labels = {
 	projects: string
 	blogDescription: string
 	projectsDescription: string
+	casesDescription: string
+	termDescription: string
 	breadcrumb: string
 	home: string
 	thisCase: string
@@ -103,6 +105,8 @@ const english: Labels = {
 	projects: 'Projects',
 	blogDescription: 'Articles about software development, architecture and technology.',
 	projectsDescription: 'Software projects and products.',
+	casesDescription: 'Case studies of software built for clients.',
+	termDescription: 'Articles about {name}',
 	breadcrumb: 'Breadcrumb',
 	home: 'Home',
 	thisCase: 'This case',
@@ -166,6 +170,8 @@ const dictionary: Record<string, Labels> = {
 		projects: 'Projetos',
 		blogDescription: 'Artigos sobre desenvolvimento, arquitetura e tecnologia.',
 		projectsDescription: 'Projetos e produtos de software.',
+		casesDescription: 'Estudos de caso de software feito para clientes.',
+		termDescription: 'Artigos sobre {name}',
 		breadcrumb: 'Trilha de navegação',
 		home: 'Início',
 		thisCase: 'Este case',
@@ -226,6 +232,8 @@ const dictionary: Record<string, Labels> = {
 		projects: 'Proyectos',
 		blogDescription: 'Artículos sobre desarrollo, arquitectura y tecnología.',
 		projectsDescription: 'Proyectos y productos de software.',
+		casesDescription: 'Casos de estudio de software creado para clientes.',
+		termDescription: 'Artículos sobre {name}',
 		breadcrumb: 'Ruta de navegación',
 		home: 'Inicio',
 		thisCase: 'Este caso',

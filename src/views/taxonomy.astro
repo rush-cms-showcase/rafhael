@@ -4,6 +4,7 @@ import BlogListing from '../components/blog/blog-listing.astro'
 import ListLayout from '../layouts/list-layout.astro'
 import { breadcrumbTrail } from '../lib/breadcrumb'
 import { loadCategoryFilters } from '../lib/category-filters'
+import { formatLabel, labelsFor } from '../lib/labels'
 import { taxonomyPageUrl } from '../lib/routing'
 import type { TaxonomyViewProps } from './index'
 
@@ -29,6 +30,7 @@ const breadcrumb = breadcrumbTrail({
 <ListLayout
 	locale={locale}
 	name={tag.name}
+	description={formatLabel(labelsFor(locale).termDescription, { name: tag.name })}
 	page={page.page}
 	lastPage={lastPage}
 	pageUrl={pageUrl}

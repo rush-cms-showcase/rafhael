@@ -1,25 +1,15 @@
 ---
-import { collectionAlternates, getUrls } from '@rushcms/astro'
+import { getUrls } from '@rushcms/astro'
 import CaseRows from '../../components/case-rows.astro'
-import ListLayout from '../../layouts/list-layout.astro'
-import { collectionPageUrl } from '../../lib/routing'
+import CollectionListLayout from '../../layouts/collection-list-layout.astro'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
 
 const { page } = Astro.props
-const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
 ---
 
-<ListLayout
-	locale={locale}
-	name={collection.name}
-	page={page.page}
-	lastPage={lastPage}
-	pageUrl={collectionPageUrl(urls, collection, locale)}
-	alternates={collectionAlternates(collection.id, urls)}
-	empty={entries.items.length === 0}
->
-	<CaseRows entries={entries.items} urls={urls} detailed />
-</ListLayout>
+<CollectionListLayout page={page}>
+	<CaseRows entries={page.entries.items} urls={urls} detailed />
+</CollectionListLayout>

@@ -1,0 +1,29 @@
+---
+import { collectionAlternates, getUrls } from '@rushcms/astro'
+import type { CollectionPage } from '@rushcms/astro'
+import { collectionCopy } from '../lib/collection-copy'
+import { collectionPageUrl } from '../lib/routing'
+import ListLayout from './list-layout.astro'
+
+type Props = {
+	page: CollectionPage
+}
+
+const { page } = Astro.props
+const { collection, locale, entries, lastPage } = page
+const urls = getUrls(Astro)
+const copy = collectionCopy(urls, collection, locale)
+---
+
+<ListLayout
+	locale={locale}
+	name={copy.title}
+	description={copy.description}
+	page={page.page}
+	lastPage={lastPage}
+	pageUrl={collectionPageUrl(urls, collection, locale)}
+	alternates={collectionAlternates(collection.id, urls)}
+	empty={entries.items.length === 0}
+>
+	<slot />
+</ListLayout>

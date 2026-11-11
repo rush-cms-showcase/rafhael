@@ -34,7 +34,7 @@ const CASES: ListCase[] = [
 	{
 		name: 'blog',
 		view: BlogList,
-		heading: 'Artigos',
+		heading: 'Blog',
 		first: '/br/blog',
 		second: '/br/blog/pagina/2',
 		page: collectionPage('blog', 'Artigos')
@@ -58,7 +58,7 @@ const CASES: ListCase[] = [
 	{
 		name: 'generic',
 		view: GenericList,
-		heading: 'Notas',
+		heading: 'Blog',
 		first: '/br/blog',
 		second: '/br/blog/pagina/2',
 		page: collectionPage('blog', 'Notas')
@@ -142,6 +142,12 @@ const DESCRIPTIONS: DescriptionCase[] = [
 		locale: 'es',
 		text: 'Artículos sobre desarrollo, arquitectura y tecnología.'
 	},
+	{
+		name: 'cases',
+		view: CaseList,
+		locale: 'es',
+		text: 'Casos de estudio de software creado para clientes.'
+	},
 	{ name: 'projects', view: ProjectList, locale: 'en', text: 'Software projects and products.' },
 	{
 		name: 'projects',
@@ -162,6 +168,80 @@ describe('list descriptions', () => {
 		const html = await render(
 			item.view,
 			{ page: collectionPage(item.name, 'List', item.locale)(1) },
+			fakeLocals({ locale: item.locale, categories: [CATEGORY] })
+		)
+		expect(html).toContain(`<meta name="description" content="${item.text}">`)
+	})
+})
+
+type HeadingCase = {
+	name: string
+	view: Component
+	locale: Locale
+	heading: string
+}
+
+const HEADINGS: HeadingCase[] = [
+	{ name: 'cases', view: CaseList, locale: 'en', heading: 'Cases' },
+	{ name: 'cases', view: CaseList, locale: 'es', heading: 'Casos' },
+	{ name: 'projects', view: ProjectList, locale: 'en', heading: 'Projects' },
+	{ name: 'projects', view: ProjectList, locale: 'es', heading: 'Proyectos' },
+	{ name: 'blog', view: BlogList, locale: 'es', heading: 'Blog' }
+]
+
+describe('list headings', () => {
+	it.each(HEADINGS)(
+		'$name reads $heading in $locale whatever the collection is named',
+		async (item) => {
+			const html = await render(
+				item.view,
+				{ page: collectionPage(item.name, 'Nome do CMS', item.locale)(1) },
+				fakeLocals({ locale: item.locale, categories: [CATEGORY] })
+			)
+			expect(html).toContain(`>${item.heading}</h1>`)
+			expect(html).toContain(`<title>${item.heading} | ${SITE_NAME}</title>`)
+			expect(html).not.toContain('Nome do CMS')
+		}
+	)
+})
+
+describe('list card headings', () => {
+	it.each(CASES.filter((item) => item.name !== 'cases'))(
+		'$name cards sit one level below the page title',
+		async (item) => {
+			const html = await renderList(item, 1)
+			expect(html).toContain('<h2')
+			expect(html).not.toContain('<h3')
+		}
+	)
+})
+
+type TermCase = {
+	locale: Locale
+	text: string
+}
+
+const TERMS: TermCase[] = [
+	{ locale: 'en', text: 'Articles about Engineering' },
+	{ locale: 'pt_BR', text: 'Artigos sobre Engineering' },
+	{ locale: 'es', text: 'Artículos sobre Engineering' }
+]
+
+describe('taxonomy descriptions', () => {
+	it.each(TERMS)('describes a category in $locale', async (item) => {
+		const html = await render(
+			Taxonomy,
+			{
+				page: {
+					kind: 'taxonomy',
+					locale: item.locale,
+					tag: CATEGORY,
+					page: 1,
+					lastPage: 1,
+					entries: { items: [] },
+					alternates: []
+				}
+			},
 			fakeLocals({ locale: item.locale, categories: [CATEGORY] })
 		)
 		expect(html).toContain(`<meta name="description" content="${item.text}">`)

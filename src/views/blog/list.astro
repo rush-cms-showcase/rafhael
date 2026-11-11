@@ -1,30 +1,17 @@
 ---
-import { collectionAlternates, getRush, getUrls } from '@rushcms/astro'
+import { getRush, getUrls } from '@rushcms/astro'
 import BlogListing from '../../components/blog/blog-listing.astro'
-import ListLayout from '../../layouts/list-layout.astro'
+import CollectionListLayout from '../../layouts/collection-list-layout.astro'
 import { loadCategoryFilters } from '../../lib/category-filters'
-import { labelsFor } from '../../lib/labels'
-import { collectionPageUrl } from '../../lib/routing'
 import type { ListViewProps } from '../index'
 
 type Props = ListViewProps
 
 const { page } = Astro.props
-const { collection, locale, entries, lastPage } = page
 const urls = getUrls(Astro)
-const rush = getRush(Astro)
-const filters = await loadCategoryFilters(rush.tags, urls, locale, undefined)
+const filters = await loadCategoryFilters(getRush(Astro).tags, urls, page.locale, undefined)
 ---
 
-<ListLayout
-	locale={locale}
-	name={collection.name}
-	page={page.page}
-	lastPage={lastPage}
-	pageUrl={collectionPageUrl(urls, collection, locale)}
-	alternates={collectionAlternates(collection.id, urls)}
-	empty={entries.items.length === 0}
-	description={labelsFor(locale).blogDescription}
->
-	<BlogListing filters={filters} entries={entries.items} locale={locale} urls={urls} />
-</ListLayout>
+<CollectionListLayout page={page}>
+	<BlogListing filters={filters} entries={page.entries.items} locale={page.locale} urls={urls} />
+</CollectionListLayout>
