@@ -7,7 +7,7 @@ import PageEntry from '../../src/views/pages/entry.astro'
 import ProjectEntry from '../../src/views/projects/entry.astro'
 import { render } from '../helpers/container'
 import type { Component } from '../helpers/container'
-import { SITE_ORIGIN } from '../helpers/fixtures'
+import { COVER, SITE_ORIGIN } from '../helpers/fixtures'
 import { makeEntry } from '../helpers/make-entry'
 import { fakeLocals, SITE_NAME } from '../helpers/runtime'
 
@@ -80,6 +80,12 @@ describe('entry layout', () => {
 	it.each(CASES)('$name title carries the site suffix after a pipe', async (item) => {
 		const html = await renderEntry(item.view, item.entry, 'en')
 		expect(html).toContain(`<title>${item.entry.title} | ${SITE_NAME}</title>`)
+	})
+
+	it('loads the post cover eagerly with a high fetch priority', async () => {
+		const entry = makeEntry({ slug: 'hello', title: 'Hello', featured_image: COVER })
+		const html = await renderEntry(BlogEntry, entry, 'en')
+		expect(html).toMatch(/<img[^>]*fetchpriority="high"/)
 	})
 
 	it('describes posts as BlogPosting and cases as Article, others not at all', async () => {

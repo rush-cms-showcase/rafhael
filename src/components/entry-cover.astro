@@ -6,20 +6,13 @@ import { entryCover } from '../lib/entry-data'
 type Props = {
 	entry: Entry
 	class?: string | undefined
-	loading?: 'eager' | 'lazy' | undefined
-	fetchpriority?: 'high' | 'auto' | undefined
+	sizes?: string
+	aspectRatio?: number
+	priority?: boolean
 }
 
-const { entry, class: className, loading = 'lazy', fetchpriority } = Astro.props
+const { entry, class: className, ...image } = Astro.props
 const cover = entryCover(entry)
 ---
 
-{cover && (
-	<RushImage
-		media={cover}
-		alt={cover.alt || entry.title}
-		class={className}
-		loading={loading}
-		fetchpriority={fetchpriority}
-	/>
-)}
+{cover && <RushImage media={cover} alt={cover.alt || entry.title} class={className} {...image} />}

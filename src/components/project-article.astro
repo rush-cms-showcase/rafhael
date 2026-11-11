@@ -1,5 +1,6 @@
 ---
 import type { Entry, LocaleCode } from '@rushcms/client'
+import { CARD_ASPECT_RATIO, ENTRY_COVER_SIZES } from '../lib/cover-sizes'
 import { projectMeta } from '../lib/entry-data'
 import { Icons } from '../lib/icons'
 import { labelsFor } from '../lib/labels'
@@ -19,7 +20,13 @@ const { linkUrl, linkLabel } = projectMeta(entry)
 
 <ArticleShell kind="project">
 	<ArticleTitle title={entry.title} tone="accent" />
-	<EntryCover entry={entry} class="aspect-video w-full rounded-2xl object-cover" />
+	<EntryCover
+		entry={entry}
+		sizes={ENTRY_COVER_SIZES}
+		aspectRatio={CARD_ASPECT_RATIO}
+		priority
+		class="aspect-video w-full rounded-2xl object-cover"
+	/>
 	<Prose entry={entry} />
 	{linkUrl !== undefined && (
 		<a

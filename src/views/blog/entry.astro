@@ -10,6 +10,7 @@ import Container from '../../components/container.astro'
 import EntryCover from '../../components/entry-cover.astro'
 import Prose from '../../components/prose.astro'
 import EntryLayout from '../../layouts/entry-layout.astro'
+import { ENTRY_COVER_SIZES } from '../../lib/cover-sizes'
 import { entryCover } from '../../lib/entry-data'
 import { ENTRY_WIDTHS } from '../../lib/entry-width'
 import { markdownBody } from '../../lib/markdown'
@@ -53,9 +54,9 @@ const width = ENTRY_WIDTHS.post
 					<div class="rounded-3xl overflow-hidden shadow-2xl">
 						<EntryCover
 							entry={entry}
+							sizes={ENTRY_COVER_SIZES}
+							priority
 							class="w-full h-auto"
-							loading="eager"
-							fetchpriority="high"
 						/>
 					</div>
 				)}

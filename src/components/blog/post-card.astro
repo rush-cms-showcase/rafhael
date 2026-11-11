@@ -1,5 +1,6 @@
 ---
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
+import { CARD_ASPECT_RATIO, POST_CARD_SIZES } from '../../lib/cover-sizes'
 import { entryCover } from '../../lib/entry-data'
 import { DEFAULT_HEADING } from '../../lib/heading'
 import type { HeadingLevel } from '../../lib/heading'
@@ -31,6 +32,8 @@ const hasImage = entryCover(entry) !== undefined
 			<a href={href} class="block size-full">
 				<EntryCover
 					entry={entry}
+					sizes={POST_CARD_SIZES}
+					aspectRatio={CARD_ASPECT_RATIO}
 					class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
 				/>
 			</a>

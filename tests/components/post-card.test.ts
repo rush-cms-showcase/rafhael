@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import PostCard from '../../src/components/blog/post-card.astro'
+import { POST_CARD_SIZES } from '../../src/lib/cover-sizes'
 import { render } from '../helpers/container'
 import { CATEGORY, COVER } from '../helpers/fixtures'
 import { makeEntry } from '../helpers/make-entry'
@@ -21,6 +22,11 @@ describe('PostCard', () => {
 		const html = await renderCard({ featured_image: { ...COVER, alt: '' }, title: 'Queues' })
 		expect(html).toContain(COVER.url)
 		expect(html).toMatch(/<img[^>]*alt="Queues"/)
+	})
+
+	it('tells the browser the width the card image occupies', async () => {
+		const html = await renderCard({ featured_image: COVER })
+		expect(html).toContain(`sizes="${POST_CARD_SIZES}"`)
 	})
 
 	it('renders no category link without categories', async () => {

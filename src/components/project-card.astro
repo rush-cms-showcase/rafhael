@@ -1,6 +1,7 @@
 ---
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
 import { entryCover, projectMeta } from '../lib/entry-data'
+import { CARD_ASPECT_RATIO, PROJECT_CARD_SIZES } from '../lib/cover-sizes'
 import { DEFAULT_HEADING } from '../lib/heading'
 import type { HeadingLevel } from '../lib/heading'
 import { labelsFor } from '../lib/labels'
@@ -26,6 +27,8 @@ const linkLabel = projectMeta(entry).linkLabel ?? labelsFor(locale).openProject
 		<a href={href} class="block aspect-video overflow-hidden">
 			<EntryCover
 				entry={entry}
+				sizes={PROJECT_CARD_SIZES}
+				aspectRatio={CARD_ASPECT_RATIO}
 				class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
 			/>
 		</a>

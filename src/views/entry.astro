@@ -5,6 +5,7 @@ import ArticleShell from '../components/article-shell.astro'
 import ArticleTitle from '../components/article-title.astro'
 import EntryCover from '../components/entry-cover.astro'
 import EntryLayout from '../layouts/entry-layout.astro'
+import { ENTRY_COVER_SIZES } from '../lib/cover-sizes'
 import { formatDate } from '../lib/format-date'
 import type { EntryViewProps } from './index'
 
@@ -28,7 +29,7 @@ const documents = Object.values(entry.data).filter(isRichText)
 				<p class="mt-4 text-xl text-pretty text-text-muted">{entry.excerpt}</p>
 			)}
 		</header>
-		<EntryCover entry={entry} class="w-full rounded-xl" loading="eager" />
+		<EntryCover entry={entry} sizes={ENTRY_COVER_SIZES} priority class="w-full rounded-xl" />
 		{documents.length > 0 && (
 			<div class="prose prose-lg max-w-none">
 				{documents.map((content) => (
