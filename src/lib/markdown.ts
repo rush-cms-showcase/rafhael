@@ -39,7 +39,7 @@ export async function renderMarkdown(markdown: string, origin: URL): Promise<str
 		.use(remarkRehype, { allowDangerousHtml: true })
 		.use(rehypeExpressiveCode, {
 			themes: ['github-dark'],
-			langAlias: { postgresql: 'sql' },
+			shiki: { langAlias: { postgresql: 'sql' } },
 			useThemedScrollbars: false,
 			styleOverrides: { borderRadius: '0.75rem', uiFontFamily: 'inherit' }
 		})
