@@ -23,6 +23,10 @@ const XIcon = Icons.x
 	type="button"
 	class="flex size-12 items-center justify-center rounded-lg border border-white/20 bg-bg/50 text-text-main backdrop-blur-sm transition-colors hover:text-primary md:hidden"
 	aria-label={labels.openMenu}
+	aria-expanded="false"
+	aria-controls="mobile-menu"
+	data-open-label={labels.openMenu}
+	data-close-label={labels.closeMenu}
 >
 	<MenuIcon class="size-6" />
 </button>
@@ -65,6 +69,8 @@ const XIcon = Icons.x
 </div>
 
 <script>
+	import { setDisclosure } from '../lib/disclosure'
+
 	const mobileMenu = document.getElementById('mobile-menu')
 	const menuToggle = document.getElementById('menu-toggle')
 	const menuClose = document.getElementById('menu-close')
@@ -75,13 +81,24 @@ const XIcon = Icons.x
 		document.body.appendChild(mobileMenu)
 	}
 
+	const toggleLabels = {
+		open: menuToggle?.dataset.openLabel ?? '',
+		close: menuToggle?.dataset.closeLabel ?? ''
+	}
+
 	function openMenu() {
+		if (menuToggle !== null) {
+			setDisclosure(menuToggle, true, toggleLabels)
+		}
 		mobileMenu?.classList.remove(...hiddenClasses)
 		mobileMenu?.classList.add(...visibleClasses)
 		document.body.style.overflow = 'hidden'
 	}
 
 	function closeMenu() {
+		if (menuToggle !== null) {
+			setDisclosure(menuToggle, false, toggleLabels)
+		}
 		mobileMenu?.classList.add(...hiddenClasses)
 		mobileMenu?.classList.remove(...visibleClasses)
 		document.body.style.overflow = ''

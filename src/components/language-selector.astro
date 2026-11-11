@@ -26,11 +26,13 @@ const currentCode = links.find((link) => link.locale === current)?.code
 			))}
 		</div>
 	) : (
-		<div class="group relative z-50">
+		<div class="group relative z-50" data-language-menu>
 			<button
 				type="button"
 				class="flex items-center gap-2 py-2 text-sm font-medium text-text-muted transition-colors hover:text-text-main"
 				aria-label={label}
+				aria-haspopup="true"
+				aria-expanded="false"
 			>
 				<GlobeIcon class="size-4" />
 				<span class="uppercase">{currentCode}</span>
@@ -44,3 +46,24 @@ const currentCode = links.find((link) => link.locale === current)?.code
 			</div>
 		</div>
 	))}
+
+<script>
+	import { setDisclosure } from '../lib/disclosure'
+
+	function bindLanguageMenu(group: HTMLElement): void {
+		const button = group.querySelector('button')
+		if (button === null) {
+			return
+		}
+		group.addEventListener('mouseenter', () => setDisclosure(button, true))
+		group.addEventListener('mouseleave', () =>
+			setDisclosure(button, group.matches(':focus-within'))
+		)
+		group.addEventListener('focusin', () => setDisclosure(button, true))
+		group.addEventListener('focusout', () =>
+			setDisclosure(button, group.matches(':hover') || group.matches(':focus-within'))
+		)
+	}
+
+	document.querySelectorAll<HTMLElement>('[data-language-menu]').forEach(bindLanguageMenu)
+</script>
