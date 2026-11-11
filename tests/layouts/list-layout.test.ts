@@ -81,6 +81,8 @@ const CASES: ListCase[] = [
 	}
 ]
 
+const BANNER = 'https://media.example.test/banner/master'
+
 const locals = fakeLocals({ locale: 'pt_BR', categories: [CATEGORY] })
 
 function renderList(item: ListCase, number: number): Promise<string> {
@@ -102,6 +104,34 @@ describe('list layout', () => {
 		expect(html).toContain(`<title>${item.heading} (2/3) | ${SITE_NAME}</title>`)
 		expect(html).toContain(`<link rel="canonical" href="${SITE_ORIGIN}${item.second}">`)
 		expect(html).not.toContain('hreflang="pt-BR" href=')
+	})
+
+	it.each(CASES)('$name emits one description, canonical and the social tags', async (item) => {
+		const html = await renderList(item, 1)
+		expect(html.match(/<link rel="canonical"/g)).toHaveLength(1)
+		expect(html.match(/<meta name="description"/g)).toHaveLength(1)
+		expect(html).toContain(`<meta property="og:title" content="${item.heading}">`)
+		expect(html).toContain(`<meta property="og:url" content="${SITE_ORIGIN}${item.first}">`)
+		expect(html).toContain('<meta property="og:locale" content="pt_BR">')
+		expect(html).toContain('<meta name="twitter:card" content="summary">')
+		expect(html).not.toContain('name="robots"')
+	})
+
+	it.each(CASES)('$name falls back to the site banner as its social image', async (item) => {
+		const html = await render(
+			item.view,
+			{ page: item.page(1) },
+			fakeLocals({ locale: 'pt_BR', categories: [CATEGORY], bannerUrl: BANNER })
+		)
+		expect(html.match(/property="og:image"/g)).toHaveLength(1)
+		expect(html).toContain(`<meta property="og:image" content="${BANNER}">`)
+		expect(html).toContain('<meta name="twitter:card" content="summary_large_image">')
+	})
+
+	it.each(CASES)('$name marks an empty list noindex', async (item) => {
+		const empty = { ...item.page(1), entries: { items: [] } }
+		const html = await render(item.view, { page: empty }, locals)
+		expect(html).toContain('<meta name="robots" content="noindex">')
 	})
 
 	it('shows the category filters on the blog list and marks the active category', async () => {

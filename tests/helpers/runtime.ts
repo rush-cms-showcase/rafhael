@@ -8,6 +8,7 @@ export type FakeSite = {
 	locale: LocaleCode
 	name?: string
 	categories?: Tag[]
+	bannerUrl?: string
 }
 
 export const SITE_NAME = 'Ada Lovelace'
@@ -18,7 +19,10 @@ function fakeClient(site: FakeSite): RushClient {
 	const client = {
 		site: { get: async () => ({ name: site.name ?? SITE_NAME }) },
 		siteOptions: {
-			get: async (slug: string) => ({ slug, values: {} })
+			get: async (slug: string) => ({
+				slug,
+				values: site.bannerUrl === undefined ? {} : { site_banner: { url: site.bannerUrl } }
+			})
 		},
 		navigations: { get: async () => ({ items: [] }) },
 		tags: { list: async () => site.categories ?? [] }

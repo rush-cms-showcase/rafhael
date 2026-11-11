@@ -1,14 +1,17 @@
 ---
+import { getRush } from '@rushcms/astro'
 import { requireSite } from '@rushcms/astro/components-runtime'
-import Hreflang from '@rushcms/astro/components/hreflang.astro'
+import Seo from '@rushcms/astro/components/seo.astro'
 import type { Alternate, LocaleCode } from '@rushcms/client'
 import Breadcrumb from '../components/breadcrumb.astro'
 import Container from '../components/container.astro'
 import Pager from '../components/pager.astro'
 import type { Breadcrumb as BreadcrumbTrail } from '../lib/breadcrumb'
+import { titleSuffix } from '../lib/document-title'
 import { labelsFor } from '../lib/labels'
 import { listPageHead } from '../lib/list-page'
 import type { PageUrl } from '../lib/routing'
+import { bannerImage, loadSiteOptions } from '../lib/site-options'
 import Base from './base.astro'
 
 type Props = {
@@ -32,12 +35,25 @@ const head = listPageHead({
 	pageUrl,
 	site: requireSite(Astro.site, '<ListLayout>')
 })
+const rush = getRush(Astro)
+const site = await rush.site.get()
+const image = bannerImage(await loadSiteOptions(rush.siteOptions))
 ---
 
-<Base locale={locale} title={{ from: 'page', page: head.title }} translations={alternates}>
-	{description && <meta slot="head" name="description" content={description} />}
-	{head.canonical && <link slot="head" rel="canonical" href={head.canonical} />}
-	{head.hreflang && <Hreflang slot="head" alternates={alternates} />}
+<Base locale={locale} title={{ from: 'seo' }} translations={alternates} socialImage={false}>
+	<Seo
+		slot="head"
+		page={{
+			locale,
+			canonical: head.canonical ?? Astro.url.pathname,
+			title: head.title,
+			description,
+			alternates: head.hreflang ? alternates : undefined,
+			image
+		}}
+		titleSuffix={titleSuffix(site.name)}
+	/>
+	{empty && <meta slot="head" name="robots" content="noindex" />}
 	{breadcrumb && <Breadcrumb trail={breadcrumb} />}
 	<section
 		class:list={[

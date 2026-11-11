@@ -1,5 +1,5 @@
 import { optional } from '@rushcms/client'
-import type { SiteOptionGroup } from '@rushcms/client'
+import type { Media, SiteOptionGroup } from '@rushcms/client'
 import { isRecord, optionalText } from './values'
 
 export const SITE_OPTIONS_GROUP = 'opcoes-do-site'
@@ -47,6 +47,10 @@ export function siteOptionsFrom(group: SiteOptionGroup | undefined): SiteOptions
 		logoUrl: optionImage(group, 'site_logo'),
 		bannerUrl: optionImage(group, 'site_banner')
 	}
+}
+
+export function bannerImage(options: SiteOptions): Media | undefined {
+	return options.bannerUrl === undefined ? undefined : { url: options.bannerUrl }
 }
 
 export function contactLinks(options: SiteOptions): ContactLink[] {
