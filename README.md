@@ -13,7 +13,7 @@ Copy `.env.example` to `.env` and fill:
 
 - `RUSH_API_URL`, `RUSH_SITE_ID`, `RUSH_API_TOKEN`: the CMS API, the site and a delivery token (secret)
 - `RUSH_MEDIA_URL`: the media host, when it differs from the API (optional)
-- `RUSH_PREVIEW`: enables draft preview (optional)
+- `RUSH_PREVIEW`: `true` only on a preview deployment (optional)
 - `SITE_URL`: the public origin of the site (build time)
 - `GTAG`: the analytics measurement id (build time, optional)
 
