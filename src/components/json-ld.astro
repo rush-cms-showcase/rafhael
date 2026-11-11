@@ -1,0 +1,11 @@
+---
+import { jsonLdScript } from '../lib/breadcrumb'
+
+type Props = {
+	data: object
+}
+
+const { data } = Astro.props
+---
+
+<script is:inline type="application/ld+json" set:html={jsonLdScript(data)} />

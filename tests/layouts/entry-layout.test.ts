@@ -9,7 +9,7 @@ import { render } from '../helpers/container'
 import type { Component } from '../helpers/container'
 import { SITE_ORIGIN } from '../helpers/fixtures'
 import { makeEntry } from '../helpers/make-entry'
-import { fakeLocals } from '../helpers/runtime'
+import { fakeLocals, SITE_NAME } from '../helpers/runtime'
 
 type EntryCase = {
 	name: string
@@ -75,6 +75,40 @@ describe('entry layout', () => {
 		}
 		expect(html).toContain('<div lang="en">')
 		expect(html).not.toContain('Not translated yet')
+	})
+
+	it.each(CASES)('$name title carries the site suffix after a pipe', async (item) => {
+		const html = await renderEntry(item.view, item.entry, 'en')
+		expect(html).toContain(`<title>${item.entry.title} | ${SITE_NAME}</title>`)
+	})
+
+	it('describes posts as BlogPosting and cases as Article, others not at all', async () => {
+		const types = await Promise.all(
+			CASES.map(async (item) => {
+				const html = await renderEntry(item.view, item.entry, 'en')
+				return [item.name, html.match(/"@type":"(BlogPosting|Article)"/)?.[1]]
+			})
+		)
+		expect(Object.fromEntries(types)).toEqual({
+			post: 'BlogPosting',
+			case: 'Article',
+			project: undefined,
+			page: undefined,
+			generic: undefined
+		})
+	})
+
+	it('puts the entry data and the author in the post JSON-LD', async () => {
+		const html = await renderEntry(BlogEntry, POST, 'en')
+		const json = html.match(
+			/<script[^>]*>({"@context":"https:\/\/schema.org","@type":"BlogPosting".*?})<\/script>/
+		)
+		expect(JSON.parse(json?.[1] ?? '{}')).toMatchObject({
+			headline: 'Hello',
+			url: `${SITE_ORIGIN}/blog/hello`,
+			inLanguage: 'en',
+			author: { '@type': 'Person', name: SITE_NAME }
+		})
 	})
 
 	it('links the translations of an entry with hreflang', async () => {

@@ -1,11 +1,15 @@
 ---
 import { getRush, getUrls, homepageTitle } from '@rushcms/astro'
 import Seo from '@rushcms/astro/components/seo.astro'
+import { requireSite } from '@rushcms/astro/components-runtime'
 import Hero from '../components/home/hero.astro'
 import Loop from '../components/home/loop.astro'
+import JsonLd from '../components/json-ld.astro'
 import Base from '../layouts/base.astro'
 import { loadLoopEntries } from '../lib/home-loop'
 import { homeSections } from '../lib/home-sections'
+import { absoluteUrl } from '../lib/routing'
+import { loadSiteIdentity, siteGraphJsonLd } from '../lib/structured-data'
 import type { HomeViewProps } from './index'
 
 type Props = HomeViewProps
@@ -14,6 +18,10 @@ const { page } = Astro.props
 const { locale, homepage } = page
 const rush = getRush(Astro)
 const urls = getUrls(Astro)
+const identity = await loadSiteIdentity(
+	rush,
+	absoluteUrl(urls.homepage(locale), requireSite(Astro.site, 'home'))
+)
 const sections = await Promise.all(
 	homeSections(homepage?.content ?? []).map(async (section) => ({
 		section,
@@ -28,6 +36,7 @@ const sections = await Promise.all(
 	socialImage={homepage?.meta?.og_image === undefined}
 >
 	{homepage && <Seo slot="head" homepage={homepage} />}
+	<JsonLd slot="head" data={siteGraphJsonLd(identity, locale)} />
 	{sections.map(({ section, entries }) =>
 		section.kind === 'hero' ? (
 			<Hero section={section} />

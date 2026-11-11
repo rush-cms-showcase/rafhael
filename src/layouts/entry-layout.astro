@@ -1,15 +1,26 @@
 ---
-import { getUrls } from '@rushcms/astro'
+import { getRush, getUrls } from '@rushcms/astro'
+import { requireSite } from '@rushcms/astro/components-runtime'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, toBcp47 } from '@rushcms/client'
 import type { Entry, LocaleCode } from '@rushcms/client'
 import Breadcrumb from '../components/breadcrumb.astro'
 import FallbackNotice from '../components/fallback-notice.astro'
+import JsonLd from '../components/json-ld.astro'
+import TitledHead from '../components/titled-head.astro'
 import { breadcrumbTrail } from '../lib/breadcrumb'
 import { entryCover } from '../lib/entry-data'
 import { ENTRY_WIDTHS } from '../lib/entry-width'
+import { absoluteUrl } from '../lib/routing'
+import { articleJsonLd, loadSiteIdentity } from '../lib/structured-data'
+import type { ArticleType } from '../lib/structured-data'
 import type { EntryKind } from '../lib/entry-width'
 import Base from './base.astro'
+
+const ARTICLE_TYPES: Partial<Record<EntryKind, ArticleType>> = {
+	post: 'BlogPosting',
+	case: 'Article'
+}
 
 type Props = {
 	entry: Entry
@@ -20,6 +31,9 @@ type Props = {
 const { entry, locale, kind } = Astro.props
 const urls = getUrls(Astro)
 const width = ENTRY_WIDTHS[kind]
+const site = requireSite(Astro.site, '<EntryLayout>')
+const identity = await loadSiteIdentity(getRush(Astro), absoluteUrl(urls.homepage(locale), site))
+const articleType = ARTICLE_TYPES[kind]
 const trail = breadcrumbTrail({ kind, locale, urls, title: entry.title, path: urls.entry(entry) })
 ---
 
@@ -29,7 +43,20 @@ const trail = breadcrumbTrail({ kind, locale, urls, title: entry.title, path: ur
 	socialImage={entryCover(entry) === undefined}
 	translations={alternates(entry, urls)}
 >
-	<Seo slot="head" entry={entry} />
+	<TitledHead slot="head" siteName={identity.name}>
+		<Seo entry={entry} />
+	</TitledHead>
+	{articleType && (
+		<JsonLd
+			slot="head"
+			data={articleJsonLd({
+				type: articleType,
+				entry,
+				url: absoluteUrl(urls.entry(entry), site),
+				identity
+			})}
+		/>
+	)}
 	<Breadcrumb trail={trail} class={width} />
 	<FallbackNotice entry={entry} locale={locale} class={width} />
 	<div lang={toBcp47(entry.locale)}>

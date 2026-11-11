@@ -2,10 +2,16 @@ import { describe, expect, it } from 'vitest'
 import Hero from '../../src/components/home/hero.astro'
 import Loop from '../../src/components/home/loop.astro'
 import WhatsappFloat from '../../src/components/whatsapp-float.astro'
+import HomeView from '../../src/views/home.astro'
 import type { HeroSection, LoopSection } from '../../src/lib/home-sections'
 import { render } from '../helpers/container'
 import { makeEntry } from '../helpers/make-entry'
 import { makeUrls } from '../helpers/make-urls'
+import { fakeLocals, SITE_NAME } from '../helpers/runtime'
+
+type GraphNode = {
+	'@type': string
+}
 
 const AVATAR = 'https://cdn.example.test/me.png'
 
@@ -119,6 +125,22 @@ describe('home components', () => {
 			})
 			expect(html).toContain('href="https://wa.me/15550100"')
 			expect(html).toContain('aria-label="Chat on WhatsApp"')
+		})
+	})
+
+	describe('HomeView', () => {
+		it('describes the site and its person in one JSON-LD graph', async () => {
+			const html = await render(
+				HomeView,
+				{ page: { kind: 'homepage', locale: 'es', homepage: undefined } },
+				fakeLocals({ locale: 'es' })
+			)
+			const json = html.match(
+				/<script[^>]*>({"@context":"https:\/\/schema.org","@graph".*?})<\/script>/
+			)
+			const graph = JSON.parse(json?.[1] ?? '{}')['@graph']
+			expect(graph.map((node: GraphNode) => node['@type'])).toEqual(['WebSite', 'Person'])
+			expect(graph[0]).toMatchObject({ name: SITE_NAME, inLanguage: 'es' })
 		})
 	})
 })
