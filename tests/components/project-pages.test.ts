@@ -82,12 +82,11 @@ describe('project article', () => {
 		expect(aside.indexOf('Official website')).toBeLessThan(aside.indexOf('Microsoft Store'))
 		const [first, second] = anchors(aside)
 		expect(first).toContain('href="https://www.example.test/app"')
-		expect(first).toContain('bg-primary text-white')
 		expect(second).toContain('href="https://store.example.test/app"')
-		expect(second).toContain('border border-border')
-		expect(second).not.toContain('bg-primary')
 		for (const anchor of [first, second]) {
 			expect(anchor).toContain('rel="noopener"')
+			expect(anchor).toContain('text-sm text-text-muted')
+			expect(anchor).not.toContain('bg-primary')
 		}
 	})
 

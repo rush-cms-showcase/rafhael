@@ -44,6 +44,12 @@ function isPlainClick(event: MouseEvent): boolean {
 	)
 }
 
+function warmSlides(slides: HTMLAnchorElement[]): void {
+	for (const image of slides.flatMap((slide) => [...slide.querySelectorAll('img')])) {
+		image.loading = 'eager'
+	}
+}
+
 function mountGallery(root: HTMLElement): void {
 	const elements = collectElements(root)
 	const { dialog, stage, counter, templates } = elements
@@ -110,6 +116,7 @@ function mountGallery(root: HTMLElement): void {
 	elements.thumbs.forEach((thumb, index) => {
 		thumb.addEventListener('click', () => select(index))
 	})
+	window.addEventListener('load', () => warmSlides(elements.slides), { once: true })
 	elements.steps.forEach((button) => {
 		button.addEventListener('click', () => step(Number(button.dataset.galleryStep)))
 	})
