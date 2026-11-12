@@ -1,9 +1,6 @@
 ---
 import type { Entry, LocaleCode } from '@rushcms/client'
 import { CARD_ASPECT_RATIO, ENTRY_COVER_SIZES } from '../lib/cover-sizes'
-import { projectMeta } from '../lib/entry-data'
-import { Icons } from '../lib/icons'
-import { labelsFor } from '../lib/labels'
 import ArticleShell from './article-shell.astro'
 import ArticleTitle from './article-title.astro'
 import EntryCover from './entry-cover.astro'
@@ -14,8 +11,7 @@ type Props = {
 	locale: LocaleCode
 }
 
-const { entry, locale } = Astro.props
-const { linkUrl, linkLabel } = projectMeta(entry)
+const { entry } = Astro.props
 ---
 
 <ArticleShell kind="project">
@@ -28,15 +24,4 @@ const { linkUrl, linkLabel } = projectMeta(entry)
 		class="aspect-video w-full rounded-2xl object-cover"
 	/>
 	<Prose entry={entry} />
-	{linkUrl !== undefined && (
-		<a
-			href={linkUrl}
-			target="_blank"
-			rel="noopener"
-			class="inline-flex items-center gap-2 self-start rounded-full bg-primary px-6 py-3 font-bold text-white transition-opacity hover:opacity-90"
-		>
-			{linkLabel ?? labelsFor(locale).openProject}
-			<Icons.external_link class="size-4" />
-		</a>
-	)}
 </ArticleShell>

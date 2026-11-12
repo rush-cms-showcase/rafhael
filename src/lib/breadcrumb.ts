@@ -1,6 +1,6 @@
 import type { LocaleCode, RushUrls } from '@rushcms/client'
 import { labelsFor } from './labels'
-import type { Labels } from './labels'
+import type { Labels, TextLabelKey } from './labels'
 import { absoluteUrl, collectionHref } from './routing'
 
 export type BreadcrumbKind = 'case' | 'post' | 'project' | 'page' | 'category' | 'tag'
@@ -51,12 +51,12 @@ type BreadcrumbNode = {
 
 type SectionRule = {
 	collection: string
-	label: keyof Labels
+	label: TextLabelKey
 }
 
 type KindRule = {
 	section: SectionRule | undefined
-	current: keyof Labels
+	current: TextLabelKey
 }
 
 const BLOG: SectionRule = { collection: 'blog', label: 'blog' }

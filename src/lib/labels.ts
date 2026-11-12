@@ -1,5 +1,7 @@
 import type { LocaleCode } from '@rushcms/client'
 
+export type LabelValues = Record<string, string>
+
 export type Labels = {
 	skipToContent: string
 	search: string
@@ -61,9 +63,19 @@ export type Labels = {
 	poweredBy: string
 	github: string
 	linkedin: string
+	projectDistribution: string
+	galleryImageAlt: string
+	galleryOpen: string
+	galleryPrevious: string
+	galleryNext: string
+	galleryClose: string
+	linkLabels: LabelValues
+	distributionLabels: LabelValues
 }
 
-export type LabelValues = Record<string, string>
+export type TextLabelKey = {
+	[Key in keyof Labels]: Labels[Key] extends string ? Key : never
+}[keyof Labels]
 
 const english: Labels = {
 	skipToContent: 'Skip to content',
@@ -125,7 +137,15 @@ const english: Labels = {
 	createdBy: 'Created by',
 	poweredBy: 'Powered by',
 	github: 'GitHub',
-	linkedin: 'LinkedIn'
+	linkedin: 'LinkedIn',
+	projectDistribution: 'Distribution',
+	galleryImageAlt: '{title}, image {n} of {total}',
+	galleryOpen: 'Open image',
+	galleryPrevious: 'Previous image',
+	galleryNext: 'Next image',
+	galleryClose: 'Close',
+	linkLabels: { globe: 'Official website', windows: 'Microsoft Store' },
+	distributionLabels: { 'Closed Source': 'Closed source' }
 }
 
 const dictionary: Record<string, Labels> = {
@@ -190,7 +210,15 @@ const dictionary: Record<string, Labels> = {
 		createdBy: 'Criado por',
 		poweredBy: 'Desenvolvido com',
 		github: 'GitHub',
-		linkedin: 'LinkedIn'
+		linkedin: 'LinkedIn',
+		projectDistribution: 'Distribuição',
+		galleryImageAlt: '{title}, imagem {n} de {total}',
+		galleryOpen: 'Abrir imagem',
+		galleryPrevious: 'Imagem anterior',
+		galleryNext: 'Próxima imagem',
+		galleryClose: 'Fechar',
+		linkLabels: { globe: 'Site oficial', windows: 'Microsoft Store' },
+		distributionLabels: { 'Closed Source': 'Código fechado' }
 	},
 	es: {
 		skipToContent: 'Saltar al contenido',
@@ -252,7 +280,15 @@ const dictionary: Record<string, Labels> = {
 		createdBy: 'Creado por',
 		poweredBy: 'Desarrollado con',
 		github: 'GitHub',
-		linkedin: 'LinkedIn'
+		linkedin: 'LinkedIn',
+		projectDistribution: 'Distribución',
+		galleryImageAlt: '{title}, imagen {n} de {total}',
+		galleryOpen: 'Abrir imagen',
+		galleryPrevious: 'Imagen anterior',
+		galleryNext: 'Imagen siguiente',
+		galleryClose: 'Cerrar',
+		linkLabels: { globe: 'Sitio oficial', windows: 'Microsoft Store' },
+		distributionLabels: { 'Closed Source': 'Código cerrado' }
 	}
 }
 

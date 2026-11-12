@@ -1,4 +1,4 @@
-import type { Entry } from '@rushcms/client'
+import type { Entry, Media } from '@rushcms/client'
 
 export type EntryOverrides = Partial<Entry>
 
@@ -23,4 +23,15 @@ export function makeEntry(overrides: EntryOverrides = {}): Entry {
 	}
 	const served = { slug: base.slug, collection_slug: base.collection.slug }
 	return { ...base, translations: { [base.locale]: served, ...base.translations } }
+}
+
+export type UrlMedia = Media & { url: string }
+
+export function makeMedia(name: string): UrlMedia {
+	return {
+		media_id: `media-${name}`,
+		url: `https://cdn.example.test/${name}.webp`,
+		mime_type: 'image/webp',
+		size: 1024
+	}
 }

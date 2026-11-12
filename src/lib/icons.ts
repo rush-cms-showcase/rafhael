@@ -20,6 +20,7 @@ import IconSearch from '~icons/lucide/search'
 import IconX from '~icons/lucide/x'
 import IconLinkedin from '~icons/simple-icons/linkedin'
 import IconWhatsapp from '~icons/simple-icons/whatsapp'
+import IconWindows from '~icons/simple-icons/windows'
 import IconTwitterX from '~icons/simple-icons/x'
 
 export const Icons = {
@@ -43,6 +44,7 @@ export const Icons = {
 	search: IconSearch,
 	twitter_x: IconTwitterX,
 	whatsapp: IconWhatsapp,
+	windows: IconWindows,
 	x: IconX
 } as const
 
@@ -50,7 +52,7 @@ export type IconName = keyof typeof Icons
 
 export type IconComponent = (typeof Icons)[IconName]
 
-export type LinkIcon = HeroIcon | ContactKind
+export type LinkIcon = HeroIcon | ContactKind | 'windows'
 
 export const LINK_ICONS: Record<LinkIcon, IconComponent> = {
 	globe: Icons.globe,
@@ -60,5 +62,10 @@ export const LINK_ICONS: Record<LinkIcon, IconComponent> = {
 	envelope: Icons.mail,
 	email: Icons.mail,
 	whatsapp: Icons.whatsapp,
-	phone: Icons.phone
+	phone: Icons.phone,
+	windows: Icons.windows
+}
+
+export function linkIcon(name: string): IconComponent {
+	return Object.hasOwn(LINK_ICONS, name) ? LINK_ICONS[name as LinkIcon] : Icons.external_link
 }

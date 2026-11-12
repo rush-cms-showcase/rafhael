@@ -1,6 +1,6 @@
 import type { CollectionRef, LocaleCode, RushUrls } from '@rushcms/client'
 import { kindLabels, labelsFor } from './labels'
-import type { Labels } from './labels'
+import type { TextLabelKey } from './labels'
 
 export type NamedCollection = CollectionRef & { name: string }
 
@@ -9,7 +9,7 @@ export type CollectionCopy = {
 	description: string | undefined
 }
 
-const DESCRIPTIONS: Record<string, keyof Labels> = {
+const DESCRIPTIONS: Record<string, TextLabelKey> = {
 	blog: 'blogDescription',
 	cases: 'casesDescription',
 	projects: 'projectsDescription'

@@ -1,5 +1,5 @@
-import type { BlockValues, Homepage, RepeaterItem } from '@rushcms/client'
-import { optionalText, text } from './values'
+import type { BlockValues, Homepage } from '@rushcms/client'
+import { isRepeaterItem, optionalText, text } from './values'
 
 export type HomepageSection = Homepage['content'][number]
 
@@ -53,10 +53,6 @@ function oneOf<T extends string>(options: readonly T[], value: unknown): T | und
 function quantityOf(value: unknown): number {
 	const parsed = typeof value === 'number' ? value : Number.parseInt(text(value), 10)
 	return Number.isInteger(parsed) && parsed > 0 ? parsed : DEFAULT_QUANTITY
-}
-
-function isRepeaterItem(item: unknown): item is RepeaterItem {
-	return typeof item === 'object' && item !== null && '_id' in item
 }
 
 function heroLinks(value: BlockValues[string] | undefined): HeroLink[] {

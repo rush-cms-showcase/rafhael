@@ -1,6 +1,6 @@
 ---
 import type { Entry, LocaleCode, RushUrls } from '@rushcms/client'
-import { entryCover, projectMeta } from '../lib/entry-data'
+import { entryCover } from '../lib/entry-data'
 import { CARD_ASPECT_RATIO, PROJECT_CARD_SIZES } from '../lib/cover-sizes'
 import { DEFAULT_HEADING } from '../lib/heading'
 import type { HeadingLevel } from '../lib/heading'
@@ -19,7 +19,7 @@ type Props = {
 const { entry, locale, urls, headingLevel = DEFAULT_HEADING } = Astro.props
 const Heading = headingLevel
 const href = urls.entry(entry)
-const linkLabel = projectMeta(entry).linkLabel ?? labelsFor(locale).openProject
+const linkLabel = labelsFor(locale).openProject
 ---
 
 <Card>
