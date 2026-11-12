@@ -1,0 +1,55 @@
+---
+import type { LocaleCode } from '@rushcms/client'
+import type { ProjectMeta } from '../lib/entry-data'
+import { Icons } from '../lib/icons'
+import { labelsFor } from '../lib/labels'
+import Fact from './fact.astro'
+import ProjectGallery from './project-gallery.astro'
+
+type Props = {
+	meta: ProjectMeta
+	title: string
+	locale: LocaleCode
+	class?: string | undefined
+}
+
+const { meta, title, locale, class: className } = Astro.props
+const labels = labelsFor(locale)
+const button = 'flex w-full items-center gap-3 rounded-full px-6 py-3 font-bold transition-colors'
+const tones = [
+	'bg-primary text-white hover:bg-primary-hover',
+	'border border-border text-text-main hover:border-primary/60 hover:text-primary'
+]
+---
+
+<aside class:list={['flex flex-col gap-8', className]}>
+	<ProjectGallery media={meta.gallery} title={title} locale={locale} />
+	{meta.distribution.length > 0 && (
+		<dl class="border-t border-border pt-6">
+			<Fact label={labels.projectDistribution}>{meta.distribution.join(', ')}</Fact>
+		</dl>
+	)}
+	{meta.links.length > 0 && (
+		<ul class="flex flex-col gap-3">
+			{meta.links.map((link, index) => (
+				<li>
+					<a
+						href={link.href}
+						target="_blank"
+						rel="noopener"
+						class:list={[button, tones[index === 0 ? 0 : 1]]}
+					>
+						<link.icon class="size-5 shrink-0" aria-hidden="true" />
+						<span class="min-w-0 flex-1 truncate">{link.label}</span>
+						{link.icon !== Icons.external_link && (
+							<Icons.external_link
+								class="size-4 shrink-0 opacity-70"
+								aria-hidden="true"
+							/>
+						)}
+					</a>
+				</li>
+			))}
+		</ul>
+	)}
+</aside>

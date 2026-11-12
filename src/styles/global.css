@@ -50,7 +50,7 @@
 		color-scheme: dark;
 	}
 
-	html:has(#search-dialog[open]) {
+	html:has(dialog[open]) {
 		overflow: hidden;
 	}
 

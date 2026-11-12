@@ -32,6 +32,8 @@ export function makeMedia(name: string): UrlMedia {
 		media_id: `media-${name}`,
 		url: `https://cdn.example.test/${name}.webp`,
 		mime_type: 'image/webp',
-		size: 1024
+		size: 1024,
+		width: 2880,
+		height: 1800
 	}
 }

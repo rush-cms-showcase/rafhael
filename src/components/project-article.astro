@@ -1,9 +1,11 @@
 ---
 import type { Entry, LocaleCode } from '@rushcms/client'
-import { CARD_ASPECT_RATIO, ENTRY_COVER_SIZES } from '../lib/cover-sizes'
+import { projectMeta } from '../lib/entry-data'
+import { labelsFor } from '../lib/labels'
 import ArticleShell from './article-shell.astro'
 import ArticleTitle from './article-title.astro'
-import EntryCover from './entry-cover.astro'
+import EntryExcerpt from './entry-excerpt.astro'
+import ProjectAside from './project-aside.astro'
 import Prose from './prose.astro'
 
 type Props = {
@@ -11,17 +13,25 @@ type Props = {
 	locale: LocaleCode
 }
 
-const { entry } = Astro.props
+const { entry, locale } = Astro.props
+const meta = projectMeta(entry, labelsFor(locale))
+const hasAside = meta.gallery.length > 0 || meta.distribution.length > 0 || meta.links.length > 0
 ---
 
 <ArticleShell kind="project">
-	<ArticleTitle title={entry.title} tone="accent" />
-	<EntryCover
-		entry={entry}
-		sizes={ENTRY_COVER_SIZES}
-		aspectRatio={CARD_ASPECT_RATIO}
-		priority
-		class="aspect-video w-full rounded-2xl object-cover"
-	/>
-	<Prose entry={entry} />
+	<header class="flex flex-col gap-8">
+		<ArticleTitle title={entry.title} tone="accent" />
+		<EntryExcerpt excerpt={entry.excerpt} />
+	</header>
+	<div class:list={['grid gap-12', hasAside && 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]']}>
+		<Prose entry={entry} size="lg" />
+		{hasAside && (
+			<ProjectAside
+				meta={meta}
+				title={entry.title}
+				locale={locale}
+				class="order-first lg:order-none lg:self-start [@media(min-height:760px)]:lg:sticky [@media(min-height:760px)]:lg:top-28"
+			/>
+		)}
+	</div>
 </ArticleShell>

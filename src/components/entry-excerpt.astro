@@ -1,0 +1,9 @@
+---
+type Props = {
+	excerpt: string | undefined
+}
+
+const { excerpt } = Astro.props
+---
+
+{excerpt && <p class="max-w-2xl text-xl text-pretty text-text-muted">{excerpt}</p>}

@@ -3,17 +3,28 @@ import type { Entry } from '@rushcms/client'
 import { markdownBody, renderMarkdown } from '../lib/markdown'
 import { siteUrl } from '../lib/site-env'
 
+type ProseSize = 'lg' | 'xl'
+
 type Props = {
 	entry: Entry
+	size?: ProseSize
 }
 
-const { entry } = Astro.props
+const sizes: Record<ProseSize, string> = {
+	lg: 'prose-lg',
+	xl: 'prose-lg lg:prose-xl'
+}
+
+const { entry, size = 'xl' } = Astro.props
 const html = await renderMarkdown(markdownBody(entry), siteUrl(Astro.site))
 ---
 
 {html !== '' && (
 	<div
-		class="prose prose-lg max-w-none lg:prose-xl prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-code:before:content-none prose-code:after:content-none prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl"
+		class:list={[
+			'prose max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-primary prose-code:before:content-none prose-code:after:content-none prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl',
+			sizes[size]
+		]}
 		set:html={html}
 	/>
 )}

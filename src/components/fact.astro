@@ -1,0 +1,15 @@
+---
+type Props = {
+	label: string
+	class?: string | undefined
+}
+
+const { label, class: className } = Astro.props
+---
+
+<div class:list={['flex min-w-0 flex-col gap-1.5', className]}>
+	<dt class="text-[11px] font-medium tracking-[0.16em] text-text-subtle uppercase">{label}</dt>
+	<dd class="text-base text-text-main">
+		<slot />
+	</dd>
+</div>

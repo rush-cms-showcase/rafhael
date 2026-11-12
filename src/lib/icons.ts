@@ -14,6 +14,7 @@ import IconGlobe from '~icons/lucide/globe'
 import IconHouse from '~icons/lucide/house'
 import IconMail from '~icons/lucide/mail'
 import IconMapPin from '~icons/lucide/map-pin'
+import IconMaximize from '~icons/lucide/maximize-2'
 import IconMenu from '~icons/lucide/menu'
 import IconPhone from '~icons/lucide/phone'
 import IconSearch from '~icons/lucide/search'
@@ -39,6 +40,7 @@ export const Icons = {
 	linkedin: IconLinkedin,
 	mail: IconMail,
 	map_pin: IconMapPin,
+	maximize: IconMaximize,
 	menu: IconMenu,
 	phone: IconPhone,
 	search: IconSearch,

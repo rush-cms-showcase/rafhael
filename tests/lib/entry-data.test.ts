@@ -1,14 +1,10 @@
-import type {
-	Entry,
-	ExpandedDatabaseItem as DatabaseItem,
-	FieldValues,
-	LocaleCode
-} from '@rushcms/client'
+import type { Entry, FieldValues, LocaleCode } from '@rushcms/client'
 import { describe, expect, it } from 'vitest'
 import { caseFacts, caseMeta, projectMeta } from '../../src/lib/entry-data'
 import { Icons } from '../../src/lib/icons'
 import { labelsFor } from '../../src/lib/labels'
 import { makeEntry, makeMedia } from '../helpers/make-entry'
+import { makeDatabaseItem, makeProjectLink } from '../helpers/make-project'
 
 describe('caseMeta', () => {
 	it('reads the case fields', () => {
@@ -72,23 +68,15 @@ describe('projectMeta', () => {
 		return projectMeta(makeEntry({ data, media }), labelsFor(locale))
 	}
 
-	function dbItem(name: string): DatabaseItem {
-		return { id: 'item-id', name, description: '', parent_id: null }
-	}
-
-	function link(url: string, icon: string | undefined, id = 'link-1') {
-		return { _id: id, url, icon: icon === undefined ? [] : [dbItem(icon)] }
-	}
-
 	it('reads a full entry', () => {
 		const result = meta(
 			{
 				'image-gallery': [photo.url, shot.url],
 				links: [
-					link('https://www.example.test/app', 'globe'),
-					link('https://store.example.test/app', 'windows', 'link-2')
+					makeProjectLink('https://www.example.test/app', 'globe'),
+					makeProjectLink('https://store.example.test/app', 'windows', 'link-2')
 				],
-				'distribution-model': [dbItem('Closed Source')]
+				'distribution-model': [makeDatabaseItem('Closed Source')]
 			},
 			{ a: photo, b: shot }
 		)
@@ -134,7 +122,11 @@ describe('projectMeta', () => {
 
 	it('drops links with an invalid or missing url', () => {
 		const result = meta({
-			links: [link('javascript:alert(1)', 'globe'), link('', 'globe'), { _id: 'z' }]
+			links: [
+				makeProjectLink('javascript:alert(1)', 'globe'),
+				makeProjectLink('', 'globe'),
+				{ _id: 'z' }
+			]
 		})
 		expect(result.links).toEqual([])
 	})
@@ -142,9 +134,9 @@ describe('projectMeta', () => {
 	it('falls back to the external link icon and the hostname for unknown icons', () => {
 		const result = meta({
 			links: [
-				link('https://www.example.test/a', 'unknown'),
-				link('https://docs.example.test/b', undefined, 'link-2'),
-				link('https://example.test/c', 'constructor', 'link-3')
+				makeProjectLink('https://www.example.test/a', 'unknown'),
+				makeProjectLink('https://docs.example.test/b', undefined, 'link-2'),
+				makeProjectLink('https://example.test/c', 'constructor', 'link-3')
 			]
 		})
 		expect(result.links).toEqual([
@@ -163,14 +155,18 @@ describe('projectMeta', () => {
 	})
 
 	it('localizes link labels', () => {
-		const data = { links: [link('https://example.test', 'globe')] }
+		const data = { links: [makeProjectLink('https://example.test', 'globe')] }
 		expect(meta(data, {}, 'pt_BR').links[0]?.label).toBe('Site oficial')
 		expect(meta(data, {}, 'es').links[0]?.label).toBe('Sitio oficial')
 	})
 
 	it('translates distribution by name and keeps unknown names raw', () => {
 		const data = {
-			'distribution-model': [dbItem('Closed Source'), dbItem('Freemium'), dbItem(' ')]
+			'distribution-model': [
+				makeDatabaseItem('Closed Source'),
+				makeDatabaseItem('Freemium'),
+				makeDatabaseItem(' ')
+			]
 		}
 		expect(meta(data).distribution).toEqual(['Closed source', 'Freemium'])
 		expect(meta(data, {}, 'pt_BR').distribution).toEqual(['Código fechado', 'Freemium'])
@@ -179,6 +175,6 @@ describe('projectMeta', () => {
 
 	it('ignores project_status', () => {
 		const base = meta({})
-		expect(meta({ project_status: [dbItem('Active')] })).toEqual(base)
+		expect(meta({ project_status: [makeDatabaseItem('Active')] })).toEqual(base)
 	})
 })

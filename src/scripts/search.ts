@@ -1,3 +1,4 @@
+import { fillTemplate, required } from '../lib/dom'
 import { groupResults } from '../lib/search-index'
 import type { SearchItem } from '../lib/search-index'
 import { bindSearchShortcut, nextActiveIndex } from '../lib/search-keys'
@@ -17,14 +18,6 @@ type SearchElements = {
 	optionTemplate: HTMLTemplateElement
 }
 
-function required<T extends Element>(root: ParentNode, selector: string): T {
-	const element = root.querySelector<T>(selector)
-	if (element === null) {
-		throw new Error(`search dialog is missing ${selector}`)
-	}
-	return element
-}
-
 function collectElements(dialog: HTMLDialogElement): SearchElements {
 	return {
 		dialog,
@@ -35,10 +28,6 @@ function collectElements(dialog: HTMLDialogElement): SearchElements {
 		groupTemplate: required<HTMLTemplateElement>(dialog, '#search-group-template'),
 		optionTemplate: required<HTMLTemplateElement>(dialog, '#search-option-template')
 	}
-}
-
-function fillTemplate(template: HTMLTemplateElement): HTMLElement {
-	return required<HTMLElement>(template.content, '*').cloneNode(true) as HTMLElement
 }
 
 function mountSearch(dialog: HTMLDialogElement): void {

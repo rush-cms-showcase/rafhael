@@ -4,6 +4,8 @@ import { caseFacts, caseMeta } from '../lib/entry-data'
 import { labelsFor } from '../lib/labels'
 import ArticleTitle from './article-title.astro'
 import CaseStack from './case-stack.astro'
+import EntryExcerpt from './entry-excerpt.astro'
+import Fact from './fact.astro'
 
 type Props = {
 	entry: Entry
@@ -14,29 +16,23 @@ const { entry, locale } = Astro.props
 const labels = labelsFor(locale)
 const meta = caseMeta(entry)
 const facts = caseFacts(meta, labels)
-const pair =
-	'flex min-w-0 flex-col gap-1.5 sm:border-l sm:border-border sm:px-6 sm:first:border-l-0 sm:first:pl-0'
-const term = 'text-[11px] font-medium tracking-[0.16em] text-text-subtle uppercase'
+const pair = 'sm:border-l sm:border-border sm:px-6 sm:first:border-l-0 sm:first:pl-0'
 ---
 
 <header class="flex flex-col gap-8">
 	<ArticleTitle title={entry.title} tone="plain" />
-	{entry.excerpt && <p class="max-w-2xl text-xl text-pretty text-text-muted">{entry.excerpt}</p>}
+	<EntryExcerpt excerpt={entry.excerpt} />
 	{(facts.length > 0 || meta.stack.length > 0) && (
 		<dl class="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-border pt-6 sm:flex sm:flex-wrap sm:gap-x-0">
 			{facts.map((fact) => (
-				<div class={pair}>
-					<dt class={term}>{fact.label}</dt>
-					<dd class="text-base text-text-main">{fact.value}</dd>
-				</div>
+				<Fact label={fact.label} class={pair}>
+					{fact.value}
+				</Fact>
 			))}
 			{meta.stack.length > 0 && (
-				<div class:list={[pair, 'col-span-2']}>
-					<dt class={term}>{labels.caseStack}</dt>
-					<dd>
-						<CaseStack stack={meta.stack} />
-					</dd>
-				</div>
+				<Fact label={labels.caseStack} class={`${pair} col-span-2`}>
+					<CaseStack stack={meta.stack} />
+				</Fact>
 			)}
 		</dl>
 	)}

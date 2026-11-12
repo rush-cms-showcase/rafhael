@@ -1,3 +1,5 @@
+import { wrapIndex } from './wrap-index'
+
 export type ShortcutEvent = {
 	key: string
 	ctrlKey: boolean
@@ -26,15 +28,15 @@ export function bindSearchShortcut(target: EventTarget, open: () => void): () =>
 	return () => target.removeEventListener('keydown', listener)
 }
 
+const ARROW_STEPS = new Map<string, number>([
+	['ArrowDown', 1],
+	['ArrowUp', -1]
+])
+
 export function nextActiveIndex(current: number, count: number, key: string): number {
+	const step = ARROW_STEPS.get(key)
 	if (count === 0) {
 		return -1
 	}
-	if (key === 'ArrowDown') {
-		return (current + 1) % count
-	}
-	if (key === 'ArrowUp') {
-		return current <= 0 ? count - 1 : current - 1
-	}
-	return current
+	return step === undefined ? current : wrapIndex(current, count, step)
 }
