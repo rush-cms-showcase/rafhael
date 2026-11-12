@@ -66,6 +66,8 @@ export type Labels = {
 	projectDistribution: string
 	galleryImageAlt: string
 	galleryOpen: string
+	galleryDialog: string
+	galleryShow: string
 	galleryPrevious: string
 	galleryNext: string
 	galleryClose: string
@@ -141,6 +143,8 @@ const english: Labels = {
 	projectDistribution: 'Distribution',
 	galleryImageAlt: '{title}, image {n} of {total}',
 	galleryOpen: 'Open image',
+	galleryDialog: '{title} — Gallery',
+	galleryShow: 'Show image {n} of {total}',
 	galleryPrevious: 'Previous image',
 	galleryNext: 'Next image',
 	galleryClose: 'Close',
@@ -214,6 +218,8 @@ const dictionary: Record<string, Labels> = {
 		projectDistribution: 'Distribuição',
 		galleryImageAlt: '{title}, imagem {n} de {total}',
 		galleryOpen: 'Abrir imagem',
+		galleryDialog: '{title} — Galeria',
+		galleryShow: 'Mostrar imagem {n} de {total}',
 		galleryPrevious: 'Imagem anterior',
 		galleryNext: 'Próxima imagem',
 		galleryClose: 'Fechar',
@@ -284,6 +290,8 @@ const dictionary: Record<string, Labels> = {
 		projectDistribution: 'Distribución',
 		galleryImageAlt: '{title}, imagen {n} de {total}',
 		galleryOpen: 'Abrir imagen',
+		galleryDialog: '{title} — Galería',
+		galleryShow: 'Mostrar imagen {n} de {total}',
 		galleryPrevious: 'Imagen anterior',
 		galleryNext: 'Imagen siguiente',
 		galleryClose: 'Cerrar',

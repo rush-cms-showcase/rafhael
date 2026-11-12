@@ -36,6 +36,7 @@
 		"@iconify-json/simple-icons": "1.2.101",
 		"@types/hast": "3.0.5",
 		"@types/node": "24.19.2",
+		"happy-dom": "21.0.4",
 		"prettier": "3.9.10",
 		"prettier-plugin-astro": "1.1.2",
 		"typescript": "npm:@typescript/typescript6@6.0.2",

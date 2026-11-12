@@ -1,4 +1,4 @@
-import { wrapIndex } from './wrap-index'
+import { stepForKey, wrapIndex } from './wrap-index'
 
 export type ShortcutEvent = {
 	key: string
@@ -34,7 +34,7 @@ const ARROW_STEPS = new Map<string, number>([
 ])
 
 export function nextActiveIndex(current: number, count: number, key: string): number {
-	const step = ARROW_STEPS.get(key)
+	const step = stepForKey(ARROW_STEPS, key)
 	if (count === 0) {
 		return -1
 	}

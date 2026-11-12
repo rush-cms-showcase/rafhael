@@ -69,15 +69,18 @@ const control =
 			))}
 		</div>
 		{total > 1 && (
-			<ul data-gallery-thumbs class="grid grid-cols-5 gap-2">
+			<ul data-gallery-thumbs hidden class="grid grid-cols-5 gap-2">
 				{images.map((image, index) => (
 					<li>
 						<button
 							type="button"
 							data-gallery-thumb
-							aria-label={image.alt}
-							aria-current={index === 0 ? 'true' : undefined}
-							class="block aspect-[16/10] w-full overflow-hidden rounded-lg border border-border opacity-60 ring-primary ring-offset-2 ring-offset-bg transition hover:opacity-100 aria-[current=true]:opacity-100 aria-[current=true]:ring-2"
+							aria-label={formatLabel(labels.galleryShow, {
+								n: String(index + 1),
+								total: String(total)
+							})}
+							aria-pressed={index === 0 ? 'true' : 'false'}
+							class="block aspect-[16/10] w-full overflow-hidden rounded-lg border border-border opacity-60 ring-primary ring-offset-2 ring-offset-bg transition hover:opacity-100 aria-pressed:opacity-100 aria-pressed:ring-2"
 						>
 							<RushImage
 								media={image.media}
@@ -94,18 +97,19 @@ const control =
 		)}
 		<dialog
 			data-gallery-dialog
-			aria-label={title}
+			data-gallery-dismiss
+			aria-label={formatLabel(labels.galleryDialog, { title })}
 			class="m-0 h-dvh max-h-none w-full max-w-none border-0 bg-transparent p-0 text-text-main backdrop:bg-bg/95 backdrop:backdrop-blur-md"
 		>
-			<div class="flex size-full flex-col">
-				<div class="flex items-center justify-between px-4 py-4 sm:px-6">
-					<p
-						data-gallery-counter
-						aria-live="polite"
-						class="text-sm text-text-muted tabular-nums"
-					>
+			<div data-gallery-dismiss class="flex size-full flex-col">
+				<div
+					data-gallery-dismiss
+					class="flex items-center justify-between px-4 py-4 sm:px-6"
+				>
+					<p data-gallery-counter class="text-sm text-text-muted tabular-nums">
 						1 / {total}
 					</p>
+					<p data-gallery-live aria-live="polite" class="sr-only"></p>
 					<button
 						type="button"
 						data-gallery-close
@@ -115,9 +119,10 @@ const control =
 						<Icons.x class="size-5" aria-hidden="true" />
 					</button>
 				</div>
-				<div class="relative min-h-0 flex-1">
+				<div data-gallery-dismiss class="relative min-h-0 flex-1">
 					<div
 						data-gallery-stage
+						data-gallery-dismiss
 						class="size-full touch-pan-y px-4 pb-6 select-none sm:px-20 [&>img]:size-full [&>img]:object-contain"
 					></div>
 					{total > 1 && (
@@ -160,5 +165,5 @@ const control =
 )}
 
 <script>
-	import '../scripts/gallery'
+	import '../scripts/mount-galleries'
 </script>
