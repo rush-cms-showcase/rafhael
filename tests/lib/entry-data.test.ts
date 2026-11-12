@@ -104,12 +104,12 @@ describe('projectMeta', () => {
 		expect(meta({ 'image-gallery': 3, links: 'x', 'distribution-model': 'x' })).toEqual(empty)
 	})
 
-	it('renders a repeated gallery url once and keeps the order', () => {
+	it('keeps a repeated gallery url as authored, in order', () => {
 		const result = meta(
 			{ 'image-gallery': [shot.url, photo.url, shot.url] },
 			{ a: photo, b: shot }
 		)
-		expect(result.gallery).toEqual([shot, photo])
+		expect(result.gallery).toEqual([shot, photo, shot])
 	})
 
 	it('drops gallery urls missing from the media map', () => {

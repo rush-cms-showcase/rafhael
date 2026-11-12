@@ -84,8 +84,9 @@ function projectLink(item: unknown, labels: Labels): ProjectLink | undefined {
 
 function projectGallery(entry: Entry): Media[] {
 	const media = Object.values(entry.media)
-	const urls = new Set(textList(entry.data['image-gallery']))
-	return [...urls].flatMap((url) => media.find((item) => item.url === url) ?? [])
+	return textList(entry.data['image-gallery']).flatMap(
+		(url) => media.find((item) => item.url === url) ?? []
+	)
 }
 
 export function projectMeta(entry: Entry, labels: Labels): ProjectMeta {
