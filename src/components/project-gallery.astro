@@ -1,4 +1,5 @@
 ---
+import { getRush } from '@rushcms/astro'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
 import type { LocaleCode, Media } from '@rushcms/client'
 import {
@@ -12,6 +13,7 @@ import {
 } from '../lib/cover-sizes'
 import { Icons } from '../lib/icons'
 import { formatLabel, labelsFor } from '../lib/labels'
+import { mediaAlt } from '../lib/media-alt'
 
 type Props = {
 	media: Media[]
@@ -25,18 +27,20 @@ type GalleryImage = {
 }
 
 const { media, title, locale } = Astro.props
+const { name: siteName } = await getRush(Astro).site.get()
 const labels = labelsFor(locale)
 const total = media.length
 const images: GalleryImage[] = media.map((item, index) => ({
 	media: item,
-	alt:
-		item.alt !== undefined && item.alt.trim() !== ''
-			? item.alt
-			: formatLabel(labels.galleryImageAlt, {
-					title,
-					n: String(index + 1),
-					total: String(total)
-				})
+	alt: mediaAlt(
+		item.alt,
+		formatLabel(labels.galleryImageAlt, {
+			title,
+			n: String(index + 1),
+			total: String(total)
+		}),
+		siteName
+	)
 }))
 const control =
 	'flex size-11 items-center justify-center rounded-full border border-border bg-bg-elevated/80 text-text-main backdrop-blur-sm transition-colors hover:border-primary/60 hover:text-primary'
@@ -84,7 +88,7 @@ const control =
 						>
 							<RushImage
 								media={image.media}
-								alt=""
+								alt={image.alt}
 								sizes={GALLERY_THUMB_SIZES}
 								widths={GALLERY_THUMB_WIDTHS}
 								aspectRatio={GALLERY_ASPECT_RATIO}

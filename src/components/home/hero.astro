@@ -2,15 +2,17 @@
 import { LINK_ICONS } from '../../lib/icons'
 import type { HeroSection } from '../../lib/home-sections'
 import { splitHeroText } from '../../lib/home-sections'
+import { mediaAlt } from '../../lib/media-alt'
 import { safeHref } from '../../lib/safe-href'
 import Container from '../container.astro'
 import MaybeLink from '../maybe-link.astro'
 
 type Props = {
 	section: HeroSection
+	siteName: string
 }
 
-const { section } = Astro.props
+const { section, siteName } = Astro.props
 const { lead, comma, rest } = splitHeroText(section.text)
 const links = section.links.map((link) => ({
 	...link,
@@ -25,7 +27,7 @@ const links = section.links.map((link) => ({
 		{section.avatar !== undefined && (
 			<img
 				src={section.avatar}
-				alt=""
+				alt={mediaAlt(undefined, undefined, siteName)}
 				width="64"
 				height="64"
 				class="mr-[0.08em] ml-[0.2em] inline-block size-[1.05em] rounded-full border-2 border-primary align-[-0.17em] object-cover lg:border-3"

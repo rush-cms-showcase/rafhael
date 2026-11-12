@@ -1,7 +1,9 @@
 ---
+import { getRush } from '@rushcms/astro'
 import RushImage from '@rushcms/astro/components/rush-image.astro'
 import type { Entry } from '@rushcms/client'
 import { entryCover } from '../lib/entry-data'
+import { mediaAlt } from '../lib/media-alt'
 
 type Props = {
 	entry: Entry
@@ -13,6 +15,14 @@ type Props = {
 
 const { entry, class: className, ...image } = Astro.props
 const cover = entryCover(entry)
+const site = cover === undefined ? undefined : await getRush(Astro).site.get()
 ---
 
-{cover && <RushImage media={cover} alt={cover.alt || entry.title} class={className} {...image} />}
+{cover && site && (
+	<RushImage
+		media={cover}
+		alt={mediaAlt(cover.alt, entry.title, site.name)}
+		class={className}
+		{...image}
+	/>
+)}

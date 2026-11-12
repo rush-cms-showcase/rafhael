@@ -18,6 +18,7 @@ const { page } = Astro.props
 const { locale, homepage } = page
 const rush = getRush(Astro)
 const urls = getUrls(Astro)
+const site = await rush.site.get()
 const identity = await loadSiteIdentity(
 	rush,
 	absoluteUrl(urls.homepage(locale), siteUrl(Astro.site))
@@ -39,7 +40,7 @@ const sections = await Promise.all(
 	<JsonLd slot="head" data={siteGraphJsonLd(identity, locale)} />
 	{sections.map(({ section, entries }) =>
 		section.kind === 'hero' ? (
-			<Hero section={section} />
+			<Hero section={section} siteName={site.name} />
 		) : (
 			<Loop section={section} entries={entries} locale={locale} urls={urls} />
 		)

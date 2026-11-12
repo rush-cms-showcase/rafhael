@@ -40,28 +40,37 @@ function loop(overrides: Partial<LoopSection>): LoopSection {
 describe('home components', () => {
 	describe('Hero', () => {
 		it('puts the avatar between the lead and a tight comma', async () => {
-			const html = await render(Hero, { section: hero })
+			const html = await render(Hero, { section: hero, siteName: SITE_NAME })
 			expect(html).toContain(AVATAR)
 			expect(html).toMatch(/<\/span><img[^>]*\/?><span[^>]*>,<\/span>/)
 			expect(html).toContain('I build engines.')
 		})
 
+		it('gives the avatar the site name as alt', async () => {
+			const html = await render(Hero, { section: hero, siteName: SITE_NAME })
+			expect(html).toContain(`alt="${SITE_NAME}"`)
+		})
+
 		it('never prints the avatar token', async () => {
 			const html = await render(Hero, {
-				section: { ...hero, text: 'Ada {avatar}, builds.', avatar: undefined }
+				section: { ...hero, text: 'Ada {avatar}, builds.', avatar: undefined },
+				siteName: SITE_NAME
 			})
 			expect(html).not.toContain('{avatar}')
 			expect(html).toMatch(/Ada<\/span><span[^>]*>,<\/span>/)
 		})
 
 		it('renders no image and no stray comma gap without an avatar', async () => {
-			const html = await render(Hero, { section: { ...hero, avatar: undefined } })
+			const html = await render(Hero, {
+				section: { ...hero, avatar: undefined },
+				siteName: SITE_NAME
+			})
 			expect(html).not.toContain('<img')
 			expect(html).toMatch(/I&#39;m Ada<\/span><span[^>]*>,<\/span>/)
 		})
 
 		it('renders plain text for links without a usable url', async () => {
-			const html = await render(Hero, { section: hero })
+			const html = await render(Hero, { section: hero, siteName: SITE_NAME })
 			expect(html).toContain('href="https://site.example.test"')
 			expect(html).toContain('Town')
 			expect(html).not.toContain('javascript:')

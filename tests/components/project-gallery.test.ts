@@ -64,6 +64,16 @@ describe('project gallery', () => {
 		expect(portuguese).toContain('alt="Motor, imagem 1 de 1"')
 	})
 
+	it('gives every thumbnail the alt of its image', async () => {
+		const html = await gallery([{ ...photo, alt: 'Dashboard view' }, shot, scan])
+		const thumbs = html.match(/<button [^>]*data-gallery-thumb [\s\S]*?<\/button>/g) ?? []
+		expect(thumbs).toHaveLength(3)
+		expect(thumbs[0]).toContain('alt="Dashboard view"')
+		expect(thumbs[1]).toContain('alt="Engine, image 2 of 3"')
+		expect(thumbs[2]).toContain('alt="Engine, image 3 of 3"')
+		expect(html).not.toContain('alt=""')
+	})
+
 	it('loads only the first main image eagerly', async () => {
 		const html = await gallery([photo, shot])
 		expect(count(html, 'fetchpriority="high"')).toBe(1)
