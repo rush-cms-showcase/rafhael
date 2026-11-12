@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { siteOrigin } from '../../src/lib/site-env'
+import { siteOrigin, siteUrl } from '../../src/lib/site-env'
 
 describe('siteOrigin', () => {
 	it('returns the configured origin', () => {
@@ -30,5 +30,16 @@ describe('siteOrigin', () => {
 	it('accepts http outside production', () => {
 		const origin = siteOrigin({ SITE_URL: 'http://localhost:4321', NODE_ENV: 'development' })
 		expect(origin.href).toBe('http://localhost:4321/')
+	})
+})
+
+describe('siteUrl', () => {
+	it('returns the site URL', () => {
+		const site = new URL('https://example.test/')
+		expect(siteUrl(site)).toBe(site)
+	})
+
+	it('throws when the site URL is undefined', () => {
+		expect(() => siteUrl(undefined)).toThrow('SITE_URL is required')
 	})
 })

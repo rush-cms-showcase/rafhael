@@ -1,6 +1,5 @@
 ---
 import { getRush } from '@rushcms/astro'
-import { requireSite } from '@rushcms/astro/components-runtime'
 import Seo from '@rushcms/astro/components/seo.astro'
 import type { Alternate, LocaleCode } from '@rushcms/client'
 import Breadcrumb from '../components/breadcrumb.astro'
@@ -11,6 +10,7 @@ import { titleSuffix } from '../lib/document-title'
 import { labelsFor } from '../lib/labels'
 import { listPageHead } from '../lib/list-page'
 import type { PageUrl } from '../lib/routing'
+import { siteUrl } from '../lib/site-env'
 import { bannerImage, loadSiteOptions } from '../lib/site-options'
 import Base from './base.astro'
 
@@ -33,7 +33,7 @@ const head = listPageHead({
 	page,
 	lastPage,
 	pageUrl,
-	site: requireSite(Astro.site, '<ListLayout>')
+	site: siteUrl(Astro.site)
 })
 const rush = getRush(Astro)
 const site = await rush.site.get()

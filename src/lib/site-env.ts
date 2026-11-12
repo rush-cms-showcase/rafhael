@@ -17,3 +17,10 @@ export function siteOrigin(env: SiteEnv): URL {
 	}
 	return origin
 }
+
+export function siteUrl(site: URL | undefined): URL {
+	if (site === undefined) {
+		throw new Error('SITE_URL is required')
+	}
+	return site
+}

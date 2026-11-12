@@ -1,14 +1,14 @@
 ---
-import { requireSite } from '@rushcms/astro/components-runtime'
 import type { Entry } from '@rushcms/client'
 import { markdownBody, renderMarkdown } from '../lib/markdown'
+import { siteUrl } from '../lib/site-env'
 
 type Props = {
 	entry: Entry
 }
 
 const { entry } = Astro.props
-const html = await renderMarkdown(markdownBody(entry), requireSite(Astro.site, '<Prose>'))
+const html = await renderMarkdown(markdownBody(entry), siteUrl(Astro.site))
 ---
 
 {html !== '' && (

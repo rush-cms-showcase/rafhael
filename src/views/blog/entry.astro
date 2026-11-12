@@ -1,6 +1,5 @@
 ---
 import { getUrls } from '@rushcms/astro'
-import { requireSite } from '@rushcms/astro/components-runtime'
 import CategoryPills from '../../components/blog/category-pills.astro'
 import PostMeta from '../../components/blog/post-meta.astro'
 import Share from '../../components/blog/share.astro'
@@ -16,13 +15,14 @@ import { ENTRY_WIDTHS } from '../../lib/entry-width'
 import { markdownBody } from '../../lib/markdown'
 import { readingTime } from '../../lib/reading-time'
 import { absoluteUrl } from '../../lib/routing'
+import { siteUrl } from '../../lib/site-env'
 import type { EntryViewProps } from '../index'
 
 type Props = EntryViewProps
 
 const { entry, locale } = Astro.props
 const urls = getUrls(Astro)
-const shareUrl = absoluteUrl(urls.entry(entry), requireSite(Astro.site, 'blog entry'))
+const shareUrl = absoluteUrl(urls.entry(entry), siteUrl(Astro.site))
 const width = ENTRY_WIDTHS.post
 ---
 

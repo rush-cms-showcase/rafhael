@@ -21,8 +21,7 @@ export default defineConfig({
 	integrations: [
 		rush({
 			...URL_CONFIG,
-			forms: false,
-			trustedProxies: 0
+			forms: false
 		})
 	]
 })

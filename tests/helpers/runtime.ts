@@ -1,8 +1,7 @@
-import { runtimeOf } from '@rushcms/astro/components-runtime'
 import type { LocaleCode, RushClient, Tag } from '@rushcms/client'
 import { makeUrls, COLLECTIONS } from './make-urls'
 
-type Runtime = ReturnType<typeof runtimeOf>
+type Runtime = Record<string, unknown>
 
 export type FakeSite = {
 	locale: LocaleCode

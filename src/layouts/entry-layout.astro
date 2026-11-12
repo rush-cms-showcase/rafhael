@@ -1,6 +1,5 @@
 ---
 import { getRush, getUrls } from '@rushcms/astro'
-import { requireSite } from '@rushcms/astro/components-runtime'
 import Seo from '@rushcms/astro/components/seo.astro'
 import { alternates, toBcp47 } from '@rushcms/client'
 import type { Entry, LocaleCode } from '@rushcms/client'
@@ -12,6 +11,7 @@ import { entryCover } from '../lib/entry-data'
 import { titleSuffix } from '../lib/document-title'
 import { ENTRY_WIDTHS } from '../lib/entry-width'
 import { absoluteUrl } from '../lib/routing'
+import { siteUrl } from '../lib/site-env'
 import { articleJsonLd, loadSiteIdentity } from '../lib/structured-data'
 import type { ArticleType } from '../lib/structured-data'
 import type { EntryKind } from '../lib/entry-width'
@@ -31,7 +31,7 @@ type Props = {
 const { entry, locale, kind } = Astro.props
 const urls = getUrls(Astro)
 const width = ENTRY_WIDTHS[kind]
-const site = requireSite(Astro.site, '<EntryLayout>')
+const site = siteUrl(Astro.site)
 const identity = await loadSiteIdentity(getRush(Astro), absoluteUrl(urls.homepage(locale), site))
 const articleType = ARTICLE_TYPES[kind]
 const trail = breadcrumbTrail({ kind, locale, urls, title: entry.title, path: urls.entry(entry) })
