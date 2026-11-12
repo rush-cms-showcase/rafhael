@@ -5,7 +5,7 @@
     "": {
       "name": "rafhael",
       "dependencies": {
-        "@rushcms/astro": "0.7.1",
+        "@rushcms/astro": "0.8.0",
         "@rushcms/client": "5.0.3",
         "@tailwindcss/typography": "0.5.20",
         "@tailwindcss/vite": "4.3.5",
@@ -255,7 +255,7 @@
 
     "@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.1", "", {}, "sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw=="],
 
-    "@rushcms/astro": ["@rushcms/astro@0.7.1", "", { "dependencies": { "@rushcms/client": "^5.0.3" }, "peerDependencies": { "astro": ">=7.4.0", "vite": ">=8.0.0" } }, "sha512-JPXv4XqFpz/F1LnUWrgtzA48qh/VqaC93oArFJ/YgQq+tLfWFWCvs70CP4VoHYAZlAfpkOc0vu9lT8JsvGmDRQ=="],
+    "@rushcms/astro": ["@rushcms/astro@0.8.0", "", { "dependencies": { "@rushcms/client": "^5.0.3" }, "peerDependencies": { "astro": ">=7.4.0", "vite": ">=8.0.0" } }, "sha512-s7uTashWXSr5/yHX96nu2SxJRs3YLgo1LxYcYfMM7z5QnpcHBjmp0C9yugHt5DaYPObofJUHbRa3kZEIMJE4kA=="],
 
     "@rushcms/client": ["@rushcms/client@5.0.3", "", {}, "sha512-+lVquUdkI8LE7z1TVYA+gcKBMB35pUOW5Fig+wXGIEYzaV8p648QPtnnCIgC6MDd9fo/btoWkNnOx+Su1x76OQ=="],
 
